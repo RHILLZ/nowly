@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="36.5" height="36.5" viewBox="0 0 36.5 36.5">
+  <g id="complete" transform="translate(-6670.26 1069)">
+    <ellipse id="Ellipse_165" data-name="Ellipse 165" cx="14" cy="14.5" rx="14" ry="14.5" transform="translate(6675 -1065)" fill="#fff"/>
+    <path id="checkmark-filled" d="M20.5,2.25A18.25,18.25,0,1,0,38.75,20.5,18.25,18.25,0,0,0,20.5,2.25ZM17.893,27.787l-6.518-6.518L13.448,19.2l4.445,4.445,9.659-9.659,2.081,2.067Z" transform="translate(6668.01 -1071.25)" fill="#3d881c"/>
+  </g>
+</svg>

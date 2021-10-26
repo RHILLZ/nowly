@@ -1,0 +1,28 @@
+<svg id="schedule_active" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="41.928" height="42.494" viewBox="0 0 41.928 42.494">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.881" y1="1.108" x2="0.119" y2="-0.108" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#ff931e"/>
+      <stop offset="0.193" stop-color="#fe971e"/>
+      <stop offset="0.412" stop-color="#fea51e"/>
+      <stop offset="0.643" stop-color="#fdbb1f"/>
+      <stop offset="0.881" stop-color="#fcdb20"/>
+      <stop offset="1" stop-color="#fcee21"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="0.946" y1="1.011" x2="0.054" y2="-0.011" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-3" x1="0.982" y1="0.793" x2="0.018" y2="0.207" xlink:href="#linear-gradient"/>
+  </defs>
+  <g id="Group_317" data-name="Group 317">
+    <g id="Group_313" data-name="Group 313" transform="translate(6.274 17.59)">
+      <path id="Path_202" data-name="Path 202" d="M494.459,63.045H469.479a2.647,2.647,0,0,0-2.406,2.835v13a2.647,2.647,0,0,0,2.406,2.835h24.979a2.647,2.647,0,0,0,2.406-2.835v-13A2.647,2.647,0,0,0,494.459,63.045Z" transform="translate(-467.073 -63.045)" fill="url(#linear-gradient)"/>
+    </g>
+    <g id="Group_314" data-name="Group 314" transform="translate(0 5.831)">
+      <path id="Path_203" data-name="Path 203" d="M494.992,42.291h-3.58c-.037,3.465-1.754,6.255-3.866,6.255s-3.828-2.79-3.866-6.255h-13.3c0,.055,0,.109,0,.164,0,3.519-1.732,6.371-3.868,6.371s-3.868-2.852-3.868-6.371c0-.055,0-.109,0-.164h-3.72A3.229,3.229,0,0,0,456,45.75V75.5a3.229,3.229,0,0,0,2.936,3.459h36.057a3.229,3.229,0,0,0,2.936-3.459V45.75A3.229,3.229,0,0,0,494.992,42.291Zm.063,29.655a2.889,2.889,0,0,1-2.627,3.094H461.87a2.889,2.889,0,0,1-2.626-3.094V54.1a2.889,2.889,0,0,1,2.626-3.094h30.559a2.889,2.889,0,0,1,2.627,3.094Z" transform="translate(-456 -42.291)" fill="url(#linear-gradient-2)"/>
+    </g>
+    <g id="Group_315" data-name="Group 315" transform="translate(7.246)">
+      <ellipse id="Ellipse_30" data-name="Ellipse 30" cx="3.31" cy="5.453" rx="3.31" ry="5.453" fill="url(#linear-gradient-3)"/>
+    </g>
+    <g id="Group_316" data-name="Group 316" transform="translate(28.268)">
+      <ellipse id="Ellipse_31" data-name="Ellipse 31" cx="3.31" cy="5.453" rx="3.31" ry="5.453" fill="url(#linear-gradient-3)"/>
+    </g>
+  </g>
+</svg>

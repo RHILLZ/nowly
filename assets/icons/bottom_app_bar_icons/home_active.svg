@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="43.712" height="43.712" viewBox="0 0 43.712 43.712">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.891" y1="1.109" x2="0.1" y2="0.318" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#ff931e"/>
+      <stop offset="0.193" stop-color="#fe971e"/>
+      <stop offset="0.412" stop-color="#fea51e"/>
+      <stop offset="0.643" stop-color="#fdbb1f"/>
+      <stop offset="0.881" stop-color="#fcdb20"/>
+      <stop offset="1" stop-color="#fcee21"/>
+    </linearGradient>
+  </defs>
+  <g id="home_active" transform="translate(-89.75 -34)" style="isolation: isolate">
+    <g id="Group_222" data-name="Group 222" transform="translate(89.75 34)">
+      <g id="Group_221" data-name="Group 221">
+        <g id="Group_220" data-name="Group 220">
+          <path id="Path_128" data-name="Path 128" d="M133.462,53.088,111.606,34,89.75,53.088V77.712h14.029V59.991h15.654V77.712h14.029Z" transform="translate(-89.75 -34)" fill="url(#linear-gradient)"/>
+        </g>
+      </g>
+    </g>
+    <g id="Group_226" data-name="Group 226" transform="translate(89.75 34)">
+      <g id="Group_225" data-name="Group 225" opacity="0.33">
+        <g id="Group_224" data-name="Group 224">
+          <g id="Group_223" data-name="Group 223">
+            <path id="Path_129" data-name="Path 129" d="M133.462,53.088,111.606,34,89.75,53.088V77.712h14.029V59.991h15.654V77.712h14.029Z" transform="translate(-89.75 -34)" fill="none"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

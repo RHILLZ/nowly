@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="26.885" height="29.724" viewBox="0 0 26.885 29.724">
+  <g id="filter" transform="translate(-3875.825 -75.5)">
+    <g id="filter-2" data-name="filter" transform="translate(3876.325 76.712)">
+      <g id="Group_241" data-name="Group 241" transform="translate(0 0)">
+        <path id="Subtraction_4" data-name="Subtraction 4" d="M23.391,4.987h-.744a5.41,5.41,0,0,0,.542-2.375A5.468,5.468,0,0,0,22.525,0h.866a2.493,2.493,0,1,1,0,4.987Zm-10.583,0H2.494A2.493,2.493,0,1,1,2.494,0H12.93a5.466,5.466,0,0,0-.664,2.612,5.411,5.411,0,0,0,.541,2.374Z" transform="translate(0 0)" stroke="rgba(0,0,0,0)" stroke-miterlimit="10" stroke-width="1"/>
+      </g>
+      <g id="Group_242" data-name="Group 242" transform="translate(0 10.449)">
+        <path id="Subtraction_3" data-name="Subtraction 3" d="M23.391,4.987H13.268a5.41,5.41,0,0,0,.542-2.375A5.468,5.468,0,0,0,13.146,0H23.391a2.493,2.493,0,1,1,0,4.987Zm-19.963,0H2.494A2.493,2.493,0,1,1,2.494,0H3.55a5.467,5.467,0,0,0-.664,2.612,5.412,5.412,0,0,0,.541,2.374Z" transform="translate(0 0)" stroke="rgba(0,0,0,0)" stroke-miterlimit="10" stroke-width="1"/>
+      </g>
+      <g id="Group_243" data-name="Group 243" transform="translate(0 22.18)">
+        <path id="Subtraction_5" data-name="Subtraction 5" d="M23.391,4.987H20.808a5.41,5.41,0,0,0,.542-2.375A5.468,5.468,0,0,0,20.686,0h2.705a2.493,2.493,0,1,1,0,4.987Zm-12.423,0H2.494A2.493,2.493,0,1,1,2.494,0h8.6a5.466,5.466,0,0,0-.664,2.612,5.411,5.411,0,0,0,.541,2.374Z" transform="translate(0 0)" stroke="rgba(0,0,0,0)" stroke-miterlimit="10" stroke-width="1"/>
+      </g>
+    </g>
+    <ellipse id="Ellipse_157" data-name="Ellipse 157" cx="3.734" cy="3.734" rx="3.734" ry="3.734" transform="translate(3890.29 75.5)"/>
+    <ellipse id="Ellipse_158" data-name="Ellipse 158" cx="3.734" cy="3.734" rx="3.734" ry="3.734" transform="translate(3880.988 86.098)"/>
+    <ellipse id="Ellipse_159" data-name="Ellipse 159" cx="3.734" cy="3.734" rx="3.734" ry="3.734" transform="translate(3888.573 97.756)"/>
+  </g>
+</svg>
