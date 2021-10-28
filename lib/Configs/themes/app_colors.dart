@@ -93,6 +93,21 @@ LinearGradient authPagesGradient(BuildContext context) {
             ]);
 }
 
+LinearGradient infoCardGradient(BuildContext context) {
+  return LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: UIParameters.isDarkMode(context)
+          ? [
+              const Color(0xFF26364f),
+              const Color(0xFF0d0e10),
+            ]
+          : [
+              const Color(0xFF010d3e),
+              const Color(0xFF35468b),
+            ]);
+}
+
 RadialGradient trainingConfirmationCardGradient(BuildContext context) {
   return RadialGradient(
       radius: 0.85,
@@ -133,7 +148,6 @@ Color myChatBubbleColor(BuildContext context) =>
         ? const Color.fromARGB(255, 56, 83, 122)
         : kPrimaryColor;
 
-Color chatBubbleColor(BuildContext context) =>
-    UIParameters.isDarkMode(context)
-        ? const Color.fromARGB(255, 64, 69, 78)  //rgba(64, 69, 78, 1)
-        : const Color.fromARGB(255, 237, 237, 237);
+Color chatBubbleColor(BuildContext context) => UIParameters.isDarkMode(context)
+    ? const Color.fromARGB(255, 64, 69, 78) //rgba(64, 69, 78, 1)
+    : const Color.fromARGB(255, 237, 237, 237);

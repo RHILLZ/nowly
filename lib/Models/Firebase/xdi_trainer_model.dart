@@ -1,0 +1,130 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class TrainerModel {
+  String? id;
+  String? firstName;
+  String? lastName;
+  String? birthYear;
+  String? sex;
+  String? stripeAccountId;
+  String? email;
+  List? pScore;
+  String? bio;
+  String? profilePicURL;
+  String? oneSignalId;
+  late bool agreedToTerms;
+  late String activeMode;
+  late double rating;
+  double? ranking;
+  int? rankIndex;
+  int? prevRankIndex;
+  List? skillSet;
+  List availability;
+  GeoPoint? lastLocation;
+  Timestamp? createdAt;
+  Timestamp? updatedAt;
+  late bool validCertification;
+  late bool validInsurance;
+  late int virtualSessionsCompleted;
+  late int inPersonSessionsCompleted;
+  int? totalSessionsCompleted;
+  late int declinedSessions;
+
+  TrainerModel(
+      {this.id,
+      this.firstName,
+      this.lastName,
+      this.email,
+      this.pScore,
+      this.bio,
+      this.birthYear,
+      this.sex,
+      this.stripeAccountId,
+      this.profilePicURL,
+      this.oneSignalId,
+      this.agreedToTerms = false,
+      this.activeMode = 'Not Available',
+      this.skillSet,
+      this.availability = const [],
+      this.lastLocation,
+      this.createdAt,
+      this.updatedAt,
+      this.validCertification = false,
+      this.validInsurance = false,
+      this.virtualSessionsCompleted = 0,
+      this.inPersonSessionsCompleted = 0,
+      this.totalSessionsCompleted = 0,
+      this.declinedSessions = 0,
+      this.ranking = 0,
+      this.rankIndex,
+      this.prevRankIndex,
+      this.rating = 4.9});
+
+  factory TrainerModel.fromDocumentSnapshot(
+      Map<String, dynamic>? document, String id) {
+    final doc = document!;
+    return TrainerModel(
+      id: id,
+      firstName: doc['firstName'],
+      lastName: doc['lastName'],
+      email: doc['email'],
+      pScore: doc['pScore'],
+      bio: doc['bio'],
+      birthYear: doc['birthYear'],
+      sex: doc['sex'],
+      profilePicURL: doc['profilePicURL'],
+      oneSignalId: doc['oneSignalId'],
+      stripeAccountId: doc['stripeAccountId'],
+      createdAt: doc['createdAt'],
+      updatedAt: doc['updatedAt'],
+      agreedToTerms: doc['agreedToTerms'],
+      activeMode: doc['activeMode'],
+      skillSet: doc['skillSet'],
+      availability: doc['availability'],
+      lastLocation: doc['lastLoction'],
+      validCertification: doc['validCertification'],
+      validInsurance: doc['validInsurance'],
+      virtualSessionsCompleted: doc['virtualSessionsCompleted'],
+      inPersonSessionsCompleted: doc['inPersonSessionsCompleted'],
+      totalSessionsCompleted: doc['totalSessionsCompleted'],
+      declinedSessions: doc['declinedSessions'],
+      ranking: doc['ranking'],
+      rankIndex: doc['rankIndex'],
+      prevRankIndex: doc['prevRankIndex'],
+      rating: doc['rating'],
+    );
+  }
+
+  Map<String, dynamic> toMap(TrainerModel trainer) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = trainer.id;
+    data['firstName'] = trainer.firstName;
+    data['lastName'] = trainer.lastName;
+    data['email'] = trainer.email;
+    data['pScore'] = trainer.pScore;
+    data['bio'] = trainer.bio;
+    data['birthYear'] = trainer.birthYear;
+    data['sex'] = trainer.sex;
+    data['profilePicURL'] = trainer.profilePicURL;
+    data['oneSignalId'] = trainer.oneSignalId;
+    data['stripeAccountId'] = trainer.stripeAccountId;
+    data['createdAt'] = trainer.createdAt;
+    data['updatedAt'] = trainer.updatedAt;
+    data['agreedToTerms'] = trainer.agreedToTerms;
+    data['activeMode'] = trainer.activeMode;
+    data['skillSet'] = trainer.skillSet;
+    data['availability'] = trainer.availability;
+    data['lastLocation'] = trainer.lastLocation;
+    data['validCertification'] = trainer.validCertification;
+    data['validInsurance'] = trainer.validInsurance;
+    data['virtualSessionsCompleted'] = trainer.virtualSessionsCompleted;
+    data['inPersonSessionsCompleted'] = trainer.inPersonSessionsCompleted;
+    data['totalSessionsCompleted'] = trainer.totalSessionsCompleted;
+    data['declinedSessions'] = trainer.declinedSessions;
+    data['ranking'] = trainer.ranking;
+    data['rankIndex'] = trainer.rankIndex;
+    data['prevRankIndex'] = trainer.prevRankIndex;
+    data['rating'] = trainer.rating;
+    return data;
+  }
+}
