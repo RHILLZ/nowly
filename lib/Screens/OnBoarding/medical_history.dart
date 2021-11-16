@@ -137,7 +137,10 @@ class MedicalHistory extends StatelessWidget {
           ),
         ),
         onTapHeader: () {
-          _controller.selectedQuestionnaire.value = _medicalHistoryQModel;
+          _controller.selectedQuestionnaire.value == _medicalHistoryQModel
+              ? _controller.selectedQuestionnaire.value =
+                  QuestionnaireModel(title: '', header: '')
+              : _controller.selectedQuestionnaire.value = _medicalHistoryQModel;
         },
       ),
     );

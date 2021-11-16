@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
+import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Utils/logger.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 
 class MapScreen extends StatelessWidget {
-  const MapScreen({Key? key}) : super(key: key);
+  MapScreen({Key? key}) : super(key: key);
+  final SessionListController _sessionListController = Get.find();
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
@@ -14,6 +15,9 @@ class RegistrationController extends GetxController {
   final ExerciseHistoryQModel exerciseHistoryQModel = ExerciseHistoryQModel();
   final PscoreQModel pscoreQModel = PscoreQModel();
   final Rx<UserModel> _user = UserModel().obs;
+  final _isProcessing = false.obs;
+
+  get isProcessing => _isProcessing.value;
 
   final selectedQuestionnaire = QuestionnaireModel(
           title: '',
@@ -24,50 +28,56 @@ class RegistrationController extends GetxController {
   final RxList _yesToMedHistoryQuestions = [].obs;
 
   createUser() async {
+    _isProcessing.toggle();
     AuthController _auth = Get.find<AuthController>();
+    final uid = _auth.firebaseUser.uid;
+    final email = _auth.firebaseUser.email;
     //USER INFO
-    _user.value.id = _auth.firebaseUser.uid;
-    _user.value.email = _auth.firebaseUser.email;
-    _user.value.firstName = nameAndInfoQModel.firstName;
-    _user.value.lastName = nameAndInfoQModel.lastName;
-    _user.value.height = nameAndInfoQModel.height.toString();
-    _user.value.weight = nameAndInfoQModel.weight.toString();
-    _user.value.sex = nameAndInfoQModel.gender.toString();
-    _user.value.birthYear = nameAndInfoQModel.birthYear.toString();
+    UserModel user = _user.value;
+    user.id = uid;
+    user.email = email;
+    user.firstName = nameAndInfoQModel.firstName;
+    user.lastName = nameAndInfoQModel.lastName;
+    user.height = nameAndInfoQModel.height.toString();
+    user.weight = nameAndInfoQModel.weight.toString();
+    user.sex = nameAndInfoQModel.gender.toString();
+    user.birthYear = nameAndInfoQModel.birthYear.toString();
     //USER GOAL INFO
-    _user.value.goals = goalsQModel.selectedFitnessGoals;
-    _user.value.goalTimeFrame =
+    user.goals = goalsQModel.selectedFitnessGoals;
+    user.goalTimeFrame =
         goalsQModel.timeFrames[goalsQModel.selectedTimeFrameIndex.toInt()];
-    _user.value.primaryGoal = goalsQModel.selectedPrimaryGoal.toString();
+    user.primaryGoal = goalsQModel.selectedPrimaryGoal.toString();
     //USER EXERCISE HISTORY
-    _user.value.fitnessLevel =
-        exerciseHistoryQModel.selectedFitnessLevel.toString();
-    _user.value.activeDaysWeekly = exerciseHistoryQModel
+    user.fitnessLevel = exerciseHistoryQModel.selectedFitnessLevel.toString();
+    user.activeDaysWeekly = exerciseHistoryQModel
         .workOutDays[exerciseHistoryQModel.selectedWorkOutIndex.toInt()];
-    _user.value.hadPastTrainer =
+    user.hadPastTrainer =
         // ignore: unrelated_type_equality_checks
         exerciseHistoryQModel.trainedWithACoach == yesNoAnswer.yes
             ? true
             : false;
-    _user.value.experienceWithPastTrainer =
-        exerciseHistoryQModel.howWasIt.toString();
+    user.experienceWithPastTrainer = exerciseHistoryQModel.howWasIt.toString();
     //INJURY HISTORY
-    _user.value.hasInjury = injuryHistoryQModel.hasInjury;
-    _user.value.injuryDetails = injuryHistoryQModel.injuryDetail;
-
+    user.hasInjury = injuryHistoryQModel.hasInjury;
+    user.injuryDetails = injuryHistoryQModel.injuryDetail;
     //MEDICAL HISTORY
-    _user.value.hasMedicalHistory = checkMedHistory();
-    _user.value.yesToMedHistoryQuestions = _yesToMedHistoryQuestions;
-    _user.value.medicalHistoryDetails = medicalHistoryQModel.info.toString();
-
-    //pScore
-    _user.value.pScore = pscore();
-    //
-    _user.value.createdAt = Timestamp.now();
-
-    var result = await FirebaseFutures().createUserInFirestore(_user.value);
+    user.hasMedicalHistory = checkMedHistory();
+    user.yesToMedHistoryQuestions = _yesToMedHistoryQuestions;
+    user.medicalHistoryDetails = medicalHistoryQModel.info.toString();
+    //PSCORE
+    user.pScore = pscore();
+    user.createdAt = Timestamp.now();
+    var result = await FirebaseFutures().createUserInFirestore(user);
     if (result == true) {
+      _isProcessing.toggle();
       Get.off(const Root());
+    } else {
+      _isProcessing.toggle();
+      Get.snackbar('Something went wrong.',
+          'Could not create profile at this time. Please try agian later.',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white);
     }
   }
 

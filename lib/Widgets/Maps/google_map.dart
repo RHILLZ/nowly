@@ -5,7 +5,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 
-
 class GoogleMapWidget extends GetView<MapController> {
   const GoogleMapWidget({Key? key}) : super(key: key);
 
@@ -20,16 +19,14 @@ class GoogleMapWidget extends GetView<MapController> {
         myLocationEnabled: true,
         mapToolbarEnabled: false,
         compassEnabled: false,
-        myLocationButtonEnabled  : false,
+        myLocationButtonEnabled: false,
         zoomControlsEnabled: false,
-        //myLocationButtonEnabled: true,
         initialCameraPosition: controller.initialPosition,
         markers: {
           ...controller.destinationMarkers,
           if (controller.originMarker.value != null)
             controller.originMarker.value!,
-          if(controller.showPlaceIcons.value)
-          ...controller.placeMarkers  
+          if (controller.showPlaceIcons.value) ...controller.placeMarkers
         },
         polylines: {
           if (controller.polylinesPoints.isNotEmpty)
@@ -39,11 +36,10 @@ class GoogleMapWidget extends GetView<MapController> {
                 width: 5,
                 points: controller.polylinesPoints)
         },
-        
-        onCameraIdle: (){
+        onCameraIdle: () {
           controller.onMapCameraIdle();
         },
-        onCameraMove: (cameraPosition){
+        onCameraMove: (cameraPosition) {
           controller.onMapCameraMove(cameraPosition);
         },
         onMapCreated: (GoogleMapController controller) {

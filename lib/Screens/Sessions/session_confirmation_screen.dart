@@ -41,8 +41,7 @@ class SessionConfirmationScreen extends StatelessWidget {
                   trainerGenderPref: _filterController.genderPref.type,
                   sessionMode: _controller.sessionMode.mode,
                   sessionDuration: _controller.sessionDurationAndCost.duration,
-                  sessionChargedAmount:
-                      _controller.sessionDurationAndCost.amount,
+                  sessionChargedAmount: _controller.sessionDurationAndCost.cost,
                   sessionID: 'NWLY${DateTime.now().millisecondsSinceEpoch}',
                   sessionWorkoutType: _controller.sessionWorkOutType.type,
                   sessionWorkoutTypeImagePath:
@@ -52,7 +51,7 @@ class SessionConfirmationScreen extends StatelessWidget {
               // ignore: unused_local_variable
               final durTimer =
                   _controller.sessionDurationAndCost.duration.substring(0, 2);
-              final amount = _controller.sessionDurationAndCost.amount;
+              final amount = _controller.sessionDurationAndCost.cost;
               final desc =
                   '${_controller.sessionDurationAndCost.duration} Minute ${_controller.sessionWorkOutType.type} Session';
               _agoraVideoCallController.user = _controller.user;
@@ -148,8 +147,7 @@ class SessionConfirmationScreen extends StatelessWidget {
                           ),
                           trailing: Text(
                             '\$' +
-                                (_controller.sessionDurationAndCost.amount ~/
-                                        100)
+                                (_controller.sessionDurationAndCost.cost ~/ 100)
                                     .toString(),
                             style: k20BoldTS,
                           ),

@@ -9,8 +9,14 @@ import 'package:sizer/sizer.dart';
 class UserPaymentMethodsList extends StatelessWidget {
   UserPaymentMethodsList({Key? key}) : super(key: key);
   final StripeController _stripeController = Get.find<StripeController>();
+
+  noPaymentMethods() => const ListTile(
+        title: Text('No Cards On File'),
+        trailing: Icon(Icons.money_off),
+      );
   @override
   Widget build(BuildContext context) {
+    print(_stripeController.paymentMethods);
     return Obx(() => ListView.builder(
         itemCount: _stripeController.paymentMethods.length,
         itemBuilder: (ctx, i) =>

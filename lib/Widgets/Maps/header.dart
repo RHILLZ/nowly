@@ -112,7 +112,7 @@ class MapHeader extends StatelessWidget {
                                       child: Text(
                                     _mapController.lastSearchedPlace.value ==
                                             null
-                                        ? 'Find session'
+                                        ? 'Find Online Trainers'
                                         : _mapController.lastSearchedPlace
                                             .value!.description,
                                     maxLines: 1,
@@ -124,41 +124,41 @@ class MapHeader extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Material(
-                        type: MaterialType.transparency,
-                        child: RoundedCornerButton(
-                            color: Theme.of(context).scaffoldBackgroundColor,
-                            radius: 50,
-                            onTap: () {
-                              showCalenderDialog();
-                            },
-                            child: Obx(
-                              () => Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 10, bottom: 10, left: 4),
-                                child: Row(
-                                  children: [
-                                    if (_dateDetails.value.selectedDate == null)
-                                      const Text('Now')
-                                    else
-                                      Text(
-                                          '${_dateDetails.value.selectedDate!.day} / ${_dateDetails.value.selectedDate!.month}'),
-                                    const Icon(
-                                      Icons.keyboard_arrow_down,
-                                      size: 15,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            )),
-                      ),
+                      // Material(
+                      //   type: MaterialType.transparency,
+                      //   child: RoundedCornerButton(
+                      //       color: Theme.of(context).scaffoldBackgroundColor,
+                      //       radius: 50,
+                      //       onTap: () {
+                      //         showCalenderDialog();
+                      //       },
+                      //       child: Obx(
+                      //         () => Padding(
+                      //           padding: const EdgeInsets.only(
+                      //               top: 10, bottom: 10, left: 4),
+                      //           child: Row(
+                      //             children: [
+                      //               if (_dateDetails.value.selectedDate == null)
+                      //                 const Text('Now')
+                      //               else
+                      //                 Text(
+                      //                     '${_dateDetails.value.selectedDate!.day} / ${_dateDetails.value.selectedDate!.month}'),
+                      //               const Icon(
+                      //                 Icons.keyboard_arrow_down,
+                      //                 size: 15,
+                      //               )
+                      //             ],
+                      //           ),
+                      //         ),
+                      //       )),
+                      // ),
                     ],
                   ),
                 ),
               ),
             ),
             const SizedBox(width: 5),
-            const SessionFilterButton(),
+            // const SessionFilterButton(),
           ],
         ),
       ),

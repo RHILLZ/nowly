@@ -1,5 +1,5 @@
-import 'package:flutter_config/flutter_config.dart';
 import 'package:get/get.dart';
+import 'package:nowly/keys.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class OneSignalService extends GetxService {
@@ -8,7 +8,7 @@ class OneSignalService extends GetxService {
     //Remove this method to stop OneSignal Debugging
     OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
 
-    OneSignal.shared.setAppId(FlutterConfig.get('ONESIGNALID'));
+    OneSignal.shared.setAppId(ONE_SIGNAL_ID);
 
 // The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
     OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {

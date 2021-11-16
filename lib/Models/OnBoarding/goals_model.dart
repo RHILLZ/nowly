@@ -7,16 +7,16 @@ class FitnessGoals {
   FitnessGoals({required this.goal, required this.imagePath});
 
   static final fitnessGoals = <FitnessGoals>[
-    FitnessGoals(goal: 'improve overall health', imagePath: ''),
-    FitnessGoals(goal: 'cardiovascular fitness', imagePath: ''),
-    FitnessGoals(goal: 'sport event', imagePath: ''),
-    FitnessGoals(goal: 'gain lean muscle mass', imagePath: ''),
-    FitnessGoals(goal: 'recover from an injury', imagePath: ''),
-    FitnessGoals(goal: 'increase flexibility', imagePath: ''),
-    FitnessGoals(goal: 'increase overall strength', imagePath: ''),
-    FitnessGoals(goal: 'prepare for life event', imagePath: ''),
-    FitnessGoals(goal: 'learn a new movement/tool', imagePath: ''),
-    FitnessGoals(goal: 'get toned', imagePath: ''),
+    FitnessGoals(goal: 'Improve overall health', imagePath: ''),
+    FitnessGoals(goal: 'Cardiovascular fitness', imagePath: ''),
+    FitnessGoals(goal: 'Sport event', imagePath: ''),
+    FitnessGoals(goal: 'Gain lean muscle mass', imagePath: ''),
+    FitnessGoals(goal: 'Recover from an injury', imagePath: ''),
+    FitnessGoals(goal: 'Increase flexibility', imagePath: ''),
+    FitnessGoals(goal: 'Increase overall strength', imagePath: ''),
+    FitnessGoals(goal: 'Prepare for life event', imagePath: ''),
+    FitnessGoals(goal: 'Learn a new movement/tool', imagePath: ''),
+    FitnessGoals(goal: 'Get toned', imagePath: ''),
   ];
 }
 

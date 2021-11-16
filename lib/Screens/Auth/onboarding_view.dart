@@ -24,23 +24,20 @@ class OnBoardingView extends StatelessWidget {
               children: [
                 SvgPicture.asset(
                   'assets/icons/logo_outlined.svg',
-                  height: 15.h,
+                  height: 20.h,
                 ),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Flexible(
-                        child: AppLogo(),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 15),
-                        child: Text(
-                          "Nowly trainers coming your way!",
-                          style: k20RegularTS,
-                          textAlign: TextAlign.center,
-                        ),
+                      // const Flexible(
+                      //   child: AppLogo(),
+                      // ),
+                      const Text(
+                        "Nowly trainers coming your way!",
+                        style: k20RegularTS,
+                        textAlign: TextAlign.center,
                       ),
                       SizedBox(
                         height: 5.h,
@@ -78,17 +75,17 @@ class OnBoardingView extends StatelessWidget {
                   title: 'Create Account',
                   onPressed: () {
                     GetStorage().write('onboardSelection', 'newAccount');
-                    Get.to(AuthView());
+                    Get.to(() => AuthView());
                   },
                   textStyle: const TextStyle(color: Colors.black),
                   fillColor: Colors.white,
                 ),
                 const SizedBox(height: 10),
-                AuthButton(
+                RectButton(
                   onPressed: () {
                     // Get.toNamed(SignUpScreen.routeName);
                     GetStorage().write('onboardSelection', 'signin');
-                    Get.to(AuthView());
+                    Get.to(() => AuthView());
                   },
                   title: '                 Sign In                 ',
                 ),

@@ -8,7 +8,6 @@ import 'package:nowly/Screens/Profile/info_screen.dart';
 import 'package:nowly/Screens/Stripe/add_payment_methods.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:sizer/sizer.dart';
-
 import 'my_goal_screen.dart';
 import 'profile_details_screen.dart';
 
@@ -22,7 +21,6 @@ class UserProfileScreen extends GetView<UserController> {
   @override
   Widget build(BuildContext context) {
     final iconColor = Theme.of(context).iconTheme.color;
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -66,9 +64,16 @@ class UserProfileScreen extends GetView<UserController> {
                     child: Row(
                       children: [
                         CircleAvatar(
-                          radius: 50,
-                          backgroundImage:
-                              NetworkImage(controller.user.profilePicURL),
+                          backgroundImage: controller.user.profilePicURL != null
+                              ? NetworkImage(controller.user.profilePicURL!)
+                              : null,
+                          child: controller.user.profilePicURL != null
+                              ? null
+                              : Icon(
+                                  Icons.person,
+                                  size: 40.sp,
+                                ),
+                          maxRadius: 6.h,
                         ),
                         SizedBox(
                           width: 3.w,
@@ -76,31 +81,35 @@ class UserProfileScreen extends GetView<UserController> {
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  '${controller.user.firstName} ${controller.user.lastName}',
-                                  style: k20RegularTS,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 5, bottom: 3),
-                                  child: Text(
-                                    Get.put(MapController()).cityState,
-                                    style: kRegularTS,
-                                    maxLines: 4,
+                            child: FittedBox(
+                              fit: BoxFit.fitWidth,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    '${controller.user.firstName} ${controller.user.lastName}',
+                                    style: k20RegularTS,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                ),
-                                Text(controller.user.primaryGoal),
-                                SizedBox(
-                                  height: 1.h,
-                                ),
-                                RatingStars(rating: controller.user.rating)
-                              ],
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.only(top: 1.h, bottom: 1.h),
+                                    child: Text(
+                                      Get.find<MapController>().cityState,
+                                      style: kRegularTS,
+                                      maxLines: 4,
+                                    ),
+                                  ),
+                                  Text(
+                                      'Primary goal: ${controller.user.primaryGoal}'),
+                                  SizedBox(
+                                    height: 1.h,
+                                  ),
+                                  RatingStars(rating: controller.user.rating)
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -160,7 +169,7 @@ class UserProfileScreen extends GetView<UserController> {
             ),
             ListTile(
               onTap: () {
-                Get.toNamed(AddPaymentMethodsScreen.routeName);
+                Get.to(() => AddPaymentMethodsScreen());
               },
               leading: SvgPicture.asset(
                 'assets/images/profile/payment.svg',

@@ -5,6 +5,7 @@ import 'package:location/location.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Screens/Sessions/current_session_details_screen.dart';
+import 'package:nowly/Screens/Sessions/session_confirmation_screen_2.dart';
 
 import '../controller_exporter.dart';
 
@@ -12,17 +13,17 @@ enum NavigationStatus { notAvailable, thisIs, thisIsnt }
 
 class MapNavigatorController extends GetxController {
   final availableMaps = <AvailableMap>[].obs;
-  final curruntSessionController = Rxn<TrainerSessionController>();
+  final curruntSessionController = Rxn<TrainerInPersonSessionController>();
 
   void openAvialableMaps(
-      {required TrainerSessionController sessionController}) async {
+      {required TrainerInPersonSessionController sessionController}) async {
     endNavigations();
     final availableMaps = await MapLauncher.installedMaps;
     this.availableMaps.value = availableMaps;
     final trainerLocation =
         sessionController.trainerSession.locationDetailsModel;
     final coordinates =
-        Coords(trainerLocation!.latitude, trainerLocation.longitude);
+        Coords(trainerLocation.latitude, trainerLocation.longitude);
 
     if (availableMaps.isEmpty) {
       Get.rawSnackbar(
@@ -97,7 +98,7 @@ class MapNavigatorController extends GetxController {
   }
 
   NavigationStatus hasThisOnGoingNavigation(
-      TrainerSessionController controller) {
+      TrainerInPersonSessionController controller) {
     //Check currently has a map  navigation and check if it belongs to this session
     if (curruntSessionController.value == null) {
       return NavigationStatus.notAvailable;
@@ -120,7 +121,7 @@ class MapNavigatorController extends GetxController {
     navigateToCurrentSessionDetailsScreen();
   }
 
-  // void openBanner(TrainerSessionController sessionController) {
+  // void openBanner(TrainerInPersonSessionController sessionController) {
   //   final trainer = sessionController.trainerSession.trainer;
   //   ScaffoldMessenger.of(Get.overlayContext!).showMaterialBanner(
   //     MaterialBanner(
@@ -131,13 +132,13 @@ class MapNavigatorController extends GetxController {
   //           crossAxisAlignment: CrossAxisAlignment.start,
   //           children: [
   //             Text(
-  //               'You are on your way to ${trainer.name}\'s session',
+  //               'You are on your way to ${trainer.firstName}\'s session',
   //               style: k16RegularTS,
   //             ),
-  //             Text(
-  //               '${trainer.address}',
-  //               style: k10RegularTS,
-  //             )
+  //             // Text(
+  //             //   '${trainer.address}',
+  //             //   style: k10RegularTS,
+  //             // )
   //           ],
   //         ),
   //       ),
@@ -147,8 +148,8 @@ class MapNavigatorController extends GetxController {
   //         TextButton(
   //           child: const Text('Review', style: TextStyle(color: Colors.white)),
   //           onPressed: () {
-  //             Get.toNamed(SessionConfirmationScreen2.routeName,
-  //                 arguments: sessionController);
+  //             Get.to(SessionConfirmationScreen2(
+  //                 trainerInPersonSessionController: sessionController));
   //           },
   //         ),
   //         TextButton(

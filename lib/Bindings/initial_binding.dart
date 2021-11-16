@@ -6,6 +6,6 @@ class InitialBinding implements Bindings {
   void dependencies() {
     Get.put(ThemeController());
     Get.put(AppPermissionController());
-    Get.put(AuthController(), permanent: true);
+    // Get.put(AuthController(), permanent: true);
   }
 }

@@ -40,7 +40,7 @@ class WorkOutCard extends StatelessWidget {
                   child: SvgPicture.asset(
                     imagePath,
                     // fit: BoxFit.scaleDown,
-                    height: 5.h,
+                    height: 6.h,
                   ),
                 ),
                 SizedBox(

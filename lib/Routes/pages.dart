@@ -6,6 +6,7 @@ import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Screens/Auth/auth_view.dart';
 import 'package:nowly/Screens/Auth/onboarding_view.dart';
+import 'package:nowly/Screens/Auth/start_screen_view.dart';
 import 'package:nowly/Screens/Map/map_screen.dart';
 import 'package:nowly/Screens/Nav/base_screen.dart';
 import 'package:nowly/Screens/Nav/home_view.dart';
@@ -22,8 +23,10 @@ import 'package:nowly/Screens/Sessions/location_selection_screen.dart';
 import 'package:nowly/Screens/Sessions/scheduled_session_confirmation_screen.dart';
 import 'package:nowly/Screens/Sessions/session_complete_screen.dart';
 import 'package:nowly/Screens/Sessions/session_confirmation_screen.dart';
+import 'package:nowly/Screens/Sessions/session_confirmation_screen_2.dart';
 import 'package:nowly/Screens/Sessions/virtual_session_view.dart';
 import 'package:nowly/Screens/Stripe/add_payment_methods.dart';
+import 'package:nowly/root.dart';
 
 part 'routes.dart';
 
@@ -37,9 +40,16 @@ class Pages {
 
   static final routes = [
     GetPage(
+      name: _Paths.START_SCREEN,
+      page: () => StartScreenView(),
+      binding: InitialBinding(),
+    ),
+    GetPage(
         name: _Paths.AUTH_SCREEN,
         page: () => AuthView(),
         binding: InitialBinding()),
+    GetPage(
+        name: _Paths.ROOT, page: () => const Root(), binding: InitialBinding()),
     GetPage(
         name: _Paths.ONBOARDING_SCREEN,
         page: () => const OnBoardingView(),
@@ -49,7 +59,10 @@ class Pages {
         page: () => BaseScreen(),
         binding: BaseScreenBinding()),
     GetPage(name: _Paths.HOME, page: () => UserHomeView()),
-    GetPage(name: _Paths.MAP, page: () => const MapScreen()),
+    GetPage(
+        name: _Paths.MAP,
+        page: () => MapScreen(),
+        binding: BaseScreenBinding()),
     GetPage(
         name: _Paths.SESSION_HISTORY,
         page: () => SessionHistoryAndUpcomingView()),
@@ -58,20 +71,35 @@ class Pages {
         name: _Paths.SESSION_CONFIRMATION,
         page: () => SessionConfirmationScreen()),
     GetPage(
+        name: _Paths.SESSION_CONFIRMATION_2,
+        page: () => SessionConfirmationScreen2(
+              trainerInPersonSessionController:
+                  TrainerInPersonSessionController(),
+            )),
+    GetPage(
         name: _Paths.SESSION_COMPLETE_SCREEN,
         page: () => SessionCompleteScreen(
             session: SessionModel(), sessionController: SessionController())),
     GetPage(
         name: _Paths.SESSION_IN_PROGRESS,
-        page: () => const CurrentSessionDetailsScreen()),
+        page: () => const CurrentSessionDetailsScreen(),
+        binding: InitialBinding()),
+    GetPage(
+        name: _Paths.LIVE_SESSION,
+        page: () => LiveSessionView(
+              controller: TrainerInPersonSessionController(),
+            ),
+        binding: InitialBinding()),
     GetPage(
         name: _Paths.FUTURE_SESSION_CONFIRMATION,
         page: () => ScheduledSessionConfirmationScreen()),
     GetPage(
-        name: _Paths.ADD_PAYMENT_METHOD, page: () => AddPaymentMethodsScreen()),
+        name: _Paths.ADD_PAYMENT_METHOD,
+        page: () => AddPaymentMethodsScreen(),
+        binding: BaseScreenBinding()),
     GetPage(name: _Paths.FEEDBACK_SCREEN, page: () => const Feedback()),
-    GetPage(
-        name: _Paths.IN_PERSON_SESSION, page: () => const LiveSessionView()),
+    // GetPage(
+    //     name: _Paths.IN_PERSON_SESSION, page: () => const LiveSessionView()),
     GetPage(
         name: _Paths.VIRTUAL_SESSION,
         page: () => VideoCallView(agoraController: AgoraController())),

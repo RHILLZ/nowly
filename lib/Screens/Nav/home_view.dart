@@ -12,11 +12,11 @@ import 'package:sizer/sizer.dart';
 class UserHomeView extends StatelessWidget {
   UserHomeView({Key? key}) : super(key: key);
 
-  final SessionController _sessionController = Get.put(SessionController());
+  final SessionController _sessionController = Get.find<SessionController>();
   // ignore: unused_field
   final UserController _userController = Get.find<UserController>();
-  final FilterController _filterController = Get.put(FilterController());
-  final MapController _mapController = Get.put(MapController());
+  final FilterController _filterController = Get.find<FilterController>();
+  final MapController _mapController = Get.find<MapController>();
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +158,7 @@ class UserHomeView extends StatelessWidget {
                                   controller: _mapController,
                                   radius: _filterController.radius,
                                 ))
-                            : Get.toNamed(SessionConfirmationScreen.routeName);
+                            : Get.to(() => SessionConfirmationScreen());
                       },
                     )
                   ],

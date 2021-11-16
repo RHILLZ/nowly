@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_config/flutter_config.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:get/get.dart';
 import 'package:get/utils.dart';
@@ -11,11 +10,12 @@ import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Services/Net/net.dart';
 import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/keys.dart';
 import 'package:sizer/sizer.dart';
 
 extension RoutePolyLinesAndMarkers on MapController {
   Future<void> addLocationDetailsToMap(
-      List<TrainerSessionController> controllers) async {
+      List<TrainerInPersonSessionController> controllers) async {
     //add session location details
     //clear existing markers of list
     clearExistingDestinationMarkers();
@@ -23,7 +23,7 @@ extension RoutePolyLinesAndMarkers on MapController {
     final allMarkers = <Marker>[];
     for (var controller in controllers) {
       Marker? marker = await getDestinationMarkers(controller);
-      if (marker != null) allMarkers.add(marker);
+      marker != null ? allMarkers.add(marker) : null;
     }
     destinationMarkers.addAll(allMarkers);
   }
@@ -33,7 +33,7 @@ extension RoutePolyLinesAndMarkers on MapController {
   }
 
   Future<Marker?> getDestinationMarkers(
-      TrainerSessionController trainerSessionController,
+      TrainerInPersonSessionController trainerSessionController,
       {VoidCallback? tapEvent}) async {
     ///// get lati ang latitude
     final LocationDetailsModel? locationDetails =
@@ -47,7 +47,7 @@ extension RoutePolyLinesAndMarkers on MapController {
 
     return Marker(
         markerId: MarkerId(locationDetails.id),
-        infoWindow: InfoWindow(title: locationDetails.locationDescription),
+        // infoWindow: InfoWindow(title: locationDetails.locationDescription),
         onTap: () {
           trainerSessionController.openSessionDetailsBottomSheet();
           addOriginMarkers(location, tsController: trainerSessionController);
@@ -59,7 +59,8 @@ extension RoutePolyLinesAndMarkers on MapController {
 
   //add my location marker and draw poly line to destination
   Future<void> addOriginMarkers(LatLng destinationCordinates,
-      {VoidCallback? tapEvent, TrainerSessionController? tsController}) async {
+      {VoidCallback? tapEvent,
+      TrainerInPersonSessionController? tsController}) async {
     LocationData? myLocation = getOriginLocation;
 
     if (myLocation == null) {
@@ -96,6 +97,8 @@ extension RoutePolyLinesAndMarkers on MapController {
       {required LatLng origin,
       required LatLng destination,
       required Function(Direction? direction) onComplete}) async {
+    AppLogger.i(destination);
+    AppLogger.i(origin);
     final uri = Uri(
         scheme: 'https',
         host: 'maps.googleapis.com',
@@ -103,7 +106,7 @@ extension RoutePolyLinesAndMarkers on MapController {
         queryParameters: {
           'origin': '${origin.latitude},${origin.longitude}',
           'destination': '${destination.latitude},${destination.longitude}',
-          'key': GetPlatform.isIOS ? FlutterConfig.get('IOSMAPSKEY') : FlutterConfig.get('ANDROIDMAPSKEY'),
+          'key': GetPlatform.isIOS ? IOS_MAPS_KEY : ANDROID_MAPS_KEY,
           'mode': describeEnum(selectedTravelMode)
         });
 

@@ -12,7 +12,7 @@ class AddPaymentMethodsScreen extends StatelessWidget {
 
   static const routeName = '/addPaymentMethods';
   // final PaymentController _controller = Get.find();
-  final StripeController _stripeController = Get.find();
+  final StripeController _stripeController = Get.put(StripeController());
 
   @override
   Widget build(BuildContext context) {
@@ -46,17 +46,14 @@ class AddPaymentMethodsScreen extends StatelessWidget {
                           _stripeController.addNewPaymentWarning(),
                       onTap: () {},
                       leading: FittedBox(
-                        fit: BoxFit.contain,
-                        child: activePM.brand == 'visa'
-                            ? VISAIMAGE
-                            : MASTERCARDIMAGE,
-                      ),
-                      title: Text('XXXX XXXX XXXX ${activePM.last4}'),
-                      trailing: Icon(Icons.check_circle_outline,
-                          color: _stripeController.activePaymentMethod.exp ==
-                                  activePM.exp
-                              ? Colors.green
-                              : kGray))
+                          fit: BoxFit.contain,
+                          child: Icon(
+                            Icons.payment,
+                            size: 30.sp,
+                          )),
+                      title: Text('No Payment Methods on File'.toUpperCase()),
+                      trailing:
+                          const Icon(Icons.close_rounded, color: Colors.red))
                   : Expanded(child: UserPaymentMethodsList()),
               _stripeController.paymentMethods.isEmpty
                   ? Expanded(

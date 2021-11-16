@@ -1,10 +1,8 @@
 // ignore_for_file: unused_field, avoid_print
 
 import 'dart:async';
-
 import 'package:agora_uikit/agora_uikit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_config/flutter_config.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
@@ -12,6 +10,7 @@ import 'package:nowly/Screens/Sessions/session_complete_screen.dart';
 import 'package:nowly/Screens/Sessions/virtual_session_view.dart';
 import 'package:nowly/Services/service_exporter.dart';
 import 'package:nowly/Widgets/BottomSheets/virtual_session_search_bottomsheet.dart';
+import 'package:nowly/keys.dart';
 import 'package:sizer/sizer.dart';
 
 class AgoraController extends GetxController {
@@ -72,8 +71,8 @@ class AgoraController extends GetxController {
   }
 
   void initVideoCall(context) {
-    final agoraConnectionData = AgoraConnectionData(
-        appId: FlutterConfig.get('AGORAID'), channelName: _channel.value);
+    final agoraConnectionData =
+        AgoraConnectionData(appId: AGORA_ID, channelName: _channel.value);
     final enabledPermission = [Permission.microphone, Permission.camera];
     _client.value = AgoraClient(
         agoraEventHandlers: AgoraEventHandlers(

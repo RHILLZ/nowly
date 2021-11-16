@@ -3,14 +3,17 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
+import 'package:nowly/Screens/Sessions/session_confirmation_screen_2.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
+import 'package:sizer/sizer.dart';
 
 class SessionDetails extends StatelessWidget {
-  const SessionDetails({Key? key, required TrainerSessionController controller})
+  const SessionDetails(
+      {Key? key, required TrainerInPersonSessionController controller})
       : _controller = controller,
         super(key: key);
 
-  final TrainerSessionController _controller;
+  final TrainerInPersonSessionController _controller;
 
   @override
   Widget build(BuildContext context) {
@@ -59,9 +62,18 @@ class SessionDetails extends StatelessWidget {
                   Row(
                     children: [
                       CircleAvatar(
-                        radius: 30,
-                        backgroundImage: NetworkImage(
-                            _sessionDetails.trainer.profilePicURL!),
+                        backgroundImage:
+                            _sessionDetails.trainer.profilePicURL != null
+                                ? NetworkImage(
+                                    _sessionDetails.trainer.profilePicURL!)
+                                : null,
+                        child: _sessionDetails.trainer.profilePicURL != null
+                            ? null
+                            : Icon(
+                                Icons.person,
+                                size: 40.sp,
+                              ),
+                        maxRadius: 4.h,
                       ),
                       const SizedBox(
                         width: 15,
@@ -72,7 +84,7 @@ class SessionDetails extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              _sessionDetails.trainer.firstName!,
+                              '${_sessionDetails.trainer.firstName} ${_sessionDetails.trainer.lastName}',
                               style: k18BoldTS,
                             ),
                             // Text(
@@ -84,13 +96,13 @@ class SessionDetails extends StatelessWidget {
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           StarRatingBar(
                             rating: _sessionDetails.trainer.rating,
                             isRatable: false,
                             onRate: (v) {},
-                            size: 25,
+                            size: 20,
                           ),
                           Padding(
                             padding: const EdgeInsets.all(4.0),
@@ -102,20 +114,23 @@ class SessionDetails extends StatelessWidget {
                     ],
                   ),
                   Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const Divider(
                         height: 25,
                       ),
                       const Align(
-                          alignment: Alignment.centerLeft,
+                          alignment: Alignment.center,
                           child: Text(
                             'CHOOSE SESSION LENGTH',
                             style: k16BoldTS,
                           )),
                       Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        padding: EdgeInsets.symmetric(vertical: 2.h),
                         child: SeperatedRow(
                           mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: List.generate(
                               _sessionDetails.sessionLengths.length, (index) {
                             final sessionLength =
@@ -124,20 +139,25 @@ class SessionDetails extends StatelessWidget {
                               () => SessionLengthCard(
                                 isSelected: _controller.selectedLength.value ==
                                     sessionLength,
-                                cost: sessionLength.charges ?? '',
+                                cost: '\$${sessionLength.cost / 100}'
+                                    .split('.')[0],
                                 imagePath: _sessionDetails
                                     .sessionLengths[index].imagepath!,
                                 length: sessionLength.duration,
                                 onTap: () {
+                                  final strDur =
+                                      sessionLength.duration.substring(0, 2);
+                                  final dur = int.parse(strDur);
                                   _controller.selectedLength.value =
                                       sessionLength;
+                                  _controller.sessionTime = dur * 60;
                                 },
                               ),
                             );
                           }),
                           separatorBuilder: (BuildContext context, int index) =>
-                              const SizedBox(
-                            width: kContentGap,
+                              SizedBox(
+                            width: 3.w,
                           ),
                         ),
                       ),
@@ -158,9 +178,11 @@ class SessionDetails extends StatelessWidget {
                       ),
                       MainButton(
                         onTap: () {
-                          Get.back();
-                          // Get.toNamed(SessionConfirmationScreen2.routeName,
-                          // arguments: _controller);
+                          Get.isBottomSheetOpen == true ? Get.back() : null;
+
+                          Get.to(SessionConfirmationScreen2(
+                            trainerInPersonSessionController: _controller,
+                          ));
                         },
                         title: "LET'S GO",
                       ),

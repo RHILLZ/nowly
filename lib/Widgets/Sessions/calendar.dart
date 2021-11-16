@@ -5,6 +5,7 @@ import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Configs/themes/app_colors.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Utils/logger.dart';
+import 'package:sizer/sizer.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../widget_exporter.dart';
@@ -18,19 +19,32 @@ class ScheduleCalendar extends GetView<SessionScheduleController> {
   final bool islnInFilters;
   DateTime? _selectedTime;
 
+  @override
+  final SessionScheduleController controller =
+      Get.put(SessionScheduleController());
+  final SessionController _sessionController = Get.find();
+
   /// SAMPLE
   Widget hourMinute15Interval() {
     return TimePickerSpinner(
-      is24HourMode: false,
+      is24HourMode: true,
       normalTextStyle: kRegularTS.copyWith(color: kGray.withOpacity(0.5)),
       highlightedTextStyle: k20BoldTS,
       time: controller.selectedDateDetail.value.selectedTime,
       spacing: 10,
       itemHeight: 20,
-      minutesInterval: 15,
+      // itemWidth: 40.w,
+      minutesInterval: 30,
+      alignment: Alignment.center,
       isForce2Digits: true,
       onTimeChange: (time) {
         _selectedTime = time;
+        final timeChecker = '${time.hour}.${time.minute}';
+        final ampm = time.hour >= 12 ? 'PM' : 'AM';
+        final hr = time.hour == 12 ? '12' : '${(time.hour % 12)}';
+        final formattedTime = '$hr:${time.minute} $ampm';
+        _sessionController.sessionTimeCheckerValue = double.parse(timeChecker);
+        _sessionController.sessionTimeScheduled = formattedTime;
       },
     );
   }
@@ -50,14 +64,14 @@ class ScheduleCalendar extends GetView<SessionScheduleController> {
             mainAxisSize: MainAxisSize.min,
             children: [
               const Text(
-                'Schedule for later',
+                'Schedule In Person Session for later',
                 style: k18BoldTS,
               ),
               const SizedBox(
                 height: 5,
               ),
               const Text(
-                'training sessions can be scheduled\nup to one week in advance',
+                'In person training sessions can be scheduled\nup to one week in advance',
                 textAlign: TextAlign.center,
                 style: kRegularTS,
               ),
@@ -99,7 +113,50 @@ class ScheduleCalendar extends GetView<SessionScheduleController> {
                     return isSameDay(controller.selectedDay.value, day);
                   },
                   onDaySelected: (selectedDay, focusedDay) {
+                    final dow = {
+                      1: 'Monday',
+                      2: 'Tuesday',
+                      3: 'Wednesday',
+                      4: 'Thursday',
+                      5: 'Friday',
+                      6: 'Saturday',
+                      7: 'Sunday'
+                    };
+                    final mon = {
+                      1: 'JAN',
+                      2: 'FEB',
+                      3: 'MAR',
+                      4: 'APR',
+                      5: 'MAY',
+                      6: 'JUN',
+                      7: 'JUL',
+                      8: 'AUG',
+                      9: 'SEP',
+                      10: 'OCT',
+                      11: 'NOV',
+                      12: 'DEC'
+                    };
                     AppLogger.i(controller.selectedDay.value);
+                    var abr = 'TH';
+                    if (selectedDay.day == 1 ||
+                        selectedDay.day == 21 ||
+                        selectedDay.day == 31) {
+                      abr = 'ST';
+                    }
+                    if (selectedDay.day == 2 || selectedDay.day == 22) {
+                      abr = 'ND';
+                    }
+                    if (selectedDay.day == 3 || selectedDay.day == 23) {
+                      abr = 'RD';
+                    }
+
+                    final date =
+                        '${mon[selectedDay.month]} ${selectedDay.day}$abr';
+                    final day = '${dow[selectedDay.weekday]}';
+                    _sessionController.sessionDateScheduled = date;
+                    _sessionController.sessionDay = day;
+                    print(date);
+                    print(day);
 
                     controller.selectedDay.value = selectedDay;
                     controller.focusedDay.value = focusedDay;
@@ -112,8 +169,8 @@ class ScheduleCalendar extends GetView<SessionScheduleController> {
               ),
               Container(
                   margin: const EdgeInsets.symmetric(vertical: 10),
-                  width: 180,
-                  height: 50,
+                  width: 50.w,
+                  height: 6.h,
                   decoration: BoxDecoration(
                       border: Border.all(
                         width: 2,

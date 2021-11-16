@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
+import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:sizer/sizer.dart';
@@ -28,7 +29,10 @@ class NameAndInfo extends StatelessWidget {
         cardTitle: _nameAndInfoQ.title,
         expanded: _controller.selectedQuestionnaire.value == _nameAndInfoQ,
         onTapHeader: () {
-          _controller.selectedQuestionnaire.value = _nameAndInfoQ;
+          _controller.selectedQuestionnaire.value == _nameAndInfoQ
+              ? _controller.selectedQuestionnaire.value =
+                  QuestionnaireModel(title: '', header: '')
+              : _controller.selectedQuestionnaire.value = _nameAndInfoQ;
         },
         content: Material(
           type: MaterialType.transparency,

@@ -10,18 +10,14 @@ import 'package:nowly/Widgets/widget_exporter.dart';
 
 class BaseScreen extends StatelessWidget {
   BaseScreen({Key? key}) : super(key: key);
-
   // ignore: unused_field
-  final SessionController _sessionController = Get.put(SessionController());
-  // ignore: unused_field
-  final FilterController _filterController = Get.put(FilterController());
 
   final _selectedIndex = 0.obs;
   static const routeName = '/baseScreen';
 
   final screens = [
     UserHomeView(),
-    const MapScreen(),
+    MapScreen(),
     SessionHistoryAndUpcomingView(),
     const UserProfileScreen()
   ];

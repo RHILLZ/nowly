@@ -33,13 +33,16 @@ class TrainerPreference extends StatelessWidget {
                 children: _sessionController.trainerTypes
                     .map((trainerTypes) => Expanded(
                           child: Obx(
-                            () => TextCard(
-                              isSelected:
-                                  _sessionController.genderPref == trainerTypes,
-                              label: trainerTypes.type,
-                              onTap: () {
-                                _sessionController.genderPref = trainerTypes;
-                              },
+                            () => FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: TextCard(
+                                isSelected: _sessionController.genderPref ==
+                                    trainerTypes,
+                                label: trainerTypes.type,
+                                onTap: () {
+                                  _sessionController.genderPref = trainerTypes;
+                                },
+                              ),
                             ),
                           ),
                         ))

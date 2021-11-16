@@ -5,6 +5,7 @@ import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'package:sizer/sizer.dart';
 
 class MyGoalScreen extends GetView<UserController> {
   MyGoalScreen({Key? key}) : super(key: key);
@@ -30,13 +31,21 @@ class MyGoalScreen extends GetView<UserController> {
                       child: Column(
                         children: [
                           CircleAvatar(
-                            radius: 50,
-                            backgroundColor: kPrimaryColor,
-                            backgroundImage:
-                                NetworkImage(_controller.user.profilePicURL),
+                            backgroundImage: controller.user.profilePicURL !=
+                                    null
+                                ? NetworkImage(controller.user.profilePicURL!)
+                                : null,
+                            child: controller.user.profilePicURL != null
+                                ? null
+                                : Icon(
+                                    Icons.person,
+                                    size: 40.sp,
+                                  ),
+                            maxRadius: 6.h,
                           ),
                           SizedBox(
-                              child: Text(_controller.user.firstName,
+                              child: Text(
+                                  '${_controller.user.firstName} ${_controller.user.lastName}',
                                   style: k20BoldTS)),
                           // Padding(
                           //   padding:
@@ -57,45 +66,52 @@ class MyGoalScreen extends GetView<UserController> {
                         ],
                       ),
                     ),
-                    const Text('MY GOAL...'),
+                    const Text('MY GOALS'),
                     const SizedBox(
                       height: 10,
                     ),
-                    Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.start,
-                      alignment: WrapAlignment.center,
-                      runSpacing: 10,
-                      spacing: 10,
-                      children: List.generate(
-                          _controller.allFitnessGoals.length,
-                          (index) => Obx(
-                                () {
-                                  UserModel user = _controller.user;
-                                  return SmallTextCard(
-                                      label: _controller
-                                          .allFitnessGoals[index].goal,
-                                      isSelected: user.goals!.contains(
-                                          _controller
-                                              .allFitnessGoals[index].goal),
-                                      onTap: () {
-                                        final item =
-                                            _controller.allFitnessGoals[index];
-                                        final selectedGoals = user.goals!;
+                    Center(
+                      child: Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        alignment: WrapAlignment.center,
+                        runAlignment: WrapAlignment.center,
+                        runSpacing: 10,
+                        spacing: 10,
+                        children: List.generate(
+                            _controller.allFitnessGoals.length,
+                            (index) => Obx(
+                                  () {
+                                    UserModel user = _controller.user;
+                                    return SmallTextCard(
+                                        label: _controller
+                                            .allFitnessGoals[index].goal,
+                                        isSelected: user.goals!.contains(
+                                            _controller
+                                                .allFitnessGoals[index].goal),
+                                        onTap: () {
+                                          final item = _controller
+                                              .allFitnessGoals[index];
+                                          final selectedGoals = user.goals!;
 
-                                        if (selectedGoals.contains(item)) {
-                                          selectedGoals.remove(item);
-                                        } else {
-                                          if (selectedGoals.length >= 4) {
-                                            return;
+                                          if (selectedGoals.contains(item)) {
+                                            selectedGoals.remove(item);
+                                          } else {
+                                            if (selectedGoals.length >= 4) {
+                                              return;
+                                            }
+                                            selectedGoals.add(item);
                                           }
-                                          selectedGoals.add(item);
-                                        }
-                                      });
-                                },
-                              )),
+                                        });
+                                  },
+                                )),
+                      ),
                     ),
-                    const SizedBox(
-                      height: 10,
+                    SizedBox(
+                      height: 1.h,
+                    ),
+                    Text('Primary GOAL'.toUpperCase()),
+                    SizedBox(
+                      height: 1.h,
                     ),
                     Center(
                       child: SmallTextCard(
@@ -107,7 +123,7 @@ class MyGoalScreen extends GetView<UserController> {
                     ),
                     const Padding(
                       padding: EdgeInsets.only(top: 15, bottom: 10),
-                      child: Text('MY WEIGHT IS…'),
+                      child: Text('MY WEIGHT IS'),
                     ),
                     Obx(
                       () => DropDownBox(
@@ -136,34 +152,34 @@ class MyGoalScreen extends GetView<UserController> {
                         },
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(top: 15, bottom: 10),
-                      child: Text('MY FAVORITE WORKOUTS ARE…'),
-                    ),
-                    Obx(() => _controller.myFavoriteWorkouts.isNotEmpty
-                        ? GridView.count(
-                            padding: EdgeInsets.zero,
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            crossAxisCount:
-                                (Get.width <= kWorkOutCardBreakWidth) ? 3 : 4,
-                            childAspectRatio: 1.0,
-                            mainAxisSpacing: 15.0,
-                            crossAxisSpacing: 15.0,
-                            children: [
-                              ..._controller.myFavoriteWorkouts
-                                  .map(
-                                    (type) => WorkOutCard(
-                                      imagePath: type.imagePath,
-                                      title: type.title,
-                                      onSelecte: () {},
-                                      isSelected: false,
-                                    ),
-                                  )
-                                  .toList(),
-                            ],
-                          )
-                        : const SizedBox()),
+                    // const Padding(
+                    //   padding: EdgeInsets.only(top: 15, bottom: 10),
+                    //   child: Text('MY FAVORITE WORKOUTS ARE…'),
+                    // ),
+                    // Obx(() => _controller.myFavoriteWorkouts.isNotEmpty
+                    //     ? GridView.count(
+                    //         padding: EdgeInsets.zero,
+                    //         physics: const NeverScrollableScrollPhysics(),
+                    //         shrinkWrap: true,
+                    //         crossAxisCount:
+                    //             (Get.width <= kWorkOutCardBreakWidth) ? 3 : 4,
+                    //         childAspectRatio: 1.0,
+                    //         mainAxisSpacing: 15.0,
+                    //         crossAxisSpacing: 15.0,
+                    //         children: [
+                    //           ..._controller.myFavoriteWorkouts
+                    //               .map(
+                    //                 (type) => WorkOutCard(
+                    //                   imagePath: type.imagePath,
+                    //                   title: type.title,
+                    //                   onSelecte: () {},
+                    //                   isSelected: false,
+                    //                 ),
+                    //               )
+                    //               .toList(),
+                    //         ],
+                    //       )
+                    //     : const SizedBox()),
                   ],
                 ),
               )

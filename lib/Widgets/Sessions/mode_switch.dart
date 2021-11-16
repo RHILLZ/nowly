@@ -3,9 +3,9 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
 
-
 class ModeSwitch extends StatelessWidget {
-  ModeSwitch({Key? key, required this.onChange, required bool isDriving}) :  super(key: key){
+  ModeSwitch({Key? key, required this.onChange, required bool isDriving})
+      : super(key: key) {
     this.isDriving.value = isDriving;
   }
   final double _width = 200;
@@ -15,7 +15,6 @@ class ModeSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return Container(
       margin: const EdgeInsets.all(20),
       width: _width,
@@ -59,10 +58,10 @@ class ModeSwitch extends StatelessWidget {
                         margin: const EdgeInsets.all(2),
                         width: _width / 2,
                         alignment: Alignment.center,
-                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        padding: const EdgeInsets.symmetric(vertical: 5),
                         child: Obx(
                           () => Text(
-                            'I’M DRIVING',
+                            'DRIVING',
                             style: TextStyle(
                                 color: isDriving.value
                                     ? null
@@ -80,10 +79,10 @@ class ModeSwitch extends StatelessWidget {
                         margin: const EdgeInsets.all(2),
                         width: _width / 2,
                         alignment: Alignment.center,
-                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        padding: const EdgeInsets.symmetric(vertical: 5),
                         child: Obx(
                           () => Text(
-                            'I’M WALKING',
+                            'WALKING',
                             style: TextStyle(
                                 color: isDriving.value
                                     ? getSelectedTxtColor(context)

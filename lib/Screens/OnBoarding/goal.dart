@@ -22,7 +22,10 @@ class Goal extends StatelessWidget {
         cardTitle: _goalsQModel.title,
         expanded: _controller.selectedQuestionnaire.value == _goalsQModel,
         onTapHeader: () {
-          _controller.selectedQuestionnaire.value = _goalsQModel;
+          _controller.selectedQuestionnaire.value == _goalsQModel
+              ? _controller.selectedQuestionnaire.value =
+                  QuestionnaireModel(title: '', header: '')
+              : _controller.selectedQuestionnaire.value = _goalsQModel;
         },
         content: Material(
           type: MaterialType.transparency,
@@ -89,7 +92,7 @@ class Goal extends StatelessWidget {
                     child: Text('What are your primary goal', style: k16BoldTS),
                   ),
                   Align(
-                    alignment: Alignment.centerLeft,
+                    alignment: Alignment.center,
                     child: Wrap(
                       runSpacing: 6,
                       spacing: 6,

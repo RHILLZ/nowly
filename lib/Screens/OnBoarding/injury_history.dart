@@ -29,15 +29,19 @@ class InjuryHistory extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Text(
                     'Do you have any pre-exsisting injuries we should know about?',
                     style: k16BoldTS,
+                    textAlign: TextAlign.center,
                   ),
                   SizedBox(
                     height: 5.h,
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SmallTextCard(
                           isSelected: !_injuryHistoryQModel.hasInjury,
@@ -79,7 +83,11 @@ class InjuryHistory extends StatelessWidget {
               ),
             )),
         onTapHeader: () {
-          _controller.selectedQuestionnaire.value = _injuryHistoryQModel;
+          _controller.selectedQuestionnaire.value == _injuryHistoryQModel
+              ? _controller.selectedQuestionnaire.value =
+                  QuestionnaireModel(title: '', header: '')
+              : _controller.selectedQuestionnaire.value = _injuryHistoryQModel;
+          _injuryHistoryQModel.toogleFilled();
         },
       ),
     );

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="69.946" height="69.951" viewBox="0 0 69.946 69.951">
+  <defs>
+    <linearGradient id="linear-gradient" y1="0.5" x2="1" y2="0.5" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="1" stop-color="#fff"/>
+    </linearGradient>
+    <clipPath id="clip-path">
+      <path id="Path_201" data-name="Path 201" d="M400.98,587.19c0-3.61,6.37-3.96,6.52,0a29.046,29.046,0,0,0,28.58,28.58,28.575,28.575,0,1,0-22.56-46.12l7.52,7.52H400.98V557.12l7.97,7.97a34.983,34.983,0,1,1-7.97,22.1Zm23.39,4.39a2.266,2.266,0,0,1-2.24-2.29,1.274,1.274,0,0,1,.01-.19,2.344,2.344,0,0,1,2.23-2.47h10.04V568.79s0-1.9,2.53-1.9,2.52,1.9,2.52,1.9v19.18a3.619,3.619,0,0,1-3.62,3.62H424.37Z"/>
+    </clipPath>
+    <linearGradient id="linear-gradient-2" x1="0" y1="0.5" x2="1" y2="0.5" xlink:href="#linear-gradient"/>
+  </defs>
+  <g id="Group_238" data-name="Group 238" transform="translate(-400.98 -552.345)">
+    <path id="Path_200" data-name="Path 200" d="M400.98,587.19c0-3.61,6.37-3.96,6.52,0a29.046,29.046,0,0,0,28.58,28.58,28.575,28.575,0,1,0-22.56-46.12l7.52,7.52H400.98V557.12l7.97,7.97a34.983,34.983,0,1,1-7.97,22.1Zm23.39,4.39a2.266,2.266,0,0,1-2.24-2.29,1.274,1.274,0,0,1,.01-.19,2.344,2.344,0,0,1,2.23-2.47h10.04V568.79s0-1.9,2.53-1.9,2.52,1.9,2.52,1.9v19.18a3.619,3.619,0,0,1-3.62,3.62H424.37Z" fill="url(#linear-gradient)"/>
+    <g id="icons_Time" clip-path="url(#clip-path)">
+      <g id="color_primary" transform="translate(-3.07 -3.07)">
+        <rect id="color_primary_copy" width="87.74" height="87.74" transform="translate(395.27 546.39)" fill="url(#linear-gradient-2)"/>
+      </g>
+    </g>
+  </g>
+</svg>

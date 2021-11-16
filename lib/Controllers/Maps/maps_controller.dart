@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -17,17 +16,18 @@ const kmapZoomLevel = 15.0;
 
 class MapController extends GetxController with WidgetsBindingObserver {
   @override
-  void onInit() {
+  void onInit() async {
     WidgetsBinding.instance!.addObserver(this);
     registerSearchFunction();
     super.onInit();
+    initiateMyLocation();
   }
 
   @override
   void onClose() {
-    googleMapController.dispose();
-    WidgetsBinding.instance!.removeObserver(this);
     super.onClose();
+    WidgetsBinding.instance!.removeObserver(this);
+    googleMapController.dispose();
   }
 
   @override
@@ -102,19 +102,15 @@ class MapController extends GetxController with WidgetsBindingObserver {
   Future<void> getMyLocation() async {
     bool _serviceEnabled;
     PermissionStatus _permissionGranted;
-
     //permissions
     _serviceEnabled = await _location.serviceEnabled();
-
     if (!_serviceEnabled) {
       _serviceEnabled = await _location.requestService();
       if (!_serviceEnabled) {
         return;
       }
     }
-
     _permissionGranted = await _location.hasPermission();
-
     if (_permissionGranted == PermissionStatus.denied) {
       _permissionGranted = await _location.requestPermission();
       if (_permissionGranted != PermissionStatus.granted) {
@@ -123,7 +119,6 @@ class MapController extends GetxController with WidgetsBindingObserver {
         return;
       }
     }
-
     _originLocationData = await _location.getLocation();
 
     if (_originLocationData != null) {
@@ -161,7 +156,7 @@ class MapController extends GetxController with WidgetsBindingObserver {
 
   Future<void> changeTravelMode(TravelMode mode,
       {required LatLng destination,
-      required TrainerSessionController tsController}) async {
+      required TrainerInPersonSessionController tsController}) async {
     LocationData? myLocation = getOriginLocation;
     if (myLocation == null) {
       await getMyLocation();
@@ -201,16 +196,7 @@ class MapController extends GetxController with WidgetsBindingObserver {
   final _isLoading = false.obs;
 
   get isLoading => _isLoading.value;
-  // final _myLocation = Position(
-  //         longitude: 0,
-  //         latitude: 0,
-  //         timestamp: DateTime.now(),
-  //         accuracy: 0,
-  //         altitude: 0,
-  //         heading: 0,
-  //         speed: 0,
-  //         speedAccuracy: 0)
-  //     .obs;
+  final _myLocation = LocationData.fromMap({}).obs;
 
   get city => _city.value;
   get state => _state.value;
@@ -218,12 +204,12 @@ class MapController extends GetxController with WidgetsBindingObserver {
 
   // get myLocation => _myLocation.value;
 
-  // initiateMyLocation() async {
-  //   _myLocation.value = await Geolocator.getCurrentPosition();
-  //   _lat.value = _myLocation.value.latitude;
-  //   _lng.value = _myLocation.value.longitude;
-  //   getCityAndState();
-  // }
+  initiateMyLocation() async {
+    _myLocation.value = await _location.getLocation();
+    _lat.value = _myLocation.value.latitude!;
+    _lng.value = _myLocation.value.longitude!;
+    getCityAndState();
+  }
 
   getCityAndState() async {
     final coords = await geo.placemarkFromCoordinates(_lat.value, _lng.value);

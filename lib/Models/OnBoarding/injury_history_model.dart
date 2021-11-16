@@ -19,7 +19,7 @@ class InjuryHistoryQModel extends QuestionnaireModel {
 
   @override
   void toogleFilled() {
-    if (hasInjury.value) {
+    if (_hasInjury.value) {
       injuryDetail.isNotEmpty ? filled.value = true : filled.value = false;
       return;
     }

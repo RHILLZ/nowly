@@ -11,7 +11,7 @@ import 'package:sizer/sizer.dart';
 
 class AuthView extends GetView<AuthController> {
   AuthView({Key? key}) : super(key: key);
-  final AuthController authController = Get.put(AuthController());
+  final AuthController authController = Get.find<AuthController>();
   final onboardSelection = GetStorage().read('onboardSelection');
 
   @override

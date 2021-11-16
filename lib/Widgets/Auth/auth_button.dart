@@ -16,31 +16,28 @@ class AuthButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FittedBox(
-      fit: BoxFit.fitWidth,
-      child: OutlinedButton(
-        style: OutlinedButton.styleFrom(
-            side: const BorderSide(width: 2.0, color: Colors.white),
-            onSurface: Colors.white),
-        onPressed: onPressed,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (iconPath != null)
-              SvgPicture.asset(
-                iconPath!,
-                width: 25,
-                color: Colors.white,
-              ),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Text(
-                title,
-                style: k18BoldTS.copyWith(color: Colors.white),
-              ),
-            )
-          ],
-        ),
+    return OutlinedButton(
+      style: OutlinedButton.styleFrom(
+          side: const BorderSide(width: 2.0, color: Colors.white),
+          onSurface: Colors.white),
+      onPressed: onPressed,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (iconPath != null)
+            SvgPicture.asset(
+              iconPath!,
+              width: 25,
+              color: Colors.white,
+            ),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Text(
+              title,
+              style: k18BoldTS.copyWith(color: Colors.white),
+            ),
+          )
+        ],
       ),
     );
   }

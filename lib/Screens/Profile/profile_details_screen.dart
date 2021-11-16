@@ -30,8 +30,16 @@ class ProfileDetailsScreen extends GetView<UserController> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     CircleAvatar(
-                      radius: 50,
-                      backgroundImage: NetworkImage(user.profilePicURL),
+                      backgroundImage: controller.user.profilePicURL != null
+                          ? NetworkImage(controller.user.profilePicURL!)
+                          : null,
+                      child: controller.user.profilePicURL != null
+                          ? null
+                          : Icon(
+                              Icons.person,
+                              size: 40.sp,
+                            ),
+                      maxRadius: 6.h,
                     ),
                     SizedBox(
                       height: 2.h,
