@@ -176,7 +176,7 @@ class SessionHistoryAndUpcomingView extends StatelessWidget {
                             ),
                             const Spacer(),
                             Text(
-                              '${_receipt.sessionCharged}0',
+                              '${_receipt.sessionCharged}',
                               style: k20BoldTS,
                             )
                           ],

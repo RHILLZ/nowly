@@ -11,14 +11,14 @@ class WorkoutType {
 
   static final List<WorkoutType> types = [
     WorkoutType(
-        imagePath: 'assets/icons/logo_outlined.svg',
+        imagePath: 'assets/logo/mark.svg',
         type: 'Recommended',
         headerData: [
           HomeHeaderData(
               title: 'Recommended',
               description:
                   'Allow us to find the correct trainer for you based on your goals and experience.',
-              imagePath: 'assets/icons/logo.svg')
+              imagePath: 'assets/logo/mark.svg')
         ]),
     WorkoutType(
         imagePath: 'assets/images/workout/functional_training.svg',

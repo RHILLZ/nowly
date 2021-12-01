@@ -6,6 +6,7 @@ import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Screens/Stripe/add_payment_methods.dart';
+import 'package:nowly/Utils/logger.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:sizer/sizer.dart';
 
@@ -21,6 +22,7 @@ class SessionConfirmationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _controller.user = Get.find<UserController>().user;
+    AppLogger.i(_controller.user.id);
     return Scaffold(
         appBar: AppBar(
           title: const Text('SESSION CONFIRMATION'),
@@ -32,6 +34,7 @@ class SessionConfirmationScreen extends StatelessWidget {
             child: MainButton(onTap: () async {
               final userName =
                   '${_controller.user.firstName} ${_controller.user.lastName}';
+              print(_controller.user.id);
               final _session = SessionModel(
                   userID: _controller.user.id,
                   userName: userName,
@@ -47,19 +50,19 @@ class SessionConfirmationScreen extends StatelessWidget {
                   sessionWorkoutTypeImagePath:
                       _controller.sessionWorkOutType.imagePath);
 
-              _agoraVideoCallController.session = _session;
               // ignore: unused_local_variable
               final durTimer =
                   _controller.sessionDurationAndCost.duration.substring(0, 2);
               final amount = _controller.sessionDurationAndCost.cost;
               final desc =
                   '${_controller.sessionDurationAndCost.duration} Minute ${_controller.sessionWorkOutType.type} Session';
+              _agoraVideoCallController.session = _session;
               _agoraVideoCallController.user = _controller.user;
               _agoraVideoCallController.sessionDescription = desc;
               _agoraVideoCallController.sessionAmount = amount;
-              // _agoraVideoCallController.sessionTimer = int.parse(durTimer) * 60;
+              _agoraVideoCallController.sessionTimer = int.parse(durTimer) * 60;
               _agoraVideoCallController.startSession(
-                  _session, _agoraVideoCallController);
+                  context, _session, _agoraVideoCallController);
             }),
           ),
         ),
@@ -191,7 +194,7 @@ class SessionConfirmationScreen extends StatelessWidget {
                             const Spacer(),
                             TextButton(
                               onPressed: () {
-                                Get.toNamed(AddPaymentMethodsScreen.routeName);
+                                Get.to(() => AddPaymentMethodsScreen());
 
                                 // if (_paymentController.myPaymentMethods.isNotEmpty) {
                                 //   Get.toNamed(PaymentMethodsScreen.routeName);

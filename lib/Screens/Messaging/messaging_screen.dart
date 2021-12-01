@@ -5,11 +5,13 @@ import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
+import 'package:sizer/sizer.dart';
 
 class MessagingScreen extends GetView<MessagingController> {
-  const MessagingScreen({Key? key}) : super(key: key);
+  MessagingScreen({Key? key}) : super(key: key);
   static const routeName = '/messagingScreen';
-
+  final MessagingController _mController = Get.put(MessagingController());
+  final TextEditingController _messageText = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,90 +49,108 @@ class MessagingScreen extends GetView<MessagingController> {
           ),
           Expanded(
             child: Obx(() {
-              return !controller.isFinishedLoading.value
+              return !_mController.isFinishedLoading.value
                   ? const Center(
                       child: SpinKitFadingFour(
                         color: kPrimaryColor,
                         size: 50.0,
                       ),
                     )
-                  : AnimatedList(
-                      key: controller.listKey,
+                  : ListView.builder(
                       reverse: true,
                       padding: UIParameters.screenPadding,
-                      initialItemCount: controller.chat.length,
-                      itemBuilder: (BuildContext context, int index,
-                          Animation<double> animation) {
-                        if (controller.me.id ==
-                            controller.chat[index].user.id) {
-                          // my message
-                          return ScaleTransition(
-                              scale: animation,
-                              alignment: Alignment.centerRight,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    MyChatBubble(
-                                      message: controller.chat[index].message,
-                                    ),
-                                  ],
-                                ),
-                              ));
-                        }
-                        return ScaleTransition(
-                            scale: animation,
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 5),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  ChatBubble(
-                                    message: controller.chat[index].message,
-                                    profileImage: controller
-                                        .chat[index].user.profileImage,
-                                  ),
-                                ],
-                              ),
-                            ));
-                      },
-                    );
+                      itemCount: _mController.chatx.length,
+                      itemBuilder: (context, index) => _mController
+                                  .chatx[index].senderId ==
+                              Get.find<AuthController>().firebaseUser.uid
+                          ? myMessage(_mController.chatx[index].message)
+                          : otherMessage(_mController.chatx[index].message));
             }),
           ),
           const Divider(
             height: 0,
           ),
-          SingleChildScrollView(
-            padding: UIParameters.screenPadding,
-            scrollDirection: Axis.horizontal,
-            child: SafeArea(
-              left: false,
-              top: false,
-              right: false,
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: Get.width * 1.5,
-                ),
-                child: Wrap(
-                  spacing: 5,
-                  runSpacing: 5,
-                  children: List.generate(
-                      QuickResponse.quickResponses.length,
-                      (index) => Message(
-                          label: QuickResponse.quickResponses[index].message,
-                          onTap: () {
-                            controller.addMessage(
-                                QuickResponse.quickResponses[index].message);
-                          })),
-                ),
-              ),
-            ),
-          )
+          // SingleChildScrollView(
+          //   padding: UIParameters.screenPadding,
+          //   scrollDirection: Axis.horizontal,
+          //   child: SafeArea(
+          //     left: false,
+          //     top: false,
+          //     right: false,
+          //     child: ConstrainedBox(
+          //       constraints: BoxConstraints(
+          //         maxWidth: 150.w,
+          //       ),
+          //       child: Wrap(
+          //         spacing: 7,
+          //         runSpacing: 8,
+          //         children: List.generate(
+          //             QuickResponse.quickResponses.length,
+          //             (index) => Message(
+          //                 label: QuickResponse.quickResponses[index].message,
+          //                 onTap: () {
+          //                   // controller.addMessage(
+          //                   //     QuickResponse.quickResponses[index].message);
+          //                 })),
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: _messageText,
+                      onChanged: (v) => _mController.message = v,
+                      decoration: const InputDecoration(
+                          hintText: 'Type message...',
+                          border: OutlineInputBorder()),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 2.w,
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        _messageText.clear();
+                        _mController.sendMessage();
+                      },
+                      icon: const Icon(Icons.send)),
+                ],
+              )),
         ],
       ),
     );
   }
+
+  myMessage(message) => ScaleTransition(
+      scale: kAlwaysCompleteAnimation,
+      alignment: Alignment.centerRight,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            MyChatBubble(
+              message: message,
+            ),
+          ],
+        ),
+      ));
+
+  otherMessage(message) => ScaleTransition(
+      scale: kAlwaysCompleteAnimation,
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ChatBubble(message: message),
+          ],
+        ),
+      ));
 }

@@ -32,39 +32,26 @@ class ChatBubble extends StatelessWidget {
   const ChatBubble({
     Key? key,
     required this.message,
-    required this.profileImage,
   }) : super(key: key);
 
   final String message;
-  final String? profileImage;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        if (profileImage != null)
-          CircleAvatar(
-            foregroundImage: NetworkImage(profileImage!),
-          ),
-        const SizedBox(
-          width: 10,
-        ),
-        Container(
-          padding: const EdgeInsets.all(12.0),
-          constraints: BoxConstraints(
-            maxWidth: Get.width * 0.7,
-          ),
-          child: Text(
-            message,
-          ),
-          decoration: BoxDecoration(
-              color: chatBubbleColor(context),
-              borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(kChatBubblesBorderRadius),
-                  topLeft: Radius.circular(kChatBubblesBorderRadius),
-                  topRight: Radius.circular(kChatBubblesBorderRadius))),
-        )
-      ],
+    return Container(
+      padding: const EdgeInsets.all(12.0),
+      constraints: BoxConstraints(
+        maxWidth: Get.width * 0.7,
+      ),
+      child: Text(
+        message,
+      ),
+      decoration: BoxDecoration(
+          color: chatBubbleColor(context),
+          borderRadius: const BorderRadius.only(
+              bottomRight: Radius.circular(kChatBubblesBorderRadius),
+              topLeft: Radius.circular(kChatBubblesBorderRadius),
+              topRight: Radius.circular(kChatBubblesBorderRadius))),
     );
   }
 }

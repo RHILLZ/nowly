@@ -28,6 +28,7 @@ abstract class Routes {
   static const PROFILE_DETAILS = _Paths.PROFILE_DETAILS;
   static const INFORMATION = _Paths.INFORMATION;
   static const GOALS_SCREEN = _Paths.GOALS_SCREEN;
+  static const MESSENGER_SCREEN = _Paths.MESSENGER_SCREEN;
 }
 
 abstract class _Paths {
@@ -56,4 +57,5 @@ abstract class _Paths {
   static const PROFILE_DETAILS = '/profile_details';
   static const INFORMATION = '/information;';
   static const GOALS_SCREEN = '/goals';
+  static const MESSENGER_SCREEN = '/messagingScreen';
 }

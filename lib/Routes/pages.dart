@@ -8,6 +8,7 @@ import 'package:nowly/Screens/Auth/auth_view.dart';
 import 'package:nowly/Screens/Auth/onboarding_view.dart';
 import 'package:nowly/Screens/Auth/start_screen_view.dart';
 import 'package:nowly/Screens/Map/map_screen.dart';
+import 'package:nowly/Screens/Messaging/messaging_screen.dart';
 import 'package:nowly/Screens/Nav/base_screen.dart';
 import 'package:nowly/Screens/Nav/home_view.dart';
 import 'package:nowly/Screens/Nav/session_history_view.dart';
@@ -97,7 +98,7 @@ class Pages {
         name: _Paths.ADD_PAYMENT_METHOD,
         page: () => AddPaymentMethodsScreen(),
         binding: BaseScreenBinding()),
-    GetPage(name: _Paths.FEEDBACK_SCREEN, page: () => const Feedback()),
+    GetPage(name: _Paths.FEEDBACK_SCREEN, page: () => const FeedbackView()),
     // GetPage(
     //     name: _Paths.IN_PERSON_SESSION, page: () => const LiveSessionView()),
     GetPage(
@@ -115,5 +116,6 @@ class Pages {
             LocationSelectionView(controller: MapController(), radius: 0)),
     GetPage(name: _Paths.GOALS_SCREEN, page: () => MyGoalScreen()),
     GetPage(name: _Paths.INFORMATION, page: () => UserInfoScreen()),
+    GetPage(name: _Paths.MESSENGER_SCREEN, page: () => MessagingScreen()),
   ];
 }

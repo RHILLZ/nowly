@@ -115,6 +115,37 @@ class FirebaseFutures {
     return isSuccessful;
   }
 
+  Future<bool> sendMessage(String sessionId, MessageModel message) async {
+    bool _isSuccessful = false;
+    try {
+      final data = MessageModel().toMap(message);
+      await _firestore
+          .collection(SESSIONCOLLECTION)
+          .doc(sessionId)
+          .collection(SESSIONCHAT)
+          .doc(sessionId)
+          .set({
+        'chat': FieldValue.arrayUnion([data])
+      }, SetOptions(merge: true));
+      _isSuccessful = true;
+    } catch (exception) {
+      print(exception.toString());
+    }
+    return _isSuccessful;
+  }
+
+  Future<bool> submitSuggestion(FeedbackModel feedback) async {
+    bool _isSuccessful = false;
+    try {
+      var data = FeedbackModel().toMap(feedback);
+      await _firestore.collection(FEEDBACK).add(data);
+      _isSuccessful = true;
+    } catch (exception) {
+      print(exception.toString());
+    }
+    return _isSuccessful;
+  }
+
 //TRAINER CRUD METHODS
 //CREATE
 //READ

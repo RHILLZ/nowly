@@ -33,10 +33,10 @@ class HomeScreenHeader extends StatelessWidget {
                 top: 10,
                 right: 0,
                 left: 0,
-                child: SvgPicture.asset(
-                  'assets/icons/nowly.svg',
-                  height: 5.h,
-                  color: Colors.white,
+                child: Image.asset(
+                  'assets/logo/logo-w.png',
+                  height: 3.h,
+                  // color: Colors.white,
                 )),
             Positioned(
                 top: 8.h,

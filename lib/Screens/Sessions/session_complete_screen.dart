@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
+import 'package:nowly/Screens/Nav/base_screen.dart';
+import 'package:nowly/Screens/Sessions/feedback.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:nowly/root.dart';
 import 'package:sizer/sizer.dart';
@@ -40,10 +42,7 @@ class SessionCompleteScreen extends StatelessWidget {
           actions: [
             TextButton(
                 onPressed: () {
-                  // // _isUser
-                  // //     ? Get.offAll(Root())
-                  // //     : Get.offAll(TrainerHomeView());
-                  // Phoenix.rebirth(context);
+                  Get.offAll(() => BaseScreen());
                 },
                 child: const Text('Skip'))
           ],
@@ -66,6 +65,7 @@ class SessionCompleteScreen extends StatelessWidget {
                         if (_isIssue.value) {
                           await _controller.reportIssue(_session, _isUser);
                         }
+                        Get.to(() => const FeedbackView());
                       } else {
                         Get.offAll(const Root());
                       }
@@ -76,171 +76,165 @@ class SessionCompleteScreen extends StatelessWidget {
         ),
         body: Obx(() => _controller.isProccessing
             ? loadScreen()
-            : _reviewSubmitted.value
-                ? thankYouView(context, _isUser)
-                : SingleChildScrollView(
-                    padding: UIParameters.screenPadding,
-                    child: Column(
-                      children: [
-                        AnimatedContainer(
-                          duration: const Duration(milliseconds: 300),
-                          height: showMore.value ? 700 : 35.h,
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(40.0),
-                            onTap: () {
-                              showMore.toggle();
-                            },
-                            child: Ink(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(40.0),
-                                  color: getExpandedCardBodyColor(context),
-                                  boxShadow: UIParameters.getShadow()),
-                              child: Padding(
-                                  padding: UIParameters.screenPadding,
-                                  child: Stack(
-                                    children: [
-                                      Positioned(
-                                          top: 0,
-                                          right: 0,
-                                          child: RoundedCornerButton(
-                                            isSelected: true,
-                                            onTap: () {},
-                                            child: const Icon(
-                                              Icons.share,
-                                              color: Colors.white,
-                                            ),
-                                          )),
-                                      Positioned.fill(
-                                          child: FittedBox(
-                                        fit: BoxFit.fitHeight,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            CircleAvatar(
-                                              radius: 50,
-                                              backgroundImage: NetworkImage(
-                                                  !_isUser
-                                                      ? _session
-                                                          .userProfilePicURL!
-                                                      : _session
-                                                          .trainerProfilePicURL!),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 10),
-                                              child: Text(
-                                                !_isUser
-                                                    ? _session.userName!
-                                                    : _session.trainerName!,
-                                                style: k20BoldTS.copyWith(
-                                                    fontSize: 25),
-                                              ),
-                                            ),
-                                            Text(
-                                              _session.sessionDuration!,
-                                              style: k20BoldTS,
-                                            ),
-                                            SizedBox(height: 1.h),
-                                            Text(
-                                              _session.sessionWorkoutType!
-                                                  .toUpperCase(),
-                                              style: k16RegularTS,
-                                            ),
-                                            SizedBox(height: 1.h),
-                                            FittedBox(
-                                              fit: BoxFit.scaleDown,
-                                              child: Text(
-                                                  '${_session.sessionMode!} Session'
-                                                      .toUpperCase(),
-                                                  style: k16RegularTS),
-                                            ),
-                                            if (showMore.value)
-                                              Expanded(
-                                                child: SingleChildScrollView(
-                                                  physics:
-                                                      const NeverScrollableScrollPhysics(),
-                                                  child: Column(
-                                                    children: const [
-                                                      SizedBox(
-                                                        height: 20,
-                                                      ),
-                                                      Divider(
-                                                        thickness: 2,
-                                                      ),
-                                                      // SessionCompleteDetails()
-                                                    ],
-                                                  ),
-                                                ),
-                                              )
-                                          ],
+            // : _reviewSubmitted.value
+            //     ? thankYouView(context, _isUser)
+            : SingleChildScrollView(
+                padding: UIParameters.screenPadding,
+                child: Column(
+                  children: [
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      height: showMore.value ? 700 : 35.h,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(40.0),
+                        onTap: () {
+                          showMore.toggle();
+                        },
+                        child: Ink(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(40.0),
+                              color: getExpandedCardBodyColor(context),
+                              boxShadow: UIParameters.getShadow()),
+                          child: Padding(
+                              padding: UIParameters.screenPadding,
+                              child: Stack(
+                                children: [
+                                  Positioned(
+                                      top: 0,
+                                      right: 0,
+                                      child: RoundedCornerButton(
+                                        isSelected: true,
+                                        onTap: () {},
+                                        child: const Icon(
+                                          Icons.share,
+                                          color: Colors.white,
                                         ),
                                       )),
-                                    ],
+                                  Positioned.fill(
+                                      child: FittedBox(
+                                    fit: BoxFit.fitHeight,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 50,
+                                          backgroundImage: NetworkImage(!_isUser
+                                              ? _session.userProfilePicURL!
+                                              : _session.trainerProfilePicURL!),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 10),
+                                          child: Text(
+                                            !_isUser
+                                                ? _session.userName!
+                                                : _session.trainerName!,
+                                            style: k20BoldTS.copyWith(
+                                                fontSize: 25),
+                                          ),
+                                        ),
+                                        Text(
+                                          _session.sessionDuration!,
+                                          style: k20BoldTS,
+                                        ),
+                                        SizedBox(height: 1.h),
+                                        Text(
+                                          _session.sessionWorkoutType!
+                                              .toUpperCase(),
+                                          style: k16RegularTS,
+                                        ),
+                                        SizedBox(height: 1.h),
+                                        FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          child: Text(
+                                              '${_session.sessionMode!} Session'
+                                                  .toUpperCase(),
+                                              style: k16RegularTS),
+                                        ),
+                                        if (showMore.value)
+                                          Expanded(
+                                            child: SingleChildScrollView(
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              child: Column(
+                                                children: const [
+                                                  SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Divider(
+                                                    thickness: 2,
+                                                  ),
+                                                  // SessionCompleteDetails()
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                      ],
+                                    ),
                                   )),
-                            ),
-                          ),
+                                ],
+                              )),
                         ),
-                        const SizedBox(height: 40),
-                        const Text('HOW WAS YOUR SESSION ?', style: k20BoldTS),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20, bottom: 10),
-                          child: StarRatingBar(
-                            size: 35,
-                            rating: 0.0,
-                            isRatable: true,
-                            onRate: (value) {
-                              _controller.calculateRating(value);
-                              _controller.starRating = value;
-                            },
-                          ),
-                        ),
-                        _controller.starRating > .5
-                            ? Text(_controller.rating.value, style: k20BoldTS)
-                            : Container(),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        _controller.starRating > 0.0
-                            ? Wrap(
-                                crossAxisAlignment: WrapCrossAlignment.start,
-                                alignment: WrapAlignment.center,
-                                runSpacing: 10,
-                                spacing: 10,
-                                children: _isUser
-                                    ? _controller.starRating < 3.0
-                                        ? negativeTrainerReviewList()
-                                        : positiveTrainerReviewList()
-                                    : _controller.starRating < 3.0
-                                        ? negativeUserReviewList()
-                                        : positiveUserReviewList())
-                            : Container(),
-                        const SizedBox(height: 20),
-                        const Divider(
-                          thickness: 2,
-                        ),
-                        ListTile(
-                          onTap: () {
-                            if (_isIssue.value) {
-                              _isIssue.value = false;
-                            } else {
-                              _isIssue.value = true;
-                            }
-                          },
-                          title: const Text('REPORT AN ISSUE',
-                              style: k16RegularTS),
-                          trailing: const Icon(Icons.navigate_next),
-                        ),
-                        SizedBox(
-                          height: 2.h,
-                        ),
-                        Obx(() => _isIssue.value
-                            ? buildReportTextField()
-                            : Container())
-                      ],
+                      ),
                     ),
-                  )));
+                    const SizedBox(height: 40),
+                    const Text('HOW WAS YOUR SESSION ?', style: k20BoldTS),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20, bottom: 10),
+                      child: StarRatingBar(
+                        size: 35,
+                        rating: 0.0,
+                        isRatable: true,
+                        onRate: (value) {
+                          _controller.calculateRating(value);
+                          _controller.starRating = value;
+                        },
+                      ),
+                    ),
+                    _controller.starRating > .5
+                        ? Text(_controller.rating.value, style: k20BoldTS)
+                        : Container(),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    _controller.starRating > 0.0
+                        ? Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.start,
+                            alignment: WrapAlignment.center,
+                            runSpacing: 10,
+                            spacing: 10,
+                            children: _isUser
+                                ? _controller.starRating < 3.0
+                                    ? negativeTrainerReviewList()
+                                    : positiveTrainerReviewList()
+                                : _controller.starRating < 3.0
+                                    ? negativeUserReviewList()
+                                    : positiveUserReviewList())
+                        : Container(),
+                    const SizedBox(height: 20),
+                    const Divider(
+                      thickness: 2,
+                    ),
+                    ListTile(
+                      onTap: () {
+                        if (_isIssue.value) {
+                          _isIssue.value = false;
+                        } else {
+                          _isIssue.value = true;
+                        }
+                      },
+                      title: const Text('REPORT AN ISSUE', style: k16RegularTS),
+                      trailing: const Icon(Icons.navigate_next),
+                    ),
+                    SizedBox(
+                      height: 2.h,
+                    ),
+                    Obx(() =>
+                        _isIssue.value ? buildReportTextField() : Container())
+                  ],
+                ),
+              )));
   }
 
   Widget buildReportTextField() => Container(

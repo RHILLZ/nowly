@@ -12,6 +12,8 @@ const String SESSIONCOLLECTION = 'xdi_sessions';
 const String USERREPORTEDESSIONCOLLECTION = 'xdi_user_reported_sessions';
 const String TRAINERREPORTEDESSIONCOLLECTION = 'xdi_trainer_reported_sessions';
 const String SESSIONRECEIPTS = 'sessionReceipts';
+const String SESSIONCHAT = 'chat';
+const String FEEDBACK = 'suggestions';
 
 SvgPicture VISAIMAGE = SvgPicture.asset(
   'assets/icons/payments/visa.svg',

@@ -22,7 +22,7 @@ void main() async {
 
 class NowlyApp extends StatelessWidget {
   NowlyApp({Key? key}) : super(key: key);
-  final _user = Get.put(AuthController()).firebaseUser;
+  final _user = Get.put(AuthController(), permanent: true).firebaseUser;
 
   @override
   Widget build(BuildContext context) {

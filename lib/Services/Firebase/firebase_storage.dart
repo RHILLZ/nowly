@@ -132,6 +132,12 @@ class FirebaseStorage {
     return _isSuccessful;
   }
 
+  Future getLegalDoc(String filename) async {
+    final bytes = _firebaseStorage.ref().child(filename).getData();
+
+    return bytes;
+  }
+
   //DOCUMENTS CRUD
   // Future<bool> uploadTrainerDoc(File doc, String trainerID) async {
   //   bool _isSuccessful = false;

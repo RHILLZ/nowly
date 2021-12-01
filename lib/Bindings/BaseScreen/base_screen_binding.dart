@@ -14,7 +14,7 @@ class BaseScreenBinding extends Bindings {
     Get.lazyPut(() => SessionScheduleController());
     Get.lazyPut(() => FilterController());
 
-    Get.lazyPut(() => AgoraController());
+    // Get.lazyPut(() => AgoraController());
     Get.lazyPut(() => UserController());
     Get.lazyPut(() => MapNavigatorController());
   }

@@ -23,6 +23,7 @@ class CurrentSessionDetailsScreen extends StatelessWidget {
     _controller.sessionDurAndCosts.value =
         _trainerSessionC.trainerSession.sessionLengths;
     // _controller.sessionDurationAndCosts = _trainerSessionC.selectedLength;
+    final MessagingController _mController = Get.put(MessagingController());
 
     return Scaffold(
       appBar: AppBar(
@@ -74,7 +75,7 @@ class CurrentSessionDetailsScreen extends StatelessWidget {
                   ],
                 ),
                 onPressed: () {
-                  Get.toNamed(MessagingScreen.routeName);
+                  Get.to(() => MessagingScreen());
                 },
               ),
               SizedBox(

@@ -1,13 +1,21 @@
 // ignore_for_file: avoid_print
 
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:nowly/Configs/configs.dart';
+import 'package:nowly/Screens/Nav/legals_view.dart';
 import 'package:nowly/Screens/OnBoarding/user_registration_view.dart';
+import 'package:nowly/Services/service_exporter.dart';
+import 'package:nowly/Utils/logger.dart';
 import 'package:nowly/root.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sizer/sizer.dart';
 
 class AuthController extends GetxController {
@@ -16,9 +24,14 @@ class AuthController extends GetxController {
   final RxString _email = RxString('');
   final RxString _password = RxString('');
   final RxString _confirmed = RxString('');
+  final RxBool _agreedToTerms =
+      RxBool(GetStorage().read('agreeToTerms') ?? false);
 
   get firebaseUser => _firebaseUser.value;
   get auth => _auth;
+  get agreedToTerms => _agreedToTerms.value;
+
+  set agreedToTerms(value) => _agreedToTerms.value = value;
 
   @override
   void onInit() {
@@ -181,15 +194,49 @@ class AuthController extends GetxController {
                       ),
                       Visibility(
                           visible: onboardSelection == 'newAccount',
-                          child: const Text(
-                            'By checking this box, I Agree to the Terms Of Service and Privacy Agreement',
-                            style: kRegularTS,
-                            textAlign: TextAlign.center,
-                          )),
+                          child: Obx(() => CheckboxListTile(
+                              checkColor: kActiveColor,
+                              activeColor: kPrimaryColor,
+                              title: RichText(
+                                  softWrap: true,
+                                  text: TextSpan(
+                                      style: kRegularTS.copyWith(
+                                          fontSize: 14, height: 1.4),
+                                      children: [
+                                        const TextSpan(
+                                            text:
+                                                'By checking this box, I hearby agree to nowly '),
+                                        TextSpan(
+                                            text: 'Terms of Services ',
+                                            style: k10BoldTS.copyWith(
+                                                fontSize: 14,
+                                                color: kPrimaryColor),
+                                            recognizer: TapGestureRecognizer()
+                                              ..onTap = () =>
+                                                  loadDoc('nowlyTOS.pdf')),
+                                        const TextSpan(text: 'and '),
+                                        TextSpan(
+                                            text: 'Privacy Agreement',
+                                            style: k10BoldTS.copyWith(
+                                                fontSize: 14,
+                                                color: kPrimaryColor),
+                                            recognizer: TapGestureRecognizer()
+                                              ..onTap =
+                                                  () => loadDoc('nowlyPA.pdf'))
+                                      ])),
+                              value: _agreedToTerms.value,
+                              selected: _agreedToTerms.value,
+                              onChanged: (v) {
+                                _agreedToTerms.toggle();
+                                GetStorage().write('agreeToTerms', v);
+                              }))),
+                      SizedBox(
+                        height: 2.h,
+                      ),
                       Visibility(
                           visible: onboardSelection == 'signin',
                           child: const Text(
-                            'Welcome back! Lets Gooooo!',
+                            'Welcome back, Lets Gooooo!',
                             style: k16BoldTS,
                             textAlign: TextAlign.center,
                           )),
@@ -203,8 +250,10 @@ class AuthController extends GetxController {
                           onPressed: () => {
                             GetUtils.isEmail(_email.value)
                                 ? onboardSelection == 'newAccount'
-                                    ? createAccount(_email.value.trim(),
-                                        _password.value.trim())
+                                    ? _agreedToTerms.value
+                                        ? createAccount(_email.value.trim(),
+                                            _password.value.trim())
+                                        : termsWarningSnackbar()
                                     : login(_email.value.trim(),
                                         _password.value.trim())
                                 : Get.snackbar('Error',
@@ -230,11 +279,41 @@ class AuthController extends GetxController {
               Positioned(
                 top: -12.h,
                 child: SvgPicture.asset(
-                  'assets/icons/logo_outlined.svg',
+                  'assets/logo/mark.svg',
                   height: 18.h,
                 ),
               ),
             ]),
         barrierColor: Colors.black.withOpacity(.9));
   }
+
+  termsWarningSnackbar() => Get.snackbar('Please Review Terms and Conditions.',
+      'Check box to agree to Terms and Conditions.',
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: Colors.red,
+      colorText: Colors.white,
+      duration: const Duration(seconds: 4));
+
+  Future<File?> _storeDoc(String url, List<int> bytes) async {
+    final filename = basename(url);
+    final dir = await getApplicationDocumentsDirectory();
+
+    final file = File('${dir.path}/$filename');
+    await file.writeAsBytes(bytes, flush: true);
+
+    return file;
+  }
+
+  Future loadDoc(filename) async {
+    Get.isBottomSheetOpen == true ? Get.back() : null;
+    final bytes = await FirebaseStorage().getLegalDoc(filename);
+    final file = await _storeDoc(filename, bytes);
+    AppLogger.i(file);
+    file != null
+        ? _openPDF(file)
+        : Get.snackbar('Something went wrong!',
+            'Unable to download document at this time. Please try again later.');
+  }
+
+  void _openPDF(File file) => Get.to(() => LegalView(file: file));
 }

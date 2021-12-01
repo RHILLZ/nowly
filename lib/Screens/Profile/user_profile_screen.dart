@@ -3,8 +3,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
+import 'package:nowly/Screens/Messaging/messaging_screen.dart';
 import 'package:nowly/Screens/Nav/session_history_view.dart';
 import 'package:nowly/Screens/Profile/info_screen.dart';
+import 'package:nowly/Screens/Profile/profile_pic.dart';
 import 'package:nowly/Screens/Stripe/add_payment_methods.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:sizer/sizer.dart';
@@ -63,17 +65,22 @@ class UserProfileScreen extends GetView<UserController> {
                     padding: const EdgeInsets.all(12.0),
                     child: Row(
                       children: [
-                        CircleAvatar(
-                          backgroundImage: controller.user.profilePicURL != null
-                              ? NetworkImage(controller.user.profilePicURL!)
-                              : null,
-                          child: controller.user.profilePicURL != null
-                              ? null
-                              : Icon(
-                                  Icons.person,
-                                  size: 40.sp,
-                                ),
-                          maxRadius: 6.h,
+                        GestureDetector(
+                          onTap: () => Get.to(
+                              ProfileImageSetterScreen(controller: controller)),
+                          child: CircleAvatar(
+                            backgroundImage: controller.user.profilePicURL !=
+                                    null
+                                ? NetworkImage(controller.user.profilePicURL!)
+                                : null,
+                            child: controller.user.profilePicURL != null
+                                ? null
+                                : Icon(
+                                    Icons.person,
+                                    size: 40.sp,
+                                  ),
+                            maxRadius: 6.h,
+                          ),
                         ),
                         SizedBox(
                           width: 3.w,
@@ -148,6 +155,7 @@ class UserProfileScreen extends GetView<UserController> {
             ListTile(
               onTap: () {
                 Get.to(() => UserInfoScreen());
+                // Get.to(() => MessagingScreen());
               },
               leading: SvgPicture.asset(
                 'assets/images/profile/preferences.svg',

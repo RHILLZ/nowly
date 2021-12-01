@@ -9,6 +9,7 @@ import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Screens/Sessions/session_complete_screen.dart';
 import 'package:nowly/Screens/Sessions/virtual_session_view.dart';
 import 'package:nowly/Services/service_exporter.dart';
+import 'package:nowly/Utils/logger.dart';
 import 'package:nowly/Widgets/BottomSheets/virtual_session_search_bottomsheet.dart';
 import 'package:nowly/keys.dart';
 import 'package:sizer/sizer.dart';
@@ -49,31 +50,29 @@ class AgoraController extends GetxController {
   set sessionTimer(value) => _sessionTimer.value = value;
   set sessionController(value) => _sessionController.value = value;
 
-  // final tempToken =
-  //     '006d1353733bdf44f40b7f784942624a8deIADblBL7OYEAsYYqfcp+etcL/F8fBmjdQxpuw/X8ixm3NcrMkksAAAAAEABumw/wRAJnYQEAAQBEAmdh';
+  final tempToken =
+      '00650efca7fe96a4631b60918eaa56caa6bIADtsNwnBGGsqKDOEKBoKJ6HGF2eZFKZa+DgqLwVEnrZEYJKSjIAAAAAEACpCW2YeaejYQEAAQB5p6Nh';
   // // final agoraAppId = 'd1353733bdf44f40b7f784942624a8de';
-  // final tempChannelName = 'nwly';
-  // final testUserName = 'Rich. H';
-  // final testPrimaryGoal = 'Improve overall health';
+  final tempChannelName = 'nowly';
 
   @override
   void onInit() async {
     super.onInit();
+    AppLogger.i('WE Live');
+    // once(_sessionTimer, (callback) => updateSession());
     ever(_sessionTimer, (callback) => checkSessionTimer());
     _sessionController.value = Get.find<SessionController>();
-
-    once(_sessionTimer, (callback) => updateSession());
   }
 
   updateSession() async {
-    _session.value =
-        await FirebaseFutures().getSession(_session.value.sessionID!);
+    _session
+        .bindStream(FirebaseStreams().streamSession(_session.value.sessionID!));
   }
 
-  void initVideoCall(context) {
-    final agoraConnectionData =
-        AgoraConnectionData(appId: AGORA_ID, channelName: _channel.value);
-    final enabledPermission = [Permission.microphone, Permission.camera];
+//  AgoraConnectionData agoraConnectionData = AgoraConnectionData(
+//         appId: AGORA_ID, channelName: 'nowly', tempToken: '00650efca7fe96a4631b60918eaa56caa6bIADtsNwnBGGsqKDOEKBoKJ6HGF2eZFKZa+DgqLwVEnrZEYJKSjIAAAAAEACpCW2YeaejYQEAAQB5p6Nh');
+// var enabledPermission = [Permission.microphone, Permission.camera];
+  initAgora(context) async {
     _client.value = AgoraClient(
         agoraEventHandlers: AgoraEventHandlers(
           joinChannelSuccess: (channel, uid, elapsed) => userJoin(context),
@@ -84,36 +83,36 @@ class AgoraController extends GetxController {
           remoteVideoStateChanged: (uid, state, reason, elapsed) =>
               state == VideoRemoteState.Stopped ? kill() : null,
         ),
-        agoraConnectionData: agoraConnectionData,
-        enabledPermission: enabledPermission);
+        agoraConnectionData:
+            AgoraConnectionData(appId: AGORA_ID, channelName: _channel.value),
+        enabledPermission: [Permission.microphone, Permission.camera]);
+
     _client.value!.sessionController.value.generatedToken = _token;
+    await client.initialize();
   }
 
-  void startSession(SessionModel session, AgoraController agora) async {
+  void startSession(
+      BuildContext context, SessionModel session, AgoraController agora) async {
     final _agoraToken =
-        await AgoraService().generateAgoraToken(session.userID!);
+        await AgoraService().generateAgoraToken(session.sessionID!);
+    AppLogger.i(_agoraToken);
     _token = _agoraToken;
-    _channel.value = session.userID!;
+    _channel.value = session.sessionID!;
     // ignore: unused_local_variable
     final sess = SessionModel().toMap(session);
+    AppLogger.i(_token);
     initTrainerSearch(_agoraToken, session);
-
-    Future.delayed(
-        const Duration(seconds: 1),
-        () => Get.to(VideoCallView(
-              agoraController: agora,
-            )));
+    await initAgora(context);
+    Get.to(() => VideoCallView(
+          agoraController: agora,
+        ));
   }
 
   initTrainerSearch(String agoraToken, SessionModel session) async {
     final uid = session.userID!;
+    AppLogger.i(uid);
     final sessionData = SessionModel().toMap(session);
-
-    if (session.sessionMode == 'VIRTUAL') {
-      SessionServices().findVirtualTrainer(uid, agoraToken, sessionData);
-    } else {
-      SessionServices().findInPersonTrainer(uid, agoraToken, session);
-    }
+    SessionServices().findVirtualTrainer(uid, agoraToken, sessionData);
   }
 
   @override
@@ -124,7 +123,7 @@ class AgoraController extends GetxController {
   }
 
   void kill() async {
-    print('KILL INITIATED!!!');
+    AppLogger.i('KILL INITIATED!!!');
     _isJoined.toggle();
     _timer!.cancel();
     _client.value?.sessionController.dispose();
@@ -139,7 +138,7 @@ class AgoraController extends GetxController {
   }
 
   void userJoin(context) {
-    print('USER JOINED!!!!');
+    AppLogger.i('USER JOINED!!!');
     Get.bottomSheet(const VirtualSessionInitSearch(),
         isDismissible: false,
         enableDrag: false,
@@ -147,8 +146,9 @@ class AgoraController extends GetxController {
   }
 
   void trainerJoin() async {
-    print('TRAINER JOINED!!!');
+    AppLogger.i('TRAINER JOINED!!!');
     startSessionTimer();
+    updateSession();
     _isJoined.toggle();
     Get.isBottomSheetOpen != null ? Get.back() : null;
   }

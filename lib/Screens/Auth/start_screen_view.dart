@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:nowly/Configs/Logo/logos.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
@@ -27,45 +28,23 @@ class StartScreenView extends GetView<AuthController> {
         children: [
           Expanded(
               child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 5.w),
             decoration: BoxDecoration(gradient: onBoardingGradient(context)),
             child: Stack(
               children: [
-                // Positioned.fill(
-                //     child: SvgPicture.asset(
-                //   'assets/images/onboarding/cover_image.svg',
-                //   fit: BoxFit.scaleDown,
-                // )),
                 Positioned(
                     left: 0,
                     right: 0,
-                    top: 0.h,
-                    child: SafeArea(
-                        //   child: Center(
-                        //       child: AppLogo(
-                        //     width: Get.width * 0.22,
-                        //   )),
-                        // ),
-                        child: FittedBox(
-                      fit: BoxFit.fitWidth,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(
-                            'assets/icons/logo_outlined.svg',
-                            height: 40.h,
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(left: 10),
-                            child: SvgPicture.asset(
-                              'assets/icons/nowly.svg',
-                              color: Colors.white,
-                              height: 15.h,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ))),
+                    top: 16.h,
+                    child: Center(child: Logo.textLogoW(context, 18.h))),
+
+                Positioned(
+                    top: 30.h,
+                    right: -20.w,
+                    child: SvgPicture.asset(
+                      'assets/images/onboarding/cover_image.svg',
+                      height: 35.h,
+                    )),
                 // Positioned(bottom: 5, right: 10, child: SkipButton())
               ],
             ),

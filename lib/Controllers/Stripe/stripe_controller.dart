@@ -224,6 +224,7 @@ class StripeController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     shouldGetStripeAccount();
+    _isProcessing.value = false;
   }
 
   shouldGetStripeAccount() {

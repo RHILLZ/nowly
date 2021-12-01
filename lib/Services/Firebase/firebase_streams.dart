@@ -20,6 +20,11 @@ class FirebaseStreams {
       .map((query) => query.docs
           .map((doc) => ReviewModel.fromDocumentSnapshot(doc.data(), doc.id))
           .toList());
+  Stream<SessionModel> streamSession(String sessionId) => _firestore
+      .collection(SESSIONCOLLECTION)
+      .doc(sessionId)
+      .snapshots()
+      .map((doc) => SessionModel.fromDocumentSnapshot(doc.data(), doc.id));
 
   Stream<List<SessionModel>> streamUserAppointments(String uid) => _firestore
       .collection(USERSCOLLECTION)
@@ -28,6 +33,17 @@ class FirebaseStreams {
       .snapshots()
       .map((query) => query.docs
           .map((doc) => SessionModel.fromDocumentSnapshot(doc.data(), doc.id))
+          .toList());
+
+  Stream<List> streamChat(String sessionId) => _firestore
+      .collection(SESSIONCOLLECTION)
+      .doc(sessionId)
+      .collection(SESSIONCHAT)
+      .doc(sessionId)
+      .snapshots()
+      .map((doc) => doc
+          .data()!['chat']
+          .map((doc) => MessageModel.fromDocumentSnapshot(doc))
           .toList());
 
 // TRAINER STREAMS

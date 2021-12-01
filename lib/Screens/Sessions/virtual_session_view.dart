@@ -1,8 +1,12 @@
 import 'package:agora_uikit/agora_uikit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:nowly/Configs/Logo/logos.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
+import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Widgets/BottomSheets/virtual_session_search_bottomsheet.dart';
 import 'package:sizer/sizer.dart';
 
 class VideoCallView extends StatelessWidget {
@@ -13,7 +17,6 @@ class VideoCallView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _agoraController.initVideoCall(context);
     final userID = Get.find<AuthController>().firebaseUser.uid;
     final _isUser = userID == _agoraController.channel;
     return Obx(() => SafeArea(
@@ -35,6 +38,7 @@ class VideoCallView extends StatelessWidget {
                   child: AgoraVideoButtons(
                     client: _agoraController.client,
                     autoHideButtons: true,
+                    // disconnectButtonChild: _disconnectBtn(),
                   ),
                 ),
               ),
@@ -52,45 +56,48 @@ class VideoCallView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: _agoraController.buildTimer(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Logo.textLogoW(context, 3.h),
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: _agoraController.buildTimer(),
+                            ),
+                          ],
                         ),
                         Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(
-                              _isUser ? 'Trainer Name: ' : 'User Name: ',
-                              style: k10RegularTS,
+                            const Text(
+                              'Trainer Name: ',
+                              style: kRegularTS,
                             ),
                             Text(
-                              _isUser
-                                  ? _agoraController.session.trainerName ??
-                                      '...'
-                                  : _agoraController.session.userName ?? '...',
-                              style: k10BoldTS,
+                              _agoraController.session.trainerName ?? '...',
+                              style: k10BoldTS.copyWith(fontSize: 14),
                             )
                           ],
                         ),
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              _isUser ? '' : 'Primary Goal: ',
-                              style: k10RegularTS,
-                            ),
-                            // Text(
-                            //     _isUser
-                            //         ? _agoraController.trainer?.skillSet[0] ??
-                            //             '...'
-                            //         : _agoraController.user.primaryGoal,
-                            //     style: k10BoldTS)
-                          ],
-                        ),
+                        // Row(
+                        //   mainAxisSize: MainAxisSize.max,
+                        //   mainAxisAlignment: MainAxisAlignment.start,
+                        //   crossAxisAlignment: CrossAxisAlignment.center,
+                        //   children: [
+                        //     Text(
+                        //       _isUser ? '' : 'Primary Goal: ',
+                        //       style: k10RegularTS,
+                        //     ),
+                        //     // Text(
+                        //     //     _isUser
+                        //     //         ? _agoraController.trainer?.skillSet[0] ??
+                        //     //             '...'
+                        //     //         : _agoraController.user.primaryGoal,
+                        //     //     style: k10BoldTS)
+                        //   ],
+                        // ),
                         Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -113,4 +120,17 @@ class VideoCallView extends StatelessWidget {
           )),
         ));
   }
+
+  Widget _disconnectBtn() => InkWell(
+        onTap: () => _agoraController.kill(),
+        child: CircleAvatar(
+          radius: 5.h,
+          child: Text(
+            'End Session',
+            style: k10BoldTS.copyWith(color: Colors.white),
+            textAlign: TextAlign.center,
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
 }

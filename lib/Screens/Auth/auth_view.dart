@@ -1,7 +1,9 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:nowly/Configs/Logo/logos.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Services/Apple/apple_auth.dart';
@@ -44,17 +46,7 @@ class AuthView extends GetView<AuthController> {
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 3.h),
                     margin: EdgeInsets.only(left: 3.w),
-                    child: Column(children: [
-                      SvgPicture.asset(
-                        'assets/icons/logo_outlined.svg',
-                        height: 10.h,
-                      ),
-                      SvgPicture.asset(
-                        'assets/icons/nowly.svg',
-                        height: 8.h,
-                        color: kPrimaryColor,
-                      ),
-                    ]),
+                    child: Column(children: [Logo.squareLogoLD(context, 30.h)]),
                   ),
                   const Text(
                     'By creating an account, you agree to our \nTerms and Conditions',
@@ -74,8 +66,9 @@ class AuthView extends GetView<AuthController> {
                 padding: const EdgeInsets.only(top: 10),
                 child: AuthButton(
                   onPressed: () {
-                    // Get.toNamed(BaseScreen.routeName);
-                    GoogleAuth().signInWithGoogle();
+                    controller.agreedToTerms
+                        ? GoogleAuth().signInWithGoogle()
+                        : controller.termsWarningSnackbar();
                   },
                   title: 'Continue with Google',
                   iconPath: 'assets/icons/g_plus.svg',
@@ -85,8 +78,9 @@ class AuthView extends GetView<AuthController> {
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: AuthButton(
                   onPressed: () {
-                    // Get.toNamed(BaseScreen.routeName);
-                    AppleAuth().signInWithApple();
+                    controller.agreedToTerms
+                        ? AppleAuth().signInWithApple()
+                        : controller.termsWarningSnackbar();
                   },
                   title: 'Continue with Apple',
                   iconPath: 'assets/icons/apple.svg',
@@ -104,7 +98,43 @@ class AuthView extends GetView<AuthController> {
                               fontWeight: FontWeight.bold, color: Colors.white),
                         ),
                       ),
-                    )
+                    ),
+              Visibility(
+                  visible: onboardSelection == 'newAccount',
+                  child: Obx(() => CheckboxListTile(
+                      checkColor: kActiveColor,
+                      activeColor: kPrimaryColor,
+                      title: RichText(
+                          softWrap: true,
+                          text: TextSpan(
+                              style: kRegularTS.copyWith(
+                                  fontSize: 14, height: 1.4),
+                              children: [
+                                const TextSpan(
+                                    text:
+                                        'By checking this box, I hearby agree to nowly '),
+                                TextSpan(
+                                    text: 'Terms of Services ',
+                                    style: k10BoldTS.copyWith(
+                                        fontSize: 14, color: kPrimaryColor),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () =>
+                                          controller.loadDoc('nowlyTOS.pdf')),
+                                const TextSpan(text: 'and '),
+                                TextSpan(
+                                    text: 'Privacy Agreement',
+                                    style: k10BoldTS.copyWith(
+                                        fontSize: 14, color: kPrimaryColor),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () =>
+                                          controller.loadDoc('nowlyPA.pdf'))
+                              ])),
+                      value: controller.agreedToTerms,
+                      selected: controller.agreedToTerms,
+                      onChanged: (v) {
+                        controller.agreedToTerms = v;
+                        GetStorage().write('agreeToTerms', v);
+                      }))),
             ],
           ),
         ),

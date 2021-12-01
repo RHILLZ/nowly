@@ -7,20 +7,32 @@ import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Services/Firebase/firebase_futures.dart';
 import 'package:nowly/Services/Sessions/sessions_services.dart';
 import 'package:nowly/Widgets/BottomSheets/future_session_search.dart';
-
 import '../controller_exporter.dart';
 
 class SessionController extends GetxController {
   final _user = UserModel().obs;
   final _trainer = TrainerModel().obs;
+  final _isProccessing = false.obs;
+
+  //SESSION PARMAS
+  final _sessionMode = SessionModeModel(id: '', mode: '').obs;
+  final _sessionDurationAndCost =
+      SessionDurationAndCostModel(duration: '', cost: 0).obs;
+  final _sessionWorkOutType =
+      WorkoutType(imagePath: '', type: '', headerData: []).obs;
+  final _genderPref = ''.obs;
+  final _sessionAvailability = ''.obs;
+
+  //IN PERSON PARAMS
   final _sessionLocationCoords = const LatLng(0, 0).obs;
   final _sessionLocationName = 'Virtual'.obs;
-  final _isProccessing = false.obs;
   final _sessionIssueContext = ''.obs;
 
   // SCHEDULED PARAMS
   final _sessionTimeCheckerValue = 0.0.obs;
   final _sessionDay = ''.obs;
+  final _sessionTimeScheduled = ''.obs;
+  final _sessionDateScheduled = ''.obs;
 
   set sessionTimeCheckerValue(value) => _sessionTimeCheckerValue.value = value;
   set sessionDay(value) => _sessionDay.value = value;
@@ -46,16 +58,6 @@ class SessionController extends GetxController {
   clearLocationName() {
     _sessionLocationName.value = 'Virtual';
   }
-
-  final _sessionMode = SessionModeModel(id: '', mode: '').obs;
-  final _sessionDurationAndCost =
-      SessionDurationAndCostModel(duration: '', cost: 0).obs;
-  final _sessionWorkOutType =
-      WorkoutType(imagePath: '', type: '', headerData: []).obs;
-  final _sessionTimeScheduled = ''.obs;
-  final _sessionDateScheduled = ''.obs;
-  final _genderPref = ''.obs;
-  final _sessionAvailability = ''.obs;
 
   formatTimeScheduled() {
     if (_sessionTimeScheduled.value.split(' ')[0].endsWith(':0')) {
@@ -131,6 +133,8 @@ class SessionController extends GetxController {
     isSessionTypeLoaded.value = true;
   }
 
+//INIT IN PERSON TRAINER SESSION
+//FIND TRAINER FOR SCHEDULED SESSION
   findTrainerForScheduledSession() async {
     Get.bottomSheet(const FutureSessionSearchIndicator(),
         backgroundColor: Colors.transparent,
@@ -252,10 +256,6 @@ class SessionController extends GetxController {
     await FirebaseFutures().updateTrainerRating(trainerID, starRating);
   }
 
-  // submitUserRating(String userID) async {
-  //   await FirebaseFutures().updateUserRating(userID, starRating);
-  // }
-
   submitTrainerReview(SessionModel session) async {
     _isProccessing.toggle();
     final review = ReviewModel(
@@ -270,21 +270,6 @@ class SessionController extends GetxController {
     await FirebaseFutures().createTrainerReview(review);
     await submitTrainerRating(session.trainerID!);
   }
-
-  // submitUserReview(SessionModel session) async {
-  //   _isProccessing.toggle();
-  //   final review = ReviewModel(
-  //       createdAt: Timestamp.now(),
-  //       reviewID: session.sessionID,
-  //       trainerID: session.trainerID,
-  //       trainerName: session.trainerName,
-  //       userID: session.userID,
-  //       userName: session.userName,
-  //       rating: starRating,
-  //       reviewContent: quickReviews);
-  //   await FirebaseFutures().createUserReview(review);
-  //   await submitUserRating(session.userID!);
-  // }
 
   createSessionReceipt(SessionModel session) async {
     final status = session.reportedIssue! ? 'Complete With ISSUE' : 'Completed';
@@ -310,31 +295,6 @@ class SessionController extends GetxController {
     await FirebaseFutures().createSessionReceipt(receipt);
     _isProccessing.toggle();
   }
-
-  // createTrainerSessionReceipt(SessionModel session) async {
-  //   final status = session.reportedIssue! ? 'Complete With ISSUE' : 'Completed';
-  //   final receipt = SessionReceiptModel(
-  //     sessionID: session.sessionID,
-  //     userID: session.userID,
-  //     trainerID: session.trainerID,
-  //     userName: session.userName,
-  //     trainerName: session.trainerName,
-  //     paymentMethod: session.userPaymentMethodID,
-  //     paidTo: session.trainerStripeID,
-  //     sessionTimestamp: Timestamp.now(),
-  //     sessionCharged:
-  //         '\$' + (session.sessionChargedAmount! / 100).toString() + '0',
-  //     sessionMode: session.sessionMode,
-  //     sessionStatus: status,
-  //     sessionDuration: session.sessionDuration,
-  //     // sessionCoordinates: GeoPoint(
-  //     //     session.sessionCoordinates![0], session.sessionCoordinates![1]),
-  //     sessionLocationName: session.sessionLocationName,
-  //     sessionWorkoutType: session.sessionWorkoutType,
-  //   );
-  //   await FirebaseFutures().createTrainerSessionReceipt(receipt);
-  //   _isProccessing.toggle();
-  // }
 
   reportIssue(SessionModel session, bool isUSer) async {
     await FirebaseFutures().reportIssueWithSession(session, isUSer);

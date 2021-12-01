@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:nowly/Configs/Logo/logos.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:sizer/sizer.dart';
@@ -21,55 +22,56 @@ class OnBoardingView extends StatelessWidget {
           child: SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SvgPicture.asset(
-                  'assets/icons/logo_outlined.svg',
-                  height: 20.h,
+                SizedBox(
+                  height: 15.h,
                 ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // const Flexible(
-                      //   child: AppLogo(),
-                      // ),
-                      const Text(
-                        "Nowly trainers coming your way!",
-                        style: k20RegularTS,
-                        textAlign: TextAlign.center,
+                Logo.textLogoW(context, 18.h),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    // const Flexible(
+                    //   child: AppLogo(),
+                    // ),
+
+                    const Text(
+                      "Nowly trainers coming your way!",
+                      style: k20RegularTS,
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SvgPicture.asset(
+                            'assets/images/trainer/sessionCardCharacter.svg',
+                            height: 10.h,
+                          ),
+                          SvgPicture.asset(
+                              'assets/images/trainer/jumpingManIcon.svg'),
+                          SvgPicture.asset(
+                              'assets/images/trainer/darkTrainerIcon.svg'),
+                          SvgPicture.asset(
+                              'assets/images/trainer/darkManHeart.svg'),
+                        ],
                       ),
-                      SizedBox(
-                        height: 5.h,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            SvgPicture.asset(
-                              'assets/images/trainer/sessionCardCharacter.svg',
-                              height: 10.h,
-                            ),
-                            SvgPicture.asset(
-                                'assets/images/trainer/jumpingManIcon.svg'),
-                            SvgPicture.asset(
-                                'assets/images/trainer/darkTrainerIcon.svg'),
-                            SvgPicture.asset(
-                                'assets/images/trainer/darkManHeart.svg'),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5.h,
-                      ),
-                      const Text(
-                          'By creating an account, you agree to our \nTerms and Conditions',
-                          textAlign: TextAlign.center),
-                    ],
-                  ),
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    const Text(
+                        'By creating an account, you agree to our \nTerms and Conditions',
+                        textAlign: TextAlign.center),
+                  ],
                 ),
-                SizedBox(height: 2.h),
+                Expanded(child: SizedBox(height: 2.h)),
                 RectButton(
                   showOutline: true,
                   title: 'Create Account',
