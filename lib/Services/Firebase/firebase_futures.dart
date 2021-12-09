@@ -3,6 +3,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:nowly/Configs/Constants/constants.dart';
 import 'package:nowly/Models/models_exporter.dart';
+import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Utils/methods.dart';
 
 class FirebaseFutures {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -146,170 +148,6 @@ class FirebaseFutures {
     return _isSuccessful;
   }
 
-//TRAINER CRUD METHODS
-//CREATE
-//READ
-//UPDATE
-//DELETE
-  // Future<bool> createTrainerInFirestore(TrainerModel trainer) async {
-  //   bool isSuccessful = false;
-  //   try {
-  //     var data = TrainerModel().toMap(trainer);
-  //     await _firestore.collection(TRAINERSCOLLECTION).doc(trainer.id).set(data);
-  //     isSuccessful = true;
-  //   } catch (exception) {
-  //     print(exception.toString());
-  //   }
-  //   return isSuccessful;
-  // }
-
-  // // UPDATE TRAINER LAST LOCATION COORDINATES
-  // Future<bool> updateTrainerLastLocation(String uid, GeoPoint location) async {
-  //   bool _isSuccessful = false;
-  //   try {
-  //     await _firestore
-  //         .collection(TRAINERSCOLLECTION)
-  //         .doc(uid)
-  //         .update({'lastLocation': location});
-  //     _isSuccessful = true;
-  //   } catch (exception) {
-  //     print(exception.toString());
-  //   }
-  //   return _isSuccessful;
-  // }
-
-  // Future<bool> updateTrainerAvailability(
-  //     TrainerModel trainer, List slots, context) async {
-  //   bool _isSuccessful = false;
-  //   try {
-  //     var data = slots
-  //         .map((e) => {
-  //               e.day: {
-  //                 'timeRange': e.availability,
-  //                 'formatted': e.formattedAvailability
-  //               },
-  //             })
-  //         .toList();
-
-  //     await _firestore
-  //         .collection(TRAINERSCOLLECTION)
-  //         .doc(trainer.id)
-  //         .update({'availability': data});
-  //     // }
-  //     _isSuccessful = true;
-  //   } catch (exception) {
-  //     print(exception.toString());
-  //   }
-  //   return _isSuccessful;
-  // }
-
-  // //UPDATE TRAINERS SKILLSET
-  // Future<bool> updateTrainerSkillSet(String uid, List skills) async {
-  //   bool _isSuccessful = false;
-  //   try {
-  //     await _firestore
-  //         .collection(TRAINERSCOLLECTION)
-  //         .doc(uid)
-  //         .update({'skillSet': skills});
-  //     _isSuccessful = true;
-  //   } catch (exception) {
-  //     print(exception.toString());
-  //   }
-  //   return _isSuccessful;
-  // }
-
-  // // ACCEPT SCHEDULED SESSION
-  // // CREATE SESSION
-  // Future<bool> acceptFutureSession(SessionModel session) async {
-  //   bool _isSuccessful = false;
-
-  //   final sessionData = SessionModel().toMap(session);
-  //   try {
-  //     //UPDATE SESSION TO ACCEPTED
-  //     print('SESSION ID ${session.sessionID}');
-  //     await _firestore
-  //         .collection(USERSCOLLECTION)
-  //         .doc(session.userID)
-  //         .collection(FUTURESESSIONCOLLECTION)
-  //         .doc(session.sessionID)
-  //         .update(sessionData);
-  //     await _firestore
-  //         .collection(TRAINERSCOLLECTION)
-  //         .doc(session.trainerID)
-  //         .collection(FUTURESESSIONCOLLECTION)
-  //         .doc(session.sessionID)
-  //         .set(sessionData);
-  //     //CREATE SESSION IN USER SCHEDULE
-  //     //CREATE SESSION IN TRAINER SCHEDULE
-  //     _isSuccessful = true;
-  //   } catch (exception) {
-  //     print(exception.toString());
-  //   }
-  //   return _isSuccessful;
-  // }
-
-  // Future<TrainerModel> getTrainerInFirestore(String uid) async =>
-  //     await _firestore
-  //         .collection(TRAINERSCOLLECTION)
-  //         .doc(uid)
-  //         .get()
-  //         .then((doc) => TrainerModel.fromDocumentSnapshot(doc.data(), doc.id));
-
-  // Future<bool> setTrainerOneSignalId(String uid, String oneSignalId) async {
-  //   bool _isSuccessful = false;
-  //   try {
-  //     await _firestore
-  //         .collection(TRAINERSCOLLECTION)
-  //         .doc(uid)
-  //         .update({'oneSignalId': oneSignalId});
-  //     _isSuccessful = true;
-  //   } catch (exception) {
-  //     print(exception.toString());
-  //   }
-  //   return _isSuccessful;
-  // }
-
-  // Future<bool> updateTrainerInFirestore(TrainerModel trainer) async {
-  //   bool isSuccessful = false;
-  //   try {
-  //     var data = TrainerModel().toMap(trainer);
-  //     await _firestore
-  //         .collection(TRAINERSCOLLECTION)
-  //         .doc(trainer.id)
-  //         .update(data);
-  //     isSuccessful = true;
-  //   } catch (exception) {
-  //     print(exception.toString());
-  //   }
-  //   return isSuccessful;
-  // }
-
-  // Future<bool> updateTrainerStripeAccountId(
-  //     String uid, String stripeAccountId) async {
-  //   bool _isSuccessful = false;
-  //   try {
-  //     await _firestore
-  //         .collection(TRAINERSCOLLECTION)
-  //         .doc(uid)
-  //         .update({'stripeAccountId': stripeAccountId});
-  //     _isSuccessful = true;
-  //   } catch (exception) {
-  //     print(exception.toString());
-  //   }
-  //   return _isSuccessful;
-  // }
-
-  // Future<bool> deleteTrainerInFirestore(String uid) async {
-  //   bool isSuccessful = false;
-  //   try {
-  //     await _firestore.collection(TRAINERSCOLLECTION).doc(uid).delete();
-  //     isSuccessful = true;
-  //   } catch (exception) {
-  //     print(exception.toString());
-  //   }
-  //   return isSuccessful;
-  // }
-
   //SESSION CRUD METHODS
   //CREATE
   //READ
@@ -319,7 +157,10 @@ class FirebaseFutures {
     bool isSuccessful = false;
     try {
       var data = SessionModel().toMap(session);
-      await _firestore.collection(SESSIONCOLLECTION).doc().set(data);
+      await _firestore
+          .collection(SESSIONCOLLECTION)
+          .doc(session.sessionID)
+          .set(data);
 
       isSuccessful = true;
     } catch (exception) {
@@ -781,25 +622,30 @@ class FirebaseFutures {
 
   Future<bool> updateTrainerRating(String trainerId, double rating) async {
     bool isSuccessful = false;
+
     try {
-      List<int> stars = [];
-      double totalStars = stars.fold(
-          rating, (previousValue, element) => previousValue + element);
-      int numOfratings = await _firestore
+      double stars = rating;
+      int totalReviews = await _firestore
           .collection(TRAINERSCOLLECTION)
           .doc(trainerId)
           .collection(REVIEWS)
           .get()
-          .then((value) => value.docs.length);
+          .then((value) => value.docs.length + 1);
+
       await _firestore
           .collection(TRAINERSCOLLECTION)
           .doc(trainerId)
           .collection(REVIEWS)
           .get()
-          .then((QuerySnapshot query) => query.docs
-              .map((DocumentSnapshot doc) => stars.add(doc['rating'])));
+          .then((QuerySnapshot query) => query.docs.forEach((doc) {
+                stars += doc['rating'];
+              }));
+      // .map((DocumentSnapshot doc) => stars + doc.get('rating')));
+      AppLogger.i('TOTAL STARS $stars');
+      AppLogger.i('TOTAL REVIEWS $totalReviews');
 
-      var score = ((20 * totalStars) / numOfratings) / 20;
+      var score = Methods.calculateRating(stars, totalReviews);
+      AppLogger.i(score);
       await _firestore
           .collection(TRAINERSCOLLECTION)
           .doc(trainerId)
@@ -922,4 +768,25 @@ class FirebaseFutures {
   //       .then((value) => null)
   //       .catchError((e) => null);
   // }
+
+  Future getOnlineTrainers(sessionLengths) async {
+    List<TrainerInPersonSessionModel> trainers = await _firestore
+        .collection(TRAINERSCOLLECTION)
+        .where('activeMode', isEqualTo: 'Physical')
+        .get()
+        .then((query) => query.docs
+            .map((doc) => TrainerInPersonSessionModel(
+                trainer: TrainerModel.fromDocumentSnapshot(
+                  doc.data(),
+                  doc.id,
+                ),
+                sessionLengths: sessionLengths,
+                locationDetailsModel: LocationDetailsModel(
+                    id: doc.id,
+                    longitude: doc.data()['lastLocation'].longitude,
+                    latitude: doc.data()['lastLocation'].latitude)))
+            .toList());
+
+    return trainers;
+  }
 }

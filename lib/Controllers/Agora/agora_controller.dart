@@ -75,6 +75,8 @@ class AgoraController extends GetxController {
   initAgora(context) async {
     _client.value = AgoraClient(
         agoraEventHandlers: AgoraEventHandlers(
+          requestToken: () => renewToken(),
+          connectionLost: () => null,
           joinChannelSuccess: (channel, uid, elapsed) => userJoin(context),
           userJoined: (uid, elapsed) => trainerJoin(),
           leaveChannel: (stats) => kill(),
@@ -89,6 +91,13 @@ class AgoraController extends GetxController {
 
     _client.value!.sessionController.value.generatedToken = _token;
     await client.initialize();
+  }
+
+  renewToken() async {
+    AppLogger.i('RENEW TOKEN!!');
+    final _agoraToken =
+        await AgoraService().generateAgoraToken(session.sessionID!);
+    _client.value!.sessionController.value.generatedToken = _agoraToken;
   }
 
   void startSession(

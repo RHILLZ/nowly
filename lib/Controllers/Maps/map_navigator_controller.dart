@@ -121,47 +121,47 @@ class MapNavigatorController extends GetxController {
     navigateToCurrentSessionDetailsScreen();
   }
 
-  // void openBanner(TrainerInPersonSessionController sessionController) {
-  //   final trainer = sessionController.trainerSession.trainer;
-  //   ScaffoldMessenger.of(Get.overlayContext!).showMaterialBanner(
-  //     MaterialBanner(
-  //       contentTextStyle: const TextStyle(color: Colors.white),
-  //       //padding: const EdgeInsets.only(top: kScreenPadding2, left: kScreenPadding, right: kScreenPadding, bottom: 5),
-  //       content: SafeArea(
-  //         child: Column(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: [
-  //             Text(
-  //               'You are on your way to ${trainer.firstName}\'s session',
-  //               style: k16RegularTS,
-  //             ),
-  //             // Text(
-  //             //   '${trainer.address}',
-  //             //   style: k10RegularTS,
-  //             // )
-  //           ],
-  //         ),
-  //       ),
-  //       leading: const Icon(Icons.navigation_rounded, color: Colors.white),
-  //       backgroundColor: Colors.green.withOpacity(0.95),
-  //       actions: <Widget>[
-  //         TextButton(
-  //           child: const Text('Review', style: TextStyle(color: Colors.white)),
-  //           onPressed: () {
-  //             Get.to(SessionConfirmationScreen2(
-  //                 trainerInPersonSessionController: sessionController));
-  //           },
-  //         ),
-  //         TextButton(
-  //           child: const Text('Cancel', style: TextStyle(color: Colors.white)),
-  //           onPressed: () {
-  //             endNavigations();
-  //           },
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
+  void openBanner(TrainerInPersonSessionController sessionController) {
+    final trainer = sessionController.trainerSession.trainer;
+    ScaffoldMessenger.of(Get.overlayContext!).showMaterialBanner(
+      MaterialBanner(
+        contentTextStyle: const TextStyle(color: Colors.white),
+        //padding: const EdgeInsets.only(top: kScreenPadding2, left: kScreenPadding, right: kScreenPadding, bottom: 5),
+        content: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'You are on your way to ${trainer.firstName}\'s session',
+                style: k16RegularTS,
+              ),
+              // Text(
+              //   '${trainer.address}',
+              //   style: k10RegularTS,
+              // )
+            ],
+          ),
+        ),
+        leading: const Icon(Icons.navigation_rounded, color: Colors.white),
+        backgroundColor: Colors.green.withOpacity(0.95),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Review', style: TextStyle(color: Colors.white)),
+            onPressed: () {
+              Get.to(SessionConfirmationScreen2(
+                  trainerInPersonSessionController: sessionController));
+            },
+          ),
+          TextButton(
+            child: const Text('Cancel', style: TextStyle(color: Colors.white)),
+            onPressed: () {
+              endNavigations();
+            },
+          ),
+        ],
+      ),
+    );
+  }
 
   void endNavigations() {
     update([

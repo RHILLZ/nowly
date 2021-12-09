@@ -46,6 +46,23 @@ class FirebaseStreams {
           .map((doc) => MessageModel.fromDocumentSnapshot(doc))
           .toList());
 
+  Stream<List<TrainerInPersonSessionModel>> streamOnlineTrainers(
+          sessionOptions) =>
+      _firestore
+          .collection(TRAINERSCOLLECTION)
+          .where('showOnMap', isEqualTo: true)
+          .snapshots()
+          .map((query) => query.docs
+              .map((doc) => TrainerInPersonSessionModel(
+                  trainer:
+                      TrainerModel.fromDocumentSnapshot(doc.data(), doc.id),
+                  sessionLengths: sessionOptions,
+                  locationDetailsModel: LocationDetailsModel(
+                      id: doc.id,
+                      longitude: doc.data()['lastLocation'].longitude,
+                      latitude: doc.data()['lastLocation'].latitude)))
+              .toList());
+
 // TRAINER STREAMS
   // Stream streamAvailability(String uid) => _firestore
   //     .collection(TRAINERSCOLLECTION)

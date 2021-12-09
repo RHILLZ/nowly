@@ -279,6 +279,8 @@ class SessionController extends GetxController {
       trainerID: session.trainerID,
       userName: session.userName,
       trainerName: session.trainerName,
+      userProfilePicURL: session.userProfilePicURL,
+      trainerProfilePicURL: session.trainerProfilePicURL,
       paymentMethod: session.userPaymentMethodID,
       paidTo: session.trainerStripeID,
       sessionTimestamp: Timestamp.now(),

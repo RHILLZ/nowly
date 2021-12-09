@@ -83,7 +83,9 @@ class Pages {
             session: SessionModel(), sessionController: SessionController())),
     GetPage(
         name: _Paths.SESSION_IN_PROGRESS,
-        page: () => const CurrentSessionDetailsScreen(),
+        page: () => CurrentSessionDetailsScreen(
+              session: SessionModel(),
+            ),
         binding: InitialBinding()),
     GetPage(
         name: _Paths.LIVE_SESSION,

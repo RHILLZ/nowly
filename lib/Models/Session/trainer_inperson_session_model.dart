@@ -1,4 +1,6 @@
 import 'package:nowly/Models/models_exporter.dart';
+import 'package:nowly/Services/Firebase/firebase_futures.dart';
+import 'package:nowly/Utils/logger.dart';
 
 class TrainerInPersonSessionModel {
   TrainerInPersonSessionModel(
@@ -13,26 +15,30 @@ class TrainerInPersonSessionModel {
   static Future<List<TrainerInPersonSessionModel>> getTrainers() async {
     // ignore: unused_local_variable
     final sessionOptions = SessionDurationAndCostModel.sessionOptions;
-    final trainers = <TrainerInPersonSessionModel>[
-      TrainerInPersonSessionModel(
-          trainer: TrainerModel(
-              firstName: 'Nick', id: '1', lastName: 'Fury', rating: 4.5),
-          sessionLengths: sessionOptions,
-          locationDetailsModel: LocationDetailsModel(
-              id: '1', longitude: -74.008825, latitude: 40.799308)),
-      TrainerInPersonSessionModel(
-          trainer: TrainerModel(
-              firstName: 'Scarlett', id: '2', lastName: 'Witch', rating: 4.1),
-          sessionLengths: sessionOptions,
-          locationDetailsModel: LocationDetailsModel(
-              id: '2', longitude: -73.9757, latitude: 40.8270)),
-      TrainerInPersonSessionModel(
-          trainer: TrainerModel(
-              firstName: 'Tony', id: '3', lastName: 'Stark', rating: 4.9),
-          sessionLengths: sessionOptions,
-          locationDetailsModel: LocationDetailsModel(
-              id: '3', longitude: -115.3037, latitude: 36.1896)),
-    ];
+    AppLogger.i('GETTING TRAINERS FROM DB');
+    List<TrainerInPersonSessionModel> trainers =
+        await FirebaseFutures().getOnlineTrainers(sessionOptions);
+    AppLogger.i('TRAINERS: $trainers');
+    // <TrainerInPersonSessionModel>[
+    //   TrainerInPersonSessionModel(
+    //       trainer: TrainerModel(
+    //           firstName: 'Nick', id: '1', lastName: 'Fury', rating: 4.5),
+    //       sessionLengths: sessionOptions,
+    //       locationDetailsModel: LocationDetailsModel(
+    //           id: '1', longitude: -74.008825, latitude: 40.799308)),
+    //   TrainerInPersonSessionModel(
+    //       trainer: TrainerModel(
+    //           firstName: 'Scarlett', id: '2', lastName: 'Witch', rating: 4.1),
+    //       sessionLengths: sessionOptions,
+    //       locationDetailsModel: LocationDetailsModel(
+    //           id: '2', longitude: -73.9757, latitude: 40.8270)),
+    //   TrainerInPersonSessionModel(
+    //       trainer: TrainerModel(
+    //           firstName: 'Tony', id: '3', lastName: 'Stark', rating: 4.9),
+    //       sessionLengths: sessionOptions,
+    //       locationDetailsModel: LocationDetailsModel(
+    //           id: '3', longitude: -115.3037, latitude: 36.1896)),
+    // ];
 
     return trainers;
   }

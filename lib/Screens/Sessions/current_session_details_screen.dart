@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
+import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Screens/Messaging/messaging_screen.dart';
 import 'package:nowly/Screens/QR/qr_scan_screen.dart';
 import 'package:nowly/Screens/Sessions/live_session_screen.dart';
@@ -9,20 +10,22 @@ import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:sizer/sizer.dart';
 
 class CurrentSessionDetailsScreen extends StatelessWidget {
-  const CurrentSessionDetailsScreen({Key? key}) : super(key: key);
+  const CurrentSessionDetailsScreen({Key? key, required SessionModel session})
+      : _session = session,
+        super(key: key);
 
   static const routeName = '/currentSession';
+  final SessionModel _session;
 
   @override
   Widget build(BuildContext context) {
-    final SessionController _controller = Get.find();
-    final TrainerInPersonSessionController _trainerSessionC =
-        Get.arguments as TrainerInPersonSessionController;
+    // final SessionController _controller = Get.find();
     final MapNavigatorController _mapNavController = Get.find();
-    final _sessionDetails = _trainerSessionC.trainerSession;
-    _controller.sessionDurAndCosts.value =
-        _trainerSessionC.trainerSession.sessionLengths;
-    // _controller.sessionDurationAndCosts = _trainerSessionC.selectedLength;
+    final TrainerInPersonSessionController _trainerSessionC = Get.find();
+    // final _sessionDetails = _trainerSessionC.trainerSession;
+    // _controller.sessionDurAndCosts.value =
+    //     _trainerSessionC.trainerSession.sessionLengths;
+    // // _controller.sessionDurationAndCosts = _trainerSessionC.selectedLength;
     final MessagingController _mController = Get.put(MessagingController());
 
     return Scaffold(
@@ -134,12 +137,11 @@ class CurrentSessionDetailsScreen extends StatelessWidget {
                       child: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: CircleAvatar(
-                            backgroundImage:
-                                _sessionDetails.trainer.profilePicURL != null
-                                    ? NetworkImage(
-                                        _sessionDetails.trainer.profilePicURL!)
-                                    : null,
-                            child: _sessionDetails.trainer.profilePicURL != null
+                            backgroundImage: _session.trainerProfilePicURL !=
+                                    null
+                                ? NetworkImage(_session.trainerProfilePicURL!)
+                                : null,
+                            child: _session.trainerProfilePicURL != null
                                 ? null
                                 : Icon(
                                     Icons.person,
@@ -148,7 +150,7 @@ class CurrentSessionDetailsScreen extends StatelessWidget {
                             maxRadius: 6.h,
                           ))),
                   Text(
-                    _sessionDetails.trainer.firstName!,
+                    _session.trainerName!,
                     style: k20BoldTS.copyWith(color: Colors.white),
                   ),
                   // Text(_sessionDetails.trainer.address ?? '',
@@ -166,14 +168,12 @@ class CurrentSessionDetailsScreen extends StatelessWidget {
             const Divider(height: 20, thickness: 3),
             ListTile(
               title: Obx(
-                () => Text(
-                    '${_controller.sessionDurationAndCost.duration} SESSION',
+                () => Text('${_session.sessionDuration} SESSION',
                     style: k16BoldTS),
               ),
-              // subtitle: Text(_trainerSessionC.trainerSession.type.type,
-              //     style: kRegularTS),
+              subtitle: Text(_session.sessionWorkoutType!, style: kRegularTS),
               trailing: Obx(
-                () => Text(_trainerSessionC.selectedLength.value.charges ?? '',
+                () => Text('\$${_session.sessionChargedAmount! / 100}0',
                     style: k20BoldTS),
               ),
             ),

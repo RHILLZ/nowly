@@ -45,7 +45,7 @@ abstract class _Paths {
   static const SESSION_CONFIRMATION_2 = '/session_confirmation_2';
   static const SESSION_COMPLETE_SCREEN = '/session_complete';
   static const SESSION_IN_PROGRESS = '/currentSession';
-  // static const CURRENT_SESSION_DETAILS = '//currentSession';
+  // static const CURRENT_SESSION_DETAILS = '/currentSession';
   static const LIVE_SESSION = '/live_session';
   static const VIRTUAL_SESSION = '/virtual_session';
   static const IN_PERSON_SESSION = '/in_person_session';

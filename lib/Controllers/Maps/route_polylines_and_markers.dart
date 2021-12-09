@@ -54,7 +54,7 @@ extension RoutePolyLinesAndMarkers on MapController {
         },
         position: location,
         icon: BitmapDescriptor.fromBytes(await getBytesFromAsset(
-            'assets/images/map/session_location.png', 85.sp.toInt())));
+            'assets/images/map/session_location.png', 75.sp.toInt())));
   }
 
   //add my location marker and draw poly line to destination

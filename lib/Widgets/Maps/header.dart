@@ -112,7 +112,7 @@ class MapHeader extends StatelessWidget {
                                       child: Text(
                                     _mapController.lastSearchedPlace.value ==
                                             null
-                                        ? 'Find Online Trainers'
+                                        ? 'Find Online Trainers for In Person Workout'
                                         : _mapController.lastSearchedPlace
                                             .value!.description,
                                     maxLines: 1,

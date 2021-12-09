@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
+import 'package:nowly/Models/Session/workout_type_model.dart';
+import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Screens/Sessions/session_confirmation_screen_2.dart';
+import 'package:nowly/Utils/logger.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:sizer/sizer.dart';
 
@@ -19,6 +23,14 @@ class SessionDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final MapController _mapController = Get.find();
     final _sessionDetails = _controller.trainerSession;
+    final skills = _sessionDetails.trainer.skillSet;
+    final _wotypes = WorkoutType.types;
+    final trainerSkills = <WorkoutType>[];
+    for (var w in _wotypes) {
+      for (var e in skills!) {
+        e == w.type ? trainerSkills.add(w) : null;
+      }
+    }
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -27,7 +39,7 @@ class SessionDetails extends StatelessWidget {
             return const SizedBox();
           }
           return Positioned(
-            height: 80,
+            height: 10.h,
             top: -40,
             right: 0,
             left: 0,
@@ -55,9 +67,9 @@ class SessionDetails extends StatelessWidget {
           child: SafeArea(
             child: Material(
               type: MaterialType.transparency,
-              child: Wrap(
-                crossAxisAlignment: WrapCrossAlignment.center,
-                alignment: WrapAlignment.center,
+              child: Column(
+                // crossAxisAlignment: WrapCrossAlignment.center,
+                // alignment: WrapAlignment.center,
                 children: [
                   Row(
                     children: [
@@ -73,27 +85,30 @@ class SessionDetails extends StatelessWidget {
                                 Icons.person,
                                 size: 40.sp,
                               ),
-                        maxRadius: 4.h,
+                        maxRadius: 3.h,
                       ),
-                      const SizedBox(
-                        width: 15,
+                      SizedBox(
+                        width: 3.w,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Text(
+                            '${_sessionDetails.trainer.firstName} ${_sessionDetails.trainer.lastName}',
+                            style: k18BoldTS,
+                          ),
+                          // Text(
+                          //   _sessionDetails.trainer.address ?? '',
+                          //   style: kRegularTS,
+                          // )
+                        ],
                       ),
                       Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              '${_sessionDetails.trainer.firstName} ${_sessionDetails.trainer.lastName}',
-                              style: k18BoldTS,
-                            ),
-                            // Text(
-                            //   _sessionDetails.trainer.address ?? '',
-                            //   style: kRegularTS,
-                            // )
-                          ],
-                        ),
-                      ),
+                          child: SizedBox(
+                        width: 1.w,
+                      )),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -117,6 +132,42 @@ class SessionDetails extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      const Divider(),
+                      const Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'CHOOSE TRAINING TYPE OFFERED',
+                            style: k16BoldTS,
+                          )),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 2.w, vertical: 1.h),
+                        child: SizedBox(
+                          height: 12.h,
+                          width: double.infinity,
+                          child: ListView.separated(
+                            // shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: trainerSkills.length,
+                            itemBuilder: (context, index) => Obx(() => SizedBox(
+                                  height: 10.h,
+                                  width: 35.w,
+                                  child: WorkOutCard(
+                                      imagePath: trainerSkills[index].imagePath,
+                                      title: trainerSkills[index].type,
+                                      isSelected: _controller
+                                              .selectedWorkoutType.value ==
+                                          trainerSkills[index],
+                                      onSelecte: () => _controller
+                                          .selectedWorkoutType
+                                          .value = trainerSkills[index]),
+                                )),
+                            separatorBuilder: (context, index) => SizedBox(
+                              width: 2.w,
+                            ),
+                          ),
+                        ),
+                      ),
                       const Divider(
                         height: 25,
                       ),
@@ -127,37 +178,42 @@ class SessionDetails extends StatelessWidget {
                             style: k16BoldTS,
                           )),
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 2.h),
-                        child: SeperatedRow(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: List.generate(
-                              _sessionDetails.sessionLengths.length, (index) {
-                            final sessionLength =
-                                _sessionDetails.sessionLengths[index];
-                            return Obx(
-                              () => SessionLengthCard(
-                                isSelected: _controller.selectedLength.value ==
-                                    sessionLength,
-                                cost: '\$${sessionLength.cost / 100}'
-                                    .split('.')[0],
-                                imagePath: _sessionDetails
-                                    .sessionLengths[index].imagepath!,
-                                length: sessionLength.duration,
-                                onTap: () {
-                                  final strDur =
-                                      sessionLength.duration.substring(0, 2);
-                                  final dur = int.parse(strDur);
-                                  _controller.selectedLength.value =
-                                      sessionLength;
-                                  _controller.sessionTime = dur * 60;
-                                },
-                              ),
-                            );
-                          }),
-                          separatorBuilder: (BuildContext context, int index) =>
-                              SizedBox(
-                            width: 3.w,
+                        padding: EdgeInsets.symmetric(
+                            vertical: 2.h, horizontal: 15.w),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: SeperatedRow(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: List.generate(
+                                _sessionDetails.sessionLengths.length, (index) {
+                              final sessionLength =
+                                  _sessionDetails.sessionLengths[index];
+                              return Obx(
+                                () => SessionLengthCard(
+                                  isSelected:
+                                      _controller.selectedLength.value ==
+                                          sessionLength,
+                                  cost: '\$${sessionLength.cost / 100}'
+                                      .split('.')[0],
+                                  imagePath: _sessionDetails
+                                      .sessionLengths[index].imagepath!,
+                                  length: sessionLength.duration,
+                                  onTap: () {
+                                    final strDur =
+                                        sessionLength.duration.substring(0, 2);
+                                    final dur = int.parse(strDur);
+                                    _controller.selectedLength.value =
+                                        sessionLength;
+                                    _controller.sessionTime = dur * 60;
+                                  },
+                                ),
+                              );
+                            }),
+                            separatorBuilder:
+                                (BuildContext context, int index) => SizedBox(
+                              width: 3.w,
+                            ),
                           ),
                         ),
                       ),
@@ -180,9 +236,9 @@ class SessionDetails extends StatelessWidget {
                         onTap: () {
                           Get.isBottomSheetOpen == true ? Get.back() : null;
 
-                          Get.to(SessionConfirmationScreen2(
-                            trainerInPersonSessionController: _controller,
-                          ));
+                          Get.to(() => SessionConfirmationScreen2(
+                                trainerInPersonSessionController: _controller,
+                              ));
                         },
                         title: "LET'S GO",
                       ),
