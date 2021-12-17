@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nowly/Configs/themes/ui_parameters.dart';
 
 class Logo {
@@ -28,7 +29,7 @@ class Logo {
             height: size,
           )
         : Image.asset(
-            'assets/logo/logo-bgSO.png',
+            'assets/logo/logo-bgSB.png',
             height: size,
           );
   }
@@ -43,5 +44,12 @@ class Logo {
             'assets/logo/logo-bgRO.png',
             height: size,
           );
+  }
+
+  static mark(double size) {
+    return SvgPicture.asset(
+      'assets/logo/mark.svg',
+      height: size,
+    );
   }
 }

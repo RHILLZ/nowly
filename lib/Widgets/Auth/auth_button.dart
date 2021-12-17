@@ -1,24 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nowly/Configs/configs.dart';
+import 'package:sizer/sizer.dart';
 
 class AuthButton extends StatelessWidget {
-  const AuthButton({
-    Key? key,
-    this.iconPath,
-    required this.title,
-    required this.onPressed,
-  }) : super(key: key);
+  const AuthButton(
+      {Key? key,
+      this.iconPath,
+      required this.title,
+      required this.onPressed,
+      Color? color = Colors.white,
+      double? imageSize = 5})
+      : _imageSize = imageSize,
+        _color = color,
+        super(key: key);
 
   final String? iconPath;
   final String title;
   final VoidCallback onPressed;
+  final Color? _color;
+  final double? _imageSize;
 
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
-          side: const BorderSide(width: 2.0, color: Colors.white),
+          side: BorderSide(width: 2.0, color: _color!),
           onSurface: Colors.white),
       onPressed: onPressed,
       child: Row(
@@ -27,14 +34,14 @@ class AuthButton extends StatelessWidget {
           if (iconPath != null)
             SvgPicture.asset(
               iconPath!,
-              width: 25,
-              color: Colors.white,
+              height: _imageSize!.h,
+              color: _color,
             ),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Text(
               title,
-              style: k18BoldTS.copyWith(color: Colors.white),
+              style: k18BoldTS.copyWith(color: _color),
             ),
           )
         ],

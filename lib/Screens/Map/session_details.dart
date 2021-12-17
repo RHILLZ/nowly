@@ -7,7 +7,6 @@ import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/Session/workout_type_model.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Screens/Sessions/session_confirmation_screen_2.dart';
-import 'package:nowly/Utils/logger.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:sizer/sizer.dart';
 
@@ -31,6 +30,7 @@ class SessionDetails extends StatelessWidget {
         e == w.type ? trainerSkills.add(w) : null;
       }
     }
+    _controller.selectedWorkoutType = trainerSkills[0];
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -150,7 +150,7 @@ class SessionDetails extends StatelessWidget {
                             scrollDirection: Axis.horizontal,
                             itemCount: trainerSkills.length,
                             itemBuilder: (context, index) => Obx(() => SizedBox(
-                                  height: 10.h,
+                                  height: 7.h,
                                   width: 35.w,
                                   child: WorkOutCard(
                                       imagePath: trainerSkills[index].imagePath,

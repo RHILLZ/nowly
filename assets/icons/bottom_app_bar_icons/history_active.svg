@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="496" height="496.001" viewBox="0 0 496 496.001">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.891" y1="1.109" x2="0.1" y2="0.318" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#ff931e"/>
+      <stop offset="0.193" stop-color="#fe971e"/>
+      <stop offset="0.412" stop-color="#fea51e"/>
+      <stop offset="1" stop-color="#fdbb1f"/>
+      
+      
+    </linearGradient>
+  </defs>
+  <g id="history-duotone" transform="translate(-8 -8)">
+    <path id="Path_1813" data-name="Path 1813" d="M141.68,400.23a184,184,0,1,0-11.75-278.3l50.76,50.76c10.08,10.08,2.94,27.31-11.32,27.31H24A16,16,0,0,1,8,184V38.63c0-14.26,17.23-21.4,27.31-11.32L84.69,76.69A247.14,247.14,0,0,1,256,8C392.81,8,503.75,118.78,504,255.53S392.82,503.9,256.18,504a247,247,0,0,1-155.82-54.91,24,24,0,0,1-1.84-35.61l11.27-11.27A24,24,0,0,1,141.68,400.23Z" opacity="0.4" fill="url(#linear-gradient)"/>
+    <path id="Path_1814" data-name="Path 1814" d="M288,152V256.35L328.7,288a24,24,0,0,1,4.21,33.68l-9.82,12.62a24,24,0,0,1-33.68,4.21L224,287.65V152a24,24,0,0,1,24-24h16A24,24,0,0,1,288,152Z"/>
+  </g>
+</svg>

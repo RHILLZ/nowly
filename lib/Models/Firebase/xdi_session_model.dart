@@ -15,12 +15,7 @@ class SessionModel {
   Timestamp? sessionCreatedAt;
   Timestamp? sessionStartTime;
   Timestamp? sessionEndTime;
-  double? timeRangeReference;
   bool isAccepted;
-  bool isFutureSession;
-  String? futureSessionDate;
-  String? futureSessionDay;
-  String? futureSessionTime;
   String? sessionDuration;
   bool? reportedIssue;
   String? trainerIssueContent;
@@ -29,8 +24,10 @@ class SessionModel {
   String? sessionWorkoutType;
   String? sessionWorkoutTypeImagePath;
   int? sessionChargedAmount;
-  String? sessionLocationName;
   List? sessionCoordinates;
+  String sessionStatus;
+  String? eta;
+  bool isScanned;
 
   SessionModel(
       {this.sessionID,
@@ -47,12 +44,7 @@ class SessionModel {
       this.sessionCreatedAt,
       this.sessionStartTime,
       this.sessionEndTime,
-      this.timeRangeReference,
       this.isAccepted = false,
-      this.isFutureSession = false,
-      this.futureSessionDate,
-      this.futureSessionDay,
-      this.futureSessionTime,
       this.sessionDuration,
       this.reportedIssue = false,
       this.trainerIssueContent,
@@ -61,8 +53,10 @@ class SessionModel {
       this.sessionWorkoutType,
       this.sessionWorkoutTypeImagePath,
       this.sessionChargedAmount,
-      this.sessionLocationName,
-      this.sessionCoordinates});
+      this.sessionCoordinates,
+      this.eta,
+      this.isScanned = false,
+      this.sessionStatus = 'created'});
 
   factory SessionModel.fromDocumentSnapshot(
       Map<String, dynamic>? document, String id) {
@@ -82,12 +76,7 @@ class SessionModel {
         sessionCreatedAt: doc['sessionCreatedAt'],
         sessionStartTime: doc['sessionStartTime'],
         sessionEndTime: doc['sessionEndTime'],
-        timeRangeReference: doc['timeRangeReference'],
         isAccepted: doc['isAccepted'],
-        isFutureSession: doc['isFutureSession'],
-        futureSessionDate: doc['futureSessionDate'],
-        futureSessionDay: doc['futureSessionDay'],
-        futureSessionTime: doc['futureSessionTime'],
         sessionDuration: doc['sessionDuration'],
         reportedIssue: doc['reportedIssue']!,
         trainerIssueContent: doc['trainerIssueContent'],
@@ -97,7 +86,9 @@ class SessionModel {
         sessionWorkoutTypeImagePath: doc['sessionWorkoutTypeImagePath'],
         sessionChargedAmount: doc['sessionChargedAmount'],
         sessionCoordinates: doc['sessionCoordinates'],
-        sessionLocationName: doc['sessionLocationName']);
+        eta: doc['eta'],
+        isScanned: doc['isScanned'],
+        sessionStatus: doc['sessionStatus']);
   }
 
   Map<String, dynamic> toMap(SessionModel session) {
@@ -116,12 +107,7 @@ class SessionModel {
     data['sessionCreated'] = session.sessionCreatedAt;
     data['sessionStartTime'] = session.sessionStartTime;
     data['sessionEndTime'] = session.sessionEndTime;
-    data['timeRangeReference'] = session.timeRangeReference;
     data['isAccepted'] = session.isAccepted;
-    data['isFutureSession'] = session.isFutureSession;
-    data['futureSessionDate'] = session.futureSessionDate;
-    data['futureSessionDay'] = session.futureSessionDay;
-    data['futureSessionTime'] = session.futureSessionTime;
     data['sessionDuration'] = session.sessionDuration;
     data['reportedIssue'] = session.reportedIssue;
     data['userIssueContent'] = session.userIssueContent;
@@ -131,21 +117,26 @@ class SessionModel {
     data['sessionWorkoutTypeImagePath'] = session.sessionWorkoutTypeImagePath;
     data['sessionChargedAmount'] = session.sessionChargedAmount;
     data['sessionCoordinates'] = session.sessionCoordinates;
-    data['sessionLocationName'] = session.sessionLocationName;
+    data['eta'] = session.eta;
+    data['isScanned'] = session.isScanned;
+    data['sessionStatus'] = session.sessionStatus;
 
     return data;
   }
 
   static final dummySessionModel = SessionModel(
-      sessionLocationName: 'James J. Braddock North Hudson County Park',
       sessionCoordinates: [40.8037, -74.0014],
-      futureSessionTime: '5:30 PM',
-      timeRangeReference: 17.3,
-      userName: 'Peggy. C',
-      futureSessionDay: 'WED',
-      futureSessionDate: 'OCT 7TH',
+      userName: 'Natasha Rominoff',
+      userID: '5fi0cvSLG4eS0MAk75AJM9dfTKd2',
+      userProfilePicURL:
+          'https://firebasestorage.googleapis.com/v0/b/nowly-c6733.appspot.com/o/UserProfileImages%2FdTi8OYktXmRpP8qtR2ODbSaEvuv1%2Fimage_picker2711134377801591087.jpg?alt=media&token=5892b8fe-7532-4d24-bcdf-7ba27a1122a0',
+      trainerProfilePicURL:
+          'https://firebasestorage.googleapis.com/v0/b/nowly-c6733.appspot.com/o/TrainerProfileImages%2FI1gXTNzFktcqcH40YYPC0uhEod42%2Fimage_picker5269482261367775599.jpg?alt=media&token=84bc57e0-29c0-49d7-98aa-f1d281cfe591',
+      trainerName: 'Bruce Banner',
+      trainerID: 'I1gXTNzFktcqcH40YYPC0uhEod42',
       sessionChargedAmount: 1000,
       sessionDuration: '30MIN',
+      sessionMode: 'Virtual',
       sessionWorkoutType: 'Boxing',
       sessionWorkoutTypeImagePath: 'assets/images/workout/boxing.svg');
 }

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nowly/Configs/Constants/constants.dart';
-import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Screens/Stripe/add_card.dart';
+import 'package:nowly/Utils/logger.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:sizer/sizer.dart';
 
@@ -16,7 +15,9 @@ class AddPaymentMethodsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     final activePM = _stripeController.activePaymentMethod;
+    AppLogger.i(activePM);
     return Scaffold(
       appBar: AppBar(
         title: const Text('PAYMENT'),

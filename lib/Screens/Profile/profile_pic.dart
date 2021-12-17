@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
+import 'package:nowly/Widgets/Common/profile_image.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:sizer/sizer.dart';
 
@@ -47,24 +48,10 @@ class ProfileImageSetterScreen extends StatelessWidget {
                   child: _controller.isLoadingPic
                       ? const CircularProgressIndicator.adaptive()
                       : GestureDetector(
-                          child: CircleAvatar(
-                            backgroundColor: kPrimaryColor,
-                            backgroundImage: _controller.user.profilePicURL !=
-                                    null
-                                ? NetworkImage(_controller.user.profilePicURL!)
-                                : null,
-                            foregroundImage: _controller.image != null
-                                ? FileImage(File(_controller.image.path))
-                                : null,
-                            child: _controller.user.profilePicURL != null
-                                ? null
-                                : Icon(
-                                    Icons.person,
-                                    size: 50.sp,
-                                    color: kActiveButtonColor,
-                                  ),
-                            maxRadius: 12.h,
-                          ),
+                          child: ProfileImage(
+                              imageFile: File(_controller.image.path),
+                              imageURL: _controller.user.profilePicURL,
+                              rad: 12),
                         ))),
         ));
   }

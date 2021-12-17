@@ -9,17 +9,16 @@ class SessionListController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
+    // ignore: todo
     super.onInit();
     ever(onlineTrainers, (callback) => _fetchAllTrainerSessions());
+    onlineTrainers.bindStream(FirebaseStreams()
+        .streamOnlineTrainers(SessionDurationAndCostModel.sessionOptions));
   }
 
   @override
   void onReady() {
-    onlineTrainers.bindStream(FirebaseStreams()
-        .streamOnlineTrainers(SessionDurationAndCostModel.sessionOptions));
     _fetchAllTrainerSessions();
-
     super.onReady();
   }
 

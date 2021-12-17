@@ -17,6 +17,7 @@ class CustomBottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     BottomNavigationBarItem getButton(
         {required String icon,
+        required double size,
         required String selectedIcon,
         required String label,
         required bool isSelected}) {
@@ -24,14 +25,14 @@ class CustomBottomNavBar extends StatelessWidget {
           ? BottomNavigationBarItem(
               icon: SvgPicture.asset(
                 selectedIcon,
-                width: 4.w,
-                height: 4.h,
+                height: size.h,
               ),
               label: label,
             )
           : BottomNavigationBarItem(
               icon: SvgPicture.asset(
                 icon,
+                height: size.h,
                 // color: Theme.of(context)
                 //     .bottomNavigationBarTheme
                 //     .unselectedItemColor,
@@ -44,23 +45,27 @@ class CustomBottomNavBar extends StatelessWidget {
       () => BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           getButton(
+              size: 5,
               icon: 'assets/icons/bottom_app_bar_icons/home.svg',
               label: 'Home',
-              selectedIcon: 'assets/icons/bottom_app_bar_icons/home_active.svg',
-              isSelected: 0 == _selectedIndex.value),
-          getButton(
-              icon: 'assets/icons/bottom_app_bar_icons/training.svg',
-              label: 'Training',
               selectedIcon:
                   'assets/icons/bottom_app_bar_icons/training_active.svg',
+              isSelected: 0 == _selectedIndex.value),
+          getButton(
+              size: 5,
+              icon: 'assets/icons/bottom_app_bar_icons/training.svg',
+              label: 'Training',
+              selectedIcon: 'assets/logo/mark.svg',
               isSelected: 1 == _selectedIndex.value),
           getButton(
-              icon: 'assets/icons/bottom_app_bar_icons/schedule.svg',
+              size: 5,
+              icon: 'assets/icons/bottom_app_bar_icons/history.svg',
               label: 'Schedule',
               selectedIcon:
-                  'assets/icons/bottom_app_bar_icons/schedule_active.svg',
+                  'assets/icons/bottom_app_bar_icons/history_active.svg',
               isSelected: 2 == _selectedIndex.value),
           getButton(
+              size: 5,
               icon: 'assets/icons/bottom_app_bar_icons/profile.svg',
               label: 'Profile',
               selectedIcon:

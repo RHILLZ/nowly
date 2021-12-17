@@ -5,6 +5,8 @@ import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Screens/Nav/base_screen.dart';
 import 'package:nowly/Screens/Sessions/feedback.dart';
+import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Widgets/Common/profile_image.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:nowly/root.dart';
 import 'package:sizer/sizer.dart';
@@ -24,10 +26,9 @@ class SessionCompleteScreen extends StatelessWidget {
   final SessionModel _session;
   @override
   Widget build(BuildContext context) {
-    final userID = Get.find<AuthController>().firebaseUser.uid;
-    final _isUser = userID == _session.userID;
     // ignore: unused_local_variable
     final sess = SessionModel().toMap(_session);
+    AppLogger.i(sess);
     final _isIssue = false.obs;
     final _reviewSubmitted = false.obs;
 
@@ -63,7 +64,7 @@ class SessionCompleteScreen extends StatelessWidget {
                         _reviewSubmitted.value = true;
 
                         if (_isIssue.value) {
-                          await _controller.reportIssue(_session, _isUser);
+                          await _controller.reportIssue(_session, true);
                         }
                         Get.to(() => const FeedbackView());
                       } else {
@@ -74,7 +75,7 @@ class SessionCompleteScreen extends StatelessWidget {
                         _reviewSubmitted.value ? 'GO HOME' : 'SUBMIT REVIEW'),
               )),
         ),
-        body: Obx(() => _controller.isProccessing
+        body: Obx(() => _controller.isProcessing
             ? loadScreen()
             // : _reviewSubmitted.value
             //     ? thankYouView(context, _isUser)
@@ -112,24 +113,20 @@ class SessionCompleteScreen extends StatelessWidget {
                                       )),
                                   Positioned.fill(
                                       child: FittedBox(
-                                    fit: BoxFit.fitHeight,
+                                    fit: BoxFit.scaleDown,
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        CircleAvatar(
-                                          radius: 50,
-                                          backgroundImage: NetworkImage(!_isUser
-                                              ? _session.userProfilePicURL!
-                                              : _session.trainerProfilePicURL!),
+                                        ProfileImage(
+                                          imageURL:
+                                              _session.trainerProfilePicURL!,
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 10),
                                           child: Text(
-                                            !_isUser
-                                                ? _session.userName!
-                                                : _session.trainerName!,
+                                            _session.trainerName!,
                                             style: k20BoldTS.copyWith(
                                                 fontSize: 25),
                                           ),
@@ -148,7 +145,7 @@ class SessionCompleteScreen extends StatelessWidget {
                                         FittedBox(
                                           fit: BoxFit.scaleDown,
                                           child: Text(
-                                              '${_session.sessionMode!} Session'
+                                              '${_session.sessionMode} Session'
                                                   .toUpperCase(),
                                               style: k16RegularTS),
                                         ),
@@ -204,13 +201,9 @@ class SessionCompleteScreen extends StatelessWidget {
                             alignment: WrapAlignment.center,
                             runSpacing: 10,
                             spacing: 10,
-                            children: _isUser
-                                ? _controller.starRating < 3.0
-                                    ? negativeTrainerReviewList()
-                                    : positiveTrainerReviewList()
-                                : _controller.starRating < 3.0
-                                    ? negativeUserReviewList()
-                                    : positiveUserReviewList())
+                            children: _controller.starRating < 3.0
+                                ? negativeTrainerReviewList()
+                                : positiveTrainerReviewList())
                         : Container(),
                     const SizedBox(height: 20),
                     const Divider(
@@ -238,10 +231,14 @@ class SessionCompleteScreen extends StatelessWidget {
   }
 
   Widget buildReportTextField() => Container(
-        padding: const EdgeInsets.all(8),
-        height: 20.h,
+        padding: const EdgeInsets.all(12),
+        height: 25.h,
         width: 90.w,
         child: TextFormField(
+          decoration: const InputDecoration(
+              contentPadding: EdgeInsets.all(12),
+              labelText: 'Report Issue',
+              hintText: 'please explain thee issue with your session here.'),
           maxLines: 10,
           onChanged: (val) => _controller.sessionIssueContext = val,
         ),
@@ -321,34 +318,34 @@ class SessionCompleteScreen extends StatelessWidget {
             }),
       );
 
-  positiveUserReviewList() => List.generate(
-        _controller.positiveUserReviewOptions.length,
-        (index) => TextCard(
-            label: _controller.positiveUserReviewOptions[index],
-            isSelected: _controller.quickReviews
-                .contains(_controller.positiveUserReviewOptions[index]),
-            onTap: () {
-              _controller.quickReviews
-                      .contains(_controller.positiveUserReviewOptions[index])
-                  ? _controller.quickReviews
-                      .remove(_controller.positiveUserReviewOptions[index])
-                  : _controller.quickReviews
-                      .add(_controller.positiveUserReviewOptions[index]);
-            }),
-      );
-  negativeUserReviewList() => List.generate(
-        _controller.negativeUserReviewOptions.length,
-        (index) => TextCard(
-            label: _controller.negativeUserReviewOptions[index],
-            isSelected: _controller.quickReviews
-                .contains(_controller.negativeUserReviewOptions[index]),
-            onTap: () {
-              _controller.quickReviews
-                      .contains(_controller.negativeUserReviewOptions[index])
-                  ? _controller.quickReviews
-                      .remove(_controller.negativeUserReviewOptions[index])
-                  : _controller.quickReviews
-                      .add(_controller.negativeUserReviewOptions[index]);
-            }),
-      );
+  // positiveUserReviewList() => List.generate(
+  //       _controller.positiveUserReviewOptions.length,
+  //       (index) => TextCard(
+  //           label: _controller.positiveUserReviewOptions[index],
+  //           isSelected: _controller.quickReviews
+  //               .contains(_controller.positiveUserReviewOptions[index]),
+  //           onTap: () {
+  //             _controller.quickReviews
+  //                     .contains(_controller.positiveUserReviewOptions[index])
+  //                 ? _controller.quickReviews
+  //                     .remove(_controller.positiveUserReviewOptions[index])
+  //                 : _controller.quickReviews
+  //                     .add(_controller.positiveUserReviewOptions[index]);
+  //           }),
+  //     );
+  // negativeUserReviewList() => List.generate(
+  //       _controller.negativeUserReviewOptions.length,
+  //       (index) => TextCard(
+  //           label: _controller.negativeUserReviewOptions[index],
+  //           isSelected: _controller.quickReviews
+  //               .contains(_controller.negativeUserReviewOptions[index]),
+  //           onTap: () {
+  //             _controller.quickReviews
+  //                     .contains(_controller.negativeUserReviewOptions[index])
+  //                 ? _controller.quickReviews
+  //                     .remove(_controller.negativeUserReviewOptions[index])
+  //                 : _controller.quickReviews
+  //                     .add(_controller.negativeUserReviewOptions[index]);
+  //           }),
+  //     );
 }

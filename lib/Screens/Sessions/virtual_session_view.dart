@@ -1,12 +1,9 @@
 import 'package:agora_uikit/agora_uikit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/Logo/logos.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
-import 'package:nowly/Utils/logger.dart';
-import 'package:nowly/Widgets/BottomSheets/virtual_session_search_bottomsheet.dart';
 import 'package:sizer/sizer.dart';
 
 class VideoCallView extends StatelessWidget {
@@ -17,8 +14,6 @@ class VideoCallView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userID = Get.find<AuthController>().firebaseUser.uid;
-    final _isUser = userID == _agoraController.channel;
     return Obx(() => SafeArea(
           child: Scaffold(
               body: Stack(
@@ -29,17 +24,16 @@ class VideoCallView extends StatelessWidget {
                 child: AgoraVideoViewer(
                   client: _agoraController.client,
                   layoutType: Layout.floating,
+                  floatingLayoutMainViewPadding: const EdgeInsets.all(0),
+                  floatingLayoutSubViewPadding: const EdgeInsets.all(0),
                 ),
               ),
               Positioned(
                 bottom: 5.h,
-                child: FittedBox(
-                  fit: BoxFit.contain,
-                  child: AgoraVideoButtons(
-                    client: _agoraController.client,
-                    autoHideButtons: true,
-                    // disconnectButtonChild: _disconnectBtn(),
-                  ),
+                child: AgoraVideoButtons(
+                  client: _agoraController.client,
+                  autoHideButtons: true,
+                  // disconnectButtonChild: _disconnectBtn(),
                 ),
               ),
               Positioned(
@@ -76,7 +70,8 @@ class VideoCallView extends StatelessWidget {
                               style: kRegularTS,
                             ),
                             Text(
-                              _agoraController.session.trainerName ?? '...',
+                              _agoraController.currentSession.trainerName ??
+                                  '...',
                               style: k10BoldTS.copyWith(fontSize: 14),
                             )
                           ],
@@ -107,7 +102,9 @@ class VideoCallView extends StatelessWidget {
                               'Workout Type: ',
                               style: k10RegularTS,
                             ),
-                            Text(_agoraController.session.sessionWorkoutType!,
+                            Text(
+                                _agoraController
+                                    .currentSession.sessionWorkoutType!,
                                 style: k10BoldTS)
                           ],
                         ),
@@ -121,6 +118,7 @@ class VideoCallView extends StatelessWidget {
         ));
   }
 
+  // ignore: unused_element
   Widget _disconnectBtn() => InkWell(
         onTap: () => _agoraController.kill(),
         child: CircleAvatar(

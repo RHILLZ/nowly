@@ -7,6 +7,7 @@ import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:sizer/sizer.dart';
 
+// ignore: must_be_immutable
 class ReceiptDetailsScreen extends GetView {
   ReceiptDetailsScreen({Key? key, required SessionReceiptModel receipt})
       : _receipt = receipt,

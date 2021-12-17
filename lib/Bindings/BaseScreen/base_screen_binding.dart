@@ -5,17 +5,17 @@ class BaseScreenBinding extends Bindings {
   @override
   void dependencies() {
     Get.put(SessionController());
-    Get.lazyPut(() => StripeController());
+    Get.put(() => StripeController());
 
     //for map screen
-    Get.lazyPut(() => SessionListController());
+    Get.put(() => SessionListController());
     Get.create(() => TrainerInPersonSessionController());
-    Get.lazyPut(() => MapController());
+    Get.put(() => MapController());
     Get.lazyPut(() => SessionScheduleController());
     Get.lazyPut(() => FilterController());
 
     // Get.lazyPut(() => AgoraController());
-    Get.lazyPut(() => UserController());
-    Get.lazyPut(() => MapNavigatorController());
+    Get.put(() => UserController());
+    Get.put(() => MapNavigatorController());
   }
 }

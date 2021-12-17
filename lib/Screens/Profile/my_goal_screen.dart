@@ -3,6 +3,9 @@ import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
+import 'package:nowly/Services/Firebase/firebase_futures.dart';
+import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Widgets/Common/profile_image.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:sizer/sizer.dart';
@@ -14,10 +17,25 @@ class MyGoalScreen extends GetView<UserController> {
   final UserController _controller = Get.find();
   @override
   Widget build(BuildContext context) {
+    AppLogger.i(_controller.selectedGoals);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: const Text('GOALS'),
+      ),
+      bottomSheet: SizedBox(
+        height: 8.h,
+        width: 100.w,
+        child: Obx(() => RectButton(
+              onPressed: () async {
+                _controller.isChanged
+                    ? await FirebaseFutures().updateGoals(
+                        _controller.user.id, _controller.selectedGoals)
+                    : null;
+              },
+              title: 'Update Goals'.toUpperCase(),
+              fillColor: _controller.isChanged ? kActiveColor : null,
+            )),
       ),
       body: SafeArea(
         child: Obx(
@@ -30,39 +48,13 @@ class MyGoalScreen extends GetView<UserController> {
                     Center(
                       child: Column(
                         children: [
-                          CircleAvatar(
-                            backgroundImage: controller.user.profilePicURL !=
-                                    null
-                                ? NetworkImage(controller.user.profilePicURL!)
-                                : null,
-                            child: controller.user.profilePicURL != null
-                                ? null
-                                : Icon(
-                                    Icons.person,
-                                    size: 40.sp,
-                                  ),
-                            maxRadius: 6.h,
+                          ProfileImage(
+                            imageURL: controller.user.profilePicURL,
                           ),
                           SizedBox(
                               child: Text(
                                   '${_controller.user.firstName} ${_controller.user.lastName}',
                                   style: k20BoldTS)),
-                          // Padding(
-                          //   padding:
-                          //       const EdgeInsets.only(top: 5, bottom: 10),
-                          //   child: SizedBox(
-                          //     width: 200,
-                          //     child: Text(
-                          //       controller
-                          //           .userController.userModel!.address!,
-                          //       textAlign: TextAlign.center,
-                          //       style: k16RegularTS,
-                          //       maxLines: 4,
-                          //     ),
-                          //   ),
-                          // ),
-                          // SvgPicture.asset(controller.userController
-                          //     .userModel!.myPrimaryFitnessGoals.imagePath),
                         ],
                       ),
                     ),
@@ -82,24 +74,30 @@ class MyGoalScreen extends GetView<UserController> {
                             (index) => Obx(
                                   () {
                                     UserModel user = _controller.user;
+
                                     return SmallTextCard(
                                         label: _controller
                                             .allFitnessGoals[index].goal,
-                                        isSelected: user.goals!.contains(
-                                            _controller
+                                        isSelected: _controller.selectedGoals
+                                            .contains(_controller
                                                 .allFitnessGoals[index].goal),
                                         onTap: () {
+                                          _controller.isChanged = true;
+
                                           final item = _controller
                                               .allFitnessGoals[index];
-                                          final selectedGoals = user.goals!;
 
-                                          if (selectedGoals.contains(item)) {
-                                            selectedGoals.remove(item);
+                                          if (_controller.selectedGoals
+                                              .contains(item)) {
+                                            _controller.selectedGoals
+                                                .remove(item);
                                           } else {
-                                            if (selectedGoals.length >= 4) {
+                                            if (_controller
+                                                    .selectedGoals.length >=
+                                                4) {
                                               return;
                                             }
-                                            selectedGoals.add(item);
+                                            _controller.selectedGoals.add(item);
                                           }
                                         });
                                   },

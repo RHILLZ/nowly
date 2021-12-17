@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -7,7 +6,6 @@ import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Screens/Stripe/add_payment_methods.dart';
-import 'package:nowly/Utils/logger.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 import 'package:sizer/sizer.dart';
@@ -24,7 +22,8 @@ class SessionConfirmationScreen2 extends StatelessWidget {
   final SessionController _controller = Get.find();
   final UserController _userController = Get.find();
   final StripeController _stripeController = Get.put(StripeController());
-  final MapNavigatorController _mapNavigatorController = Get.find();
+  final MapNavigatorController _mapNavigatorController =
+      Get.put(MapNavigatorController());
   final TrainerInPersonSessionController _trainerInPersonSessionController;
 
   @override
@@ -49,51 +48,52 @@ class SessionConfirmationScreen2 extends StatelessWidget {
                   ? Padding(
                       padding: UIParameters.screenPadding,
                       child: MainButton(
-                          title: 'I’M SO PUMPED',
+                          title: _controller.isProcessing
+                              ? 'CANCEL'
+                              : 'I’M SO PUMPED',
                           onTap: () {
                             final userName =
                                 '${_userController.user.firstName} ${_userController.user.lastName}';
                             final trainerName =
                                 '${_sessionDetails.trainer.firstName} ${_sessionDetails.trainer.lastName}';
                             final _session = SessionModel(
-                              sessionID:
-                                  'NWLY${DateTime.now().millisecondsSinceEpoch}',
-                              sessionMode: 'IN PERSON',
-                              sessionWorkoutType:
-                                  _trainerInPersonSessionController
-                                      .selectedWorkoutType.value.type,
-                              sessionWorkoutTypeImagePath:
-                                  _trainerInPersonSessionController
-                                      .selectedWorkoutType.value.imagePath,
-                              sessionDuration:
-                                  _controller.sessionDurationAndCost.duration,
-                              sessionChargedAmount:
-                                  _controller.sessionDurationAndCost.cost,
-                              userID: _userController.user.id,
-                              userName: userName,
-                              userPaymentMethodID:
-                                  _userController.user.activePaymentMethodId,
-                              userProfilePicURL:
-                                  _userController.user.profilePicURL,
-                              userStripeID:
-                                  _userController.user.stripeCustomerId,
-                              trainerID: _sessionDetails.trainer.id,
-                              trainerName: trainerName,
-                              trainerProfilePicURL:
-                                  _sessionDetails.trainer.profilePicURL,
-                              trainerStripeID:
-                                  _sessionDetails.trainer.stripeAccountId,
-                            );
+                                sessionID:
+                                    'NWLY${DateTime.now().millisecondsSinceEpoch}',
+                                sessionMode: 'IN PERSON',
+                                sessionWorkoutType:
+                                    _trainerInPersonSessionController
+                                        .selectedWorkoutType.value.type,
+                                sessionWorkoutTypeImagePath:
+                                    _trainerInPersonSessionController
+                                        .selectedWorkoutType.value.imagePath,
+                                sessionDuration:
+                                    _controller.sessionDurationAndCost.duration,
+                                sessionChargedAmount:
+                                    _controller.sessionDurationAndCost.cost,
+                                userID: _userController.user.id,
+                                userName: userName,
+                                userPaymentMethodID:
+                                    _userController.user.activePaymentMethodId,
+                                userProfilePicURL:
+                                    _userController.user.profilePicURL,
+                                userStripeID:
+                                    _userController.user.stripeCustomerId,
+                                trainerID: _sessionDetails.trainer.id,
+                                trainerName: trainerName,
+                                trainerProfilePicURL:
+                                    _sessionDetails.trainer.profilePicURL,
+                                trainerStripeID:
+                                    _sessionDetails.trainer.stripeAccountId,
+                                eta: _controller.sessionEta.duration.text);
                             final durTimer = _controller
                                 .sessionDurationAndCost.duration
                                 .substring(0, 2);
-                            _trainerInPersonSessionController.sessionTime =
-                                int.parse(durTimer) * 60;
+                            _controller.sessionTime = int.parse(durTimer) * 60;
 
                             final tokenId = _sessionDetails.trainer.oneSignalId;
 
-                            _trainerInPersonSessionController.engageTrainer(
-                                _session, tokenId!);
+                            _controller.engageTrainer(
+                                _session, tokenId!, context);
                             // _mapNavigatorController.openAvialableMaps(
                             //     sessionController:
                             //         _trainerInPersonSessionController);
@@ -107,7 +107,7 @@ class SessionConfirmationScreen2 extends StatelessWidget {
                     )),
         ),
         body: Obx(
-          () => _trainerInPersonSessionController.isProcessing
+          () => _controller.isProcessing
               ? _loadScreen()
               : SafeArea(
                   child: SingleChildScrollView(
@@ -317,23 +317,25 @@ class SessionConfirmationScreen2 extends StatelessWidget {
         ));
   }
 
-  _loadScreen() => Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          HeartbeatProgressIndicator(
-              child: SvgPicture.asset(
-            'assets/logo/mark.svg',
-            height: 6.h,
-          )),
-          SizedBox(
-            height: 2.h,
-          ),
-          const Text(
-            'Connecting with trainer..',
-            style: k16BoldTS,
-          )
-        ],
+  _loadScreen() => Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            HeartbeatProgressIndicator(
+                child: SvgPicture.asset(
+              'assets/logo/mark.svg',
+              height: 6.h,
+            )),
+            SizedBox(
+              height: 4.h,
+            ),
+            const Text(
+              'Please wait, connecting with trainer..',
+              style: k16BoldTS,
+            )
+          ],
+        ),
       );
 }

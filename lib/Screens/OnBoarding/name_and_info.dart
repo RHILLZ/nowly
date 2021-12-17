@@ -51,6 +51,7 @@ class NameAndInfo extends StatelessWidget {
                   onChanged: (v) {
                     _nameAndInfoQ.firstName = v;
                     _filledToogle();
+                    _controller.isEveryRequirmentsFilled();
                   },
                 ),
                 TextField(
@@ -59,6 +60,7 @@ class NameAndInfo extends StatelessWidget {
                   onChanged: (v) {
                     _nameAndInfoQ.lastName = v;
                     _filledToogle();
+                    _controller.isEveryRequirmentsFilled();
                   },
                 ),
                 Row(children: [
@@ -138,6 +140,7 @@ class NameAndInfo extends StatelessWidget {
                                 haptics: true,
                                 onChanged: (value) {
                                   _nameAndInfoQ.weight.value = value;
+                                  _controller.isEveryRequirmentsFilled();
                                 },
                               ),
                             ),
@@ -174,6 +177,8 @@ class NameAndInfo extends StatelessWidget {
                                                 _nameAndInfoQ.gender.value =
                                                     'Male';
                                                 _filledToogle();
+                                                _controller
+                                                    .isEveryRequirmentsFilled();
                                               },
                                               title: const Center(
                                                 child: Text(
@@ -195,6 +200,8 @@ class NameAndInfo extends StatelessWidget {
                                                 _nameAndInfoQ.gender.value =
                                                     'Female';
                                                 _filledToogle();
+                                                _controller
+                                                    .isEveryRequirmentsFilled();
                                               },
                                               title: const Center(
                                                 child: Text(
@@ -216,6 +223,8 @@ class NameAndInfo extends StatelessWidget {
                                                 _nameAndInfoQ.gender.value =
                                                     'Other';
                                                 _filledToogle();
+                                                _controller
+                                                    .isEveryRequirmentsFilled();
                                               },
                                               title: const Center(
                                                 child: Text(
@@ -244,21 +253,38 @@ class NameAndInfo extends StatelessWidget {
                 ),
                 Column(
                   children: [
-                    const Text(
-                      'What year were you born? \n Dont worry. we wont tell. Promise.',
-                      textAlign: TextAlign.center,
+                    CheckboxListTile(
+                        activeColor: kPrimaryColor,
+                        title: const Text(
+                          'I confirm im at least 18 years old.',
+                          style: k16BoldTS,
+                        ),
+                        value: _controller.isOver18,
+                        selected: _controller.isOver18,
+                        onChanged: (v) => _controller.isOver18 = v),
+                    Visibility(
+                      visible: _controller.isOver18,
+                      child: const Text(
+                        'What year were you born? \n Dont worry. we wont tell. Promise.',
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                    Obx(() => Container(
-                          constraints: BoxConstraints(maxHeight: 30.h),
-                          child: YearPicker(
-                              firstDate: DateTime(DateTime.now().year - 100, 1),
-                              lastDate: DateTime(DateTime.now().year + 100, 1),
-                              selectedDate: _nameAndInfoQ.birthYear.value,
-                              onChanged: (value) {
-                                _nameAndInfoQ.birthYear.value = value;
-                                _filledToogle();
-                              }),
-                        ))
+                    Visibility(
+                      visible: _controller.isOver18,
+                      child: Obx(() => Container(
+                            constraints: BoxConstraints(maxHeight: 30.h),
+                            child: YearPicker(
+                                firstDate:
+                                    DateTime(DateTime.now().year - 100, 1),
+                                lastDate: DateTime(DateTime.now().year - 18, 1),
+                                selectedDate: _nameAndInfoQ.birthYear.value,
+                                onChanged: (value) {
+                                  _nameAndInfoQ.birthYear.value = value;
+                                  _filledToogle();
+                                  _controller.isEveryRequirmentsFilled();
+                                }),
+                          )),
+                    ),
                   ],
                 )
               ],

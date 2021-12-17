@@ -1,18 +1,28 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:nowly/Configs/Logo/logos.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Models/models_exporter.dart';
+import 'package:nowly/Screens/Sessions/current_session_details_screen.dart';
+import 'package:nowly/Screens/Sessions/session_complete_screen.dart';
 import 'package:nowly/Services/Firebase/firebase_futures.dart';
-import 'package:nowly/Services/Sessions/sessions_services.dart';
-import 'package:nowly/Widgets/BottomSheets/future_session_search.dart';
+import 'package:nowly/Services/service_exporter.dart';
+import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Widgets/Dialogs/dialogs.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:sizer/sizer.dart';
 import '../controller_exporter.dart';
 
 class SessionController extends GetxController {
   final _user = UserModel().obs;
   final _trainer = TrainerModel().obs;
-  final _isProccessing = false.obs;
+  final _isProcessing = false.obs;
+  final _currentSession = SessionModel().obs;
+  Timer? _timer;
+  final RxInt _sessionTime = 0.obs;
 
   //SESSION PARMAS
   final _sessionMode = SessionModeModel(id: '', mode: '').obs;
@@ -21,75 +31,60 @@ class SessionController extends GetxController {
   final _sessionWorkOutType =
       WorkoutType(imagePath: '', type: '', headerData: []).obs;
   final _genderPref = ''.obs;
-  final _sessionAvailability = ''.obs;
-
-  //IN PERSON PARAMS
-  final _sessionLocationCoords = const LatLng(0, 0).obs;
-  final _sessionLocationName = 'Virtual'.obs;
   final _sessionIssueContext = ''.obs;
+  final _sessionEta =
+      Get.put(TrainerInPersonSessionController()).sessionDistandeDuratiom;
 
-  // SCHEDULED PARAMS
-  final _sessionTimeCheckerValue = 0.0.obs;
-  final _sessionDay = ''.obs;
-  final _sessionTimeScheduled = ''.obs;
-  final _sessionDateScheduled = ''.obs;
-
-  set sessionTimeCheckerValue(value) => _sessionTimeCheckerValue.value = value;
-  set sessionDay(value) => _sessionDay.value = value;
   set sessionIssueContext(value) => _sessionIssueContext.value = value;
+  get isProcessing => _isProcessing.value;
 
-  get sessionTimeCheckerValue => _sessionTimeCheckerValue.value;
-  get sessionDay => _sessionDay.value;
-  get isProccessing => _isProccessing.value;
+  void startSessionTimer() {
+    const sec = Duration(seconds: 1);
+    _timer = Timer.periodic(sec, (timer) => _sessionTime.value--);
+  }
+
+  buildTimer() {
+    final String minutes = _formatNumber(_sessionTime.value ~/ 60);
+    final String seconds = _formatNumber(_sessionTime.value % 60);
+    return Text('$minutes : $seconds',
+        style: TextStyle(fontSize: 60.sp, color: kPrimaryColor));
+  }
+
+  String _formatNumber(int number) {
+    String numberStr = number.toString();
+    if (number < 10) {
+      numberStr = '0' + numberStr;
+    }
+    return numberStr;
+  }
 
   @override
   void onInit() {
+    super.onInit();
+    ever(_currentSession, (callback) => checkAccepted());
+    ever(_sessionEta, (callback) => updateEta());
     _fetchWorkOutData();
     _fetchSessionDurationAndCosts();
     _fethSessionTypes();
-    super.onInit();
-    ever(
-        _sessionMode,
-        (callback) => _sessionMode.value.mode == 'Virtual'.toUpperCase()
-            ? clearLocationName()
-            : null);
   }
 
-  clearLocationName() {
-    _sessionLocationName.value = 'Virtual';
-  }
-
-  formatTimeScheduled() {
-    if (_sessionTimeScheduled.value.split(' ')[0].endsWith(':0')) {
-      return '${_sessionTimeScheduled.value.split(' ')[0]}0 ${_sessionTimeScheduled.value.split(' ')[1]}';
-    } else {
-      return _sessionTimeScheduled.value;
-    }
-  }
-
+  get currentSession => _currentSession.value;
+  get sessionTime => _sessionTime.value;
   get user => _user.value;
   get trainer => _trainer.value;
   get sessionMode => _sessionMode.value;
   get sessionDurationAndCost => _sessionDurationAndCost.value;
   get sessionWorkOutType => _sessionWorkOutType.value;
-  get sessionLocationCoords => _sessionLocationCoords.value;
-  get sessionLocationName => _sessionLocationName.value;
-  get sessionTimeScheduled => formatTimeScheduled();
-  get sessionDateScheduled => _sessionDateScheduled.value;
   get genderPref => _genderPref.value;
-  get sessionAvailability => _sessionAvailability.value;
+  get sessionEta => _sessionEta.value;
 
   set trainer(value) => _trainer.value = value;
   set user(value) => _user.value = value;
   set sessionMode(value) => _sessionMode.value = value;
   set sessionDurationAndCost(value) => _sessionDurationAndCost.value = value;
   set sessionWorkOutType(value) => _sessionWorkOutType.value = value;
-  set sessionLocationCoords(value) => _sessionLocationCoords.value = value;
-  set sessionLocationName(value) => _sessionLocationName.value = value;
-  set sessionTimeScheduled(value) => _sessionTimeScheduled.value = value;
-  set sessionDateScheduled(value) => _sessionDateScheduled.value = value;
   set genderPref(value) => _genderPref.value = value;
-  set sessionAvailability(value) => _sessionAvailability.value = value;
+  set sessionTime(value) => _sessionTime.value = value;
 
   var isSessionTypeLoaded = false.obs;
   var isSessionLengthsLoaded = false.obs;
@@ -131,69 +126,6 @@ class SessionController extends GetxController {
     sessionModes.addAll(SessionModeModel.types);
     _sessionMode.value = sessionModes[0];
     isSessionTypeLoaded.value = true;
-  }
-
-//INIT IN PERSON TRAINER SESSION
-//FIND TRAINER FOR SCHEDULED SESSION
-  findTrainerForScheduledSession() async {
-    Get.bottomSheet(const FutureSessionSearchIndicator(),
-        backgroundColor: Colors.transparent,
-        barrierColor: Colors.black.withOpacity(.5),
-        enableDrag: true,
-        isDismissible: false,
-        isScrollControlled: true);
-    List<double> latLng = [
-      sessionLocationCoords.latitude,
-      sessionLocationCoords.longitude
-    ];
-    final userName = '${_user.value.firstName} ${_user.value.lastName}';
-    final _sessionModel = SessionModel(
-      userID: _user.value.id,
-      userName: userName,
-      userProfilePicURL: _user.value.profilePicURL,
-      userStripeID: _user.value.stripeCustomerId,
-      userPaymentMethodID: _user.value.activePaymentMethodId,
-      sessionCoordinates: latLng,
-      sessionLocationName: sessionLocationName,
-      futureSessionDate: sessionDateScheduled,
-      futureSessionDay: sessionDay,
-      futureSessionTime: sessionTimeScheduled,
-      sessionID: 'NWLY${DateTime.now().millisecondsSinceEpoch}',
-      sessionWorkoutType: sessionWorkOutType.type,
-      sessionWorkoutTypeImagePath: sessionWorkOutType.imagePath,
-      sessionMode: 'IN PERSON',
-      sessionChargedAmount: sessionDurationAndCost.amount,
-      sessionDuration: sessionDurationAndCost.duration,
-      timeRangeReference: sessionTimeCheckerValue,
-      isFutureSession: true,
-      isAccepted: false,
-      trainerGenderPref: genderPref,
-    );
-    final _session = SessionModel().toMap(_sessionModel);
-
-    final uid = Get.find<UserController>().user.id;
-    final result =
-        await SessionServices().findTrainerForScheduledSession(uid, _session);
-    // Future.delayed(Duration(seconds: 10), () => Get.back());
-    if (result == 'unavailable') {
-      Get.back();
-      Get.snackbar('No Trainers Available For This Session.',
-          'Please Try agian at a later time. Thank you',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-          isDismissible: true,
-          duration: const Duration(seconds: 5));
-    } else {
-      Get.back();
-      Get.snackbar('Session Scheduled Successfully!.',
-          'Upcoming session details will appear in your appointments. Thank you',
-          // snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: kActiveColor,
-          colorText: Colors.white,
-          duration: const Duration(seconds: 5),
-          isDismissible: true);
-    }
   }
 
   // SESSION COMPLETION METHODS
@@ -252,12 +184,12 @@ class SessionController extends GetxController {
     }
   }
 
-  submitTrainerRating(String trainerID) async {
-    await FirebaseFutures().updateTrainerRating(trainerID, starRating);
+  submitTrainerRating(String trainerID, double rating) async {
+    await FirebaseFutures().updateTrainerRating(trainerID, rating);
   }
 
   submitTrainerReview(SessionModel session) async {
-    _isProccessing.toggle();
+    _isProcessing.toggle();
     final review = ReviewModel(
         createdAt: Timestamp.now(),
         reviewID: session.sessionID,
@@ -268,7 +200,7 @@ class SessionController extends GetxController {
         rating: starRating,
         reviewContent: quickReviews);
     await FirebaseFutures().createTrainerReview(review);
-    await submitTrainerRating(session.trainerID!);
+    await submitTrainerRating(session.trainerID!, starRating);
   }
 
   createSessionReceipt(SessionModel session) async {
@@ -289,16 +221,108 @@ class SessionController extends GetxController {
       sessionMode: session.sessionMode,
       sessionStatus: status,
       sessionDuration: session.sessionDuration,
-      // sessionCoordinates: GeoPoint(
-      //     session.sessionCoordinates![0], session.sessionCoordinates![1]),
-      sessionLocationName: session.sessionLocationName,
       sessionWorkoutType: session.sessionWorkoutType,
     );
+    await FirebaseFutures().incrementSessionCount(session.userID!);
     await FirebaseFutures().createSessionReceipt(receipt);
-    _isProccessing.toggle();
+    _isProcessing.toggle();
   }
 
   reportIssue(SessionModel session, bool isUSer) async {
     await FirebaseFutures().reportIssueWithSession(session, isUSer);
+  }
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    super.onClose();
+    _timer!.cancel();
+  }
+
+  final qrLoaded = false.obs;
+
+  loadQr() async {
+    await Future.delayed(
+        const Duration(seconds: 3), () => qrLoaded.value = true);
+  }
+
+  engageTrainer(SessionModel sess, String tokenId, BuildContext context) async {
+    _isProcessing.toggle();
+    _context = context;
+    final session = SessionModel().toMap(sess);
+    final sessionCreated = await FirebaseFutures().createNewSession(sess);
+
+    if (sessionCreated) {
+      _currentSession
+          .bindStream(FirebaseStreams().streamSession(sess.sessionID!));
+      OneSignal.shared.postNotification(OSCreateNotification(
+          playerIds: [tokenId],
+          content: 'In Person',
+          heading: 'InPerson',
+          additionalData: {'session': session, 'signal_Type': 'in person'},
+          contentAvailable: true));
+      // trainerUnavailable();
+    } else {
+      _isProcessing.toggle();
+      Get.snackbar('Something went wrong.',
+          'Unable to engage trainer at this time. Please try again later.',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white);
+    }
+  }
+
+  BuildContext? _context;
+
+  checkAccepted() {
+    if (_currentSession.value.isAccepted == true &&
+        !_currentSession.value.isScanned) {
+      _isProcessing.toggle();
+      Get.off(() => CurrentSessionDetailsScreen(
+            session: _currentSession.value,
+            mapNavController: Get.find<MapNavigatorController>(),
+            trainerSessionC: Get.put(TrainerInPersonSessionController()),
+            sessionController: this,
+          ));
+      return;
+    }
+
+    if (_currentSession.value.isScanned == true) {
+      startSessionTimer();
+      return;
+    }
+    trainerUnavailable();
+  }
+
+  trainerUnavailable() {
+    Future.delayed(const Duration(seconds: 15), () {
+      if (_currentSession.value.isAccepted == false) {
+        _isProcessing.toggle();
+        Get.dialog(Dialogs().trainerUnavailable(_context));
+        // Get.snackbar('Trainer Unavailable',
+        //     'Trainer has not accepted request, Please try again or choose another trainer.',
+        //     icon: Logo.mark(4.h),
+        //     backgroundColor: kPrimaryColor,
+        //     colorText: Colors.white,
+        //     dismissDirection: SnackDismissDirection.VERTICAL,
+        //     duration: const Duration(seconds: 5));
+      }
+    });
+  }
+
+  updateEta() async {
+    final eta = _sessionEta.value!.duration.text;
+    AppLogger.i('ETA: $eta');
+
+    if (_currentSession.value.sessionID != null) {
+      await FirebaseFutures().updateETA(_currentSession.value, eta);
+    }
+  }
+
+  endSession(context) async {
+    await Get.dialog(Dialogs().sessionCancellation(
+        context,
+        () => Get.off(() => SessionCompleteScreen(
+            session: _currentSession.value, sessionController: this))));
   }
 }

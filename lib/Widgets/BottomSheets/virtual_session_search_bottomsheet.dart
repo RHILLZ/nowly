@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
+import 'package:nowly/Controllers/Agora/agora_controller.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 import 'package:sizer/sizer.dart';
 
 class VirtualSessionInitSearch extends StatelessWidget {
-  const VirtualSessionInitSearch({Key? key}) : super(key: key);
+  VirtualSessionInitSearch({Key? key}) : super(key: key);
 
+  final AgoraController _agoraController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
-            gradient: kMainButtonGradient(context),
+            gradient: onBoardingGradient(context),
             borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(20), topRight: Radius.circular(20))),
         child: Column(
@@ -21,7 +23,7 @@ class VirtualSessionInitSearch extends StatelessWidget {
             children: [
               HeartbeatProgressIndicator(
                   child: SvgPicture.asset(
-                'assets/icons/logo_outlined.svg',
+                'assets/logo/mark.svg',
                 height: 8.h,
               )),
               SizedBox(
@@ -46,7 +48,7 @@ class VirtualSessionInitSearch extends StatelessWidget {
               Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextButton.icon(
-                      onPressed: () => Get.back(),
+                      onPressed: () => _agoraController.cancel(),
                       icon: const Icon(Icons.close),
                       label: const Text('cancel')))
             ]));

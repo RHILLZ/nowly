@@ -17,6 +17,7 @@ void main() async {
   await initServices();
   await GetStorage.init();
   InitialBinding().dependencies();
+  BaseScreenBinding().dependencies();
   runApp(NowlyApp());
 }
 

@@ -16,7 +16,6 @@ class UserPaymentMethodsList extends StatelessWidget {
       );
   @override
   Widget build(BuildContext context) {
-    print(_stripeController.paymentMethods);
     return Obx(() => ListView.builder(
         itemCount: _stripeController.paymentMethods.length,
         itemBuilder: (ctx, i) =>

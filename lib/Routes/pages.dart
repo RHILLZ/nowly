@@ -62,7 +62,7 @@ class Pages {
     GetPage(name: _Paths.HOME, page: () => UserHomeView()),
     GetPage(
         name: _Paths.MAP,
-        page: () => MapScreen(),
+        page: () => const MapScreen(),
         binding: BaseScreenBinding()),
     GetPage(
         name: _Paths.SESSION_HISTORY,
@@ -84,18 +84,18 @@ class Pages {
     GetPage(
         name: _Paths.SESSION_IN_PROGRESS,
         page: () => CurrentSessionDetailsScreen(
-              session: SessionModel(),
-            ),
+            session: SessionModel(),
+            mapNavController: MapNavigatorController(),
+            trainerSessionC: TrainerInPersonSessionController(),
+            sessionController: SessionController()),
         binding: InitialBinding()),
     GetPage(
         name: _Paths.LIVE_SESSION,
         page: () => LiveSessionView(
-              controller: TrainerInPersonSessionController(),
+              controller: SessionController(),
             ),
         binding: InitialBinding()),
-    GetPage(
-        name: _Paths.FUTURE_SESSION_CONFIRMATION,
-        page: () => ScheduledSessionConfirmationScreen()),
+
     GetPage(
         name: _Paths.ADD_PAYMENT_METHOD,
         page: () => AddPaymentMethodsScreen(),
@@ -112,12 +112,11 @@ class Pages {
         name: _Paths.REGISTRATION_SCREEN,
         page: () => UserRegistrationView(),
         binding: RegistrationBinding()),
-    GetPage(
-        name: _Paths.LOCATION_SELECTION,
-        page: () =>
-            LocationSelectionView(controller: MapController(), radius: 0)),
+
     GetPage(name: _Paths.GOALS_SCREEN, page: () => MyGoalScreen()),
     GetPage(name: _Paths.INFORMATION, page: () => UserInfoScreen()),
-    GetPage(name: _Paths.MESSENGER_SCREEN, page: () => MessagingScreen()),
+    GetPage(
+        name: _Paths.MESSENGER_SCREEN,
+        page: () => MessagingScreen(session: SessionModel())),
   ];
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Screens/Map/map_screen.dart';
 import 'package:nowly/Screens/Nav/home_view.dart';
 import 'package:nowly/Screens/Nav/session_history_view.dart';
@@ -17,7 +16,7 @@ class BaseScreen extends StatelessWidget {
 
   final screens = [
     UserHomeView(),
-    MapScreen(),
+    const MapScreen(),
     SessionHistoryAndUpcomingView(),
     const UserProfileScreen()
   ];

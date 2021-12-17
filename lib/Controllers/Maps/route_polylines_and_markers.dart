@@ -49,7 +49,8 @@ extension RoutePolyLinesAndMarkers on MapController {
         markerId: MarkerId(locationDetails.id),
         // infoWindow: InfoWindow(title: locationDetails.locationDescription),
         onTap: () {
-          trainerSessionController.openSessionDetailsBottomSheet();
+          trainerSessionController
+              .openSessionDetailsBottomSheet(trainerSessionController);
           addOriginMarkers(location, tsController: trainerSessionController);
         },
         position: location,

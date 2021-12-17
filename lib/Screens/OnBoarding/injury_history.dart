@@ -88,6 +88,7 @@ class InjuryHistory extends StatelessWidget {
                   QuestionnaireModel(title: '', header: '')
               : _controller.selectedQuestionnaire.value = _injuryHistoryQModel;
           _injuryHistoryQModel.toogleFilled();
+          _controller.isEveryRequirmentsFilled();
         },
       ),
     );

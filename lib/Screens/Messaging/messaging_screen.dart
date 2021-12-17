@@ -4,45 +4,61 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
+import 'package:nowly/Widgets/Common/profile_image.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:sizer/sizer.dart';
 
 class MessagingScreen extends GetView<MessagingController> {
-  MessagingScreen({Key? key}) : super(key: key);
+  MessagingScreen({Key? key, required SessionModel session})
+      : _session = session,
+        super(key: key);
+
   static const routeName = '/messagingScreen';
-  final MessagingController _mController = Get.put(MessagingController());
+  final SessionModel _session;
+  final MessagingController _mController = Get.find();
   final TextEditingController _messageText = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    _mController.sessionId = _session.sessionID;
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
+            padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 2.w),
             color: const Color.fromARGB(255, 2, 12, 50),
             child: SafeArea(
               bottom: false,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const CloseButton(
-                    color: Colors.white,
+                  ProfileImage(
+                    imageURL: _session.trainerProfilePicURL,
+                    rad: 3,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: kScreenPadding),
-                    child: Text(
-                      'MIKE T.',
-                      style: k20BoldTS.copyWith(color: Colors.white),
-                    ),
+                  SizedBox(
+                    width: 1.w,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: kScreenPadding),
-                    child: Text(
-                      '963 Madyson Drive ',
-                      style: kRegularTS.copyWith(color: Colors.white),
-                    ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: kScreenPadding),
+                        child: Text(
+                          _session.trainerName!,
+                          style: k20BoldTS.copyWith(color: Colors.white),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: kScreenPadding),
+                        child: Text(
+                          '${_session.sessionWorkoutType!} Session',
+                          style: kRegularTS.copyWith(color: Colors.white),
+                        ),
+                      ),
+                      // const SizedBox(height: 20)
+                    ],
                   ),
-                  const SizedBox(height: 20)
                 ],
               ),
             ),

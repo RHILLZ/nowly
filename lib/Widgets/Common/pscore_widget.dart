@@ -65,6 +65,7 @@ class PScore extends StatelessWidget {
                   QuestionnaireModel(title: '', header: '')
               : _controller.selectedQuestionnaire.value = _pscoreQM;
           _pscoreQM.toogleFilled();
+          _controller.isEveryRequirmentsFilled();
         }));
   }
 }

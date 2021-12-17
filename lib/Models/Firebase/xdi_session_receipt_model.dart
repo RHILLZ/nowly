@@ -16,10 +16,6 @@ class SessionReceiptModel {
   Timestamp? sessionEndTime;
   String? sessionDuration;
   String? sessionCharged;
-  String? sessionDate;
-  String? sessionDay;
-  GeoPoint? sessionCoordinates;
-  String? sessionLocationName;
   String? sessionMode;
   String? sessionWorkoutType;
 
@@ -39,10 +35,6 @@ class SessionReceiptModel {
       this.sessionEndTime,
       this.sessionDuration,
       this.sessionCharged,
-      this.sessionCoordinates,
-      this.sessionLocationName,
-      this.sessionDate,
-      this.sessionDay,
       this.sessionMode,
       this.sessionWorkoutType});
 
@@ -64,11 +56,7 @@ class SessionReceiptModel {
       sessionStartTime: doc['sessionStartTime'],
       sessionEndTime: doc['sessionEndTime'],
       sessionDuration: doc['sessionDuration'],
-      sessionLocationName: doc['sessionLocationName'],
-      sessionCoordinates: doc['sessionCoordinates'],
       sessionMode: doc['sessionMode'],
-      sessionDate: doc['sessionDate'],
-      sessionDay: doc['sessionDay'],
       sessionWorkoutType: doc['sessionWorkoutType'],
       sessionStatus: doc['sessionStatus'],
     );
@@ -90,11 +78,7 @@ class SessionReceiptModel {
     data['sessionStartTime'] = receipt.sessionStartTime;
     data['sessionEndTime'] = receipt.sessionEndTime;
     data['sessionDuration'] = receipt.sessionDuration;
-    data['sessionLocationName'] = receipt.sessionLocationName;
     data['sessionMode'] = receipt.sessionMode;
-    data['sessionDate'] = receipt.sessionDate;
-    data['sessionDay'] = receipt.sessionDay;
-    data['sessionCoordinates'] = receipt.sessionCoordinates;
     data['sessionWorkoutType'] = receipt.sessionWorkoutType;
     data['sessionStatus'] = receipt.sessionStatus;
 

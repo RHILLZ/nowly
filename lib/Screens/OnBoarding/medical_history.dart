@@ -63,6 +63,8 @@ class MedicalHistory extends StatelessWidget {
                                             val!.answer = yesNoAnswer.yes;
                                             _medicalHistoryQModel
                                                 .toogleFilled();
+                                            _controller
+                                                .isEveryRequirmentsFilled();
                                           });
                                         })),
                                 const SizedBox(
@@ -78,6 +80,8 @@ class MedicalHistory extends StatelessWidget {
                                             val!.answer = yesNoAnswer.no;
                                             _medicalHistoryQModel
                                                 .toogleFilled();
+                                            _controller
+                                                .isEveryRequirmentsFilled();
                                           });
                                         }))
                               ],
@@ -103,6 +107,7 @@ class MedicalHistory extends StatelessWidget {
                                   onPressed: () {
                                     _medicalHistoryQModel.makeAllNegative();
                                     _medicalHistoryQModel.toogleFilled();
+                                    _controller.isEveryRequirmentsFilled();
                                   },
                                   child: const Text('No To All')))
                         ],
@@ -129,6 +134,7 @@ class MedicalHistory extends StatelessWidget {
                     onChanged: (v) {
                       _medicalHistoryQModel.info.value = v;
                       _medicalHistoryQModel.toogleFilled();
+                      _controller.isEveryRequirmentsFilled();
                     },
                   ),
                 ),
@@ -141,6 +147,7 @@ class MedicalHistory extends StatelessWidget {
               ? _controller.selectedQuestionnaire.value =
                   QuestionnaireModel(title: '', header: '')
               : _controller.selectedQuestionnaire.value = _medicalHistoryQModel;
+          _controller.isEveryRequirmentsFilled();
         },
       ),
     );

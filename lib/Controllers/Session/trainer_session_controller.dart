@@ -21,9 +21,12 @@ class TrainerInPersonSessionController extends GetxController {
   final RxInt _sessionTime = 900.obs;
   final _isProcessing = false.obs;
   final _currentSession = SessionModel().obs;
-  // TrainerSessionController({required TrainerSessionModel trainerSessionModel}) {
-  //   trainerSession = trainerSessionModel;
-  // }
+  // ignore: non_constant_identifier_names
+  TrainerSessionController(
+      {required TrainerInPersonSessionModel trainerSessionModel}) {
+    trainerSession = trainerSessionModel;
+  }
+
   set sessionTime(value) => _sessionTime.value = value;
   get sessionTime => _sessionTime.value;
   get isProcessing => _isProcessing.value;
@@ -31,29 +34,9 @@ class TrainerInPersonSessionController extends GetxController {
 
   @override
   void onInit() {
+    // ignore: todo
     // TODO: implement onInit
     super.onInit();
-    ever(_currentSession, (callback) => checkAccepted());
-  }
-
-  void startSessionTimer() {
-    const sec = Duration(seconds: 1);
-    _timer = Timer.periodic(sec, (timer) => _sessionTime.value++);
-  }
-
-  buildTimer() {
-    final String minutes = _formatNumber(_sessionTime.value ~/ 60);
-    final String seconds = _formatNumber(_sessionTime.value % 60);
-    return Text('$minutes : $seconds',
-        style: TextStyle(fontSize: 60.sp, color: kPrimaryColor));
-  }
-
-  String _formatNumber(int number) {
-    String numberStr = number.toString();
-    if (number < 10) {
-      numberStr = '0' + numberStr;
-    }
-    return numberStr;
   }
 
   final selectedLength = SessionDurationAndCostModel(duration: '', cost: 0).obs;
@@ -83,11 +66,12 @@ class TrainerInPersonSessionController extends GetxController {
     // selectedWorkoutType.value = skillTypes[0];
   }
 
-  void openSessionDetailsBottomSheet() {
+  void openSessionDetailsBottomSheet(
+      TrainerInPersonSessionController controller) {
     Get.bottomSheet(
       Wrap(
         children: [
-          SessionDetails(controller: this),
+          SessionDetails(controller: controller),
         ],
       ),
       isScrollControlled: true,
@@ -126,38 +110,5 @@ class TrainerInPersonSessionController extends GetxController {
   void onClose() {
     super.onClose();
     _timer!.cancel();
-  }
-
-  engageTrainer(SessionModel sess, String tokenId) async {
-    _isProcessing.toggle();
-    final session = SessionModel().toMap(sess);
-    final sessionCreated = await FirebaseFutures().createNewSession(sess);
-    _currentSession
-        .bindStream(FirebaseStreams().streamSession(sess.sessionID!));
-
-    if (sessionCreated) {
-      OneSignal.shared.postNotification(OSCreateNotification(
-          playerIds: [tokenId],
-          content: 'In Person',
-          heading: 'InPerson',
-          additionalData: {'session': session, 'signal_Type': 'in person'},
-          contentAvailable: true));
-    } else {
-      _isProcessing.toggle();
-      Get.snackbar('Something went wrong.',
-          'Unable to engage trainer at this time. Please try again later.',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white);
-    }
-  }
-
-  checkAccepted() {
-    if (_currentSession.value.isAccepted == true) {
-      _isProcessing.toggle();
-      Get.off(() => CurrentSessionDetailsScreen(
-            session: _currentSession.value,
-          ));
-    }
   }
 }

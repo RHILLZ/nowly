@@ -4,7 +4,6 @@ import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 
-
 class Filters extends StatelessWidget {
   Filters({
     Key? key,
@@ -69,8 +68,8 @@ class Filters extends StatelessWidget {
                       const SortTypes(),
                       // SessionLength(),
                       const TrainerPreference(),
-                      SessionMode(),
-                      const Avalability(),
+                      // SessionMode(),
+                      // const Avalability(),
                       const SizedBox(
                         height: 20.0,
                       ),

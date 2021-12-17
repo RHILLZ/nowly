@@ -48,6 +48,7 @@ class ExerciseHistory extends StatelessWidget {
                                   _exerciseHQM.selectedFitnessLevel.value =
                                       _exerciseHQM.fitnessLevels[index];
                                   _exerciseHQM.toogleFilled();
+                                  _controller.isEveryRequirmentsFilled();
                                 }),
                           )),
                 ),
@@ -60,6 +61,7 @@ class ExerciseHistory extends StatelessWidget {
                   currentSliderValue: _exerciseHQM.selectedWorkOutIndex,
                   onChange: (int i) {
                     _exerciseHQM.toogleFilled();
+                    _controller.isEveryRequirmentsFilled();
                   },
                   values: _exerciseHQM.workOutDays,
                 ),
@@ -80,6 +82,7 @@ class ExerciseHistory extends StatelessWidget {
                               _exerciseHQM.trainedWithACoach.value =
                                   yesNoAnswer.yes;
                               _exerciseHQM.toogleFilled();
+                              _controller.isEveryRequirmentsFilled();
                             })),
                     const SizedBox(
                       width: kContentGap,
@@ -93,6 +96,7 @@ class ExerciseHistory extends StatelessWidget {
                               _exerciseHQM.trainedWithACoach.value =
                                   yesNoAnswer.no;
                               _exerciseHQM.toogleFilled();
+                              _controller.isEveryRequirmentsFilled();
                             }))
                   ],
                 ),
@@ -117,6 +121,7 @@ class ExerciseHistory extends StatelessWidget {
                                     _exerciseHQM.howWasIt.value =
                                         _exerciseHQM.howWasItAnswers[index];
                                     _exerciseHQM.toogleFilled();
+                                    _controller.isEveryRequirmentsFilled();
                                   }),
                             )),
                   ),

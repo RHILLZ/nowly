@@ -18,8 +18,8 @@ class StartScreenView extends GetView<AuthController> {
   @override
   Widget build(BuildContext context) {
     final List<String> _texts = [
-      'Access Personal Trainers with a click of a button. 😌',
-      'Schedule in person session at a public location with ease. 🗓',
+      'Access Personal Trainers Virtually or In Person with a click of a button. 😌',
+      'View online trainers live in map view, just select and bam! your on your way to a healthier you. 🗺️',
       'Choose from a variety of training styles or just let us find your match. 🏃🏽‍♂️'
     ];
     return Scaffold(
@@ -36,7 +36,7 @@ class StartScreenView extends GetView<AuthController> {
                     left: 0,
                     right: 0,
                     top: 16.h,
-                    child: Center(child: Logo.textLogoW(context, 18.h))),
+                    child: Center(child: Logo.textLogoLD(context, 18.h))),
 
                 Positioned(
                     top: 30.h,

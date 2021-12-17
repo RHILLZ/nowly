@@ -23,12 +23,17 @@ class UserController extends GetxController {
   //FROM MYFITNESSGOALSCONTROLLER
   final _allFitnessGoals = <FitnessGoals>[].obs;
   final _myFavoriteWorkouts = <WorkoutType>[].obs;
+  final _isChanged = false.obs;
+  final _selectedGoals = [].obs;
 
   get user => _user.value;
   get allFitnessGoals => _allFitnessGoals;
   get myFavoriteWorkouts => _myFavoriteWorkouts;
+  get selectedGoals => _selectedGoals;
+  get isChanged => _isChanged.value;
 
   set myWeight(value) => _myWeight.value = value;
+  set isChanged(value) => _isChanged.value = value;
 
   @override
   void onInit() async {
@@ -39,7 +44,20 @@ class UserController extends GetxController {
     Future.delayed(const Duration(seconds: 2), () => checkOneSignalId());
     Get.put(SessionController()).user = _user.value;
     sessionReceipts.value = await FirebaseFutures().getSessionReceipts(uid);
-    scheduledSessions.bindStream(FirebaseStreams().streamUserAppointments(uid));
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    once(_user, (callback) => setGoals());
+  }
+
+  setGoals() {
+    _user.value.goals!.forEach((goal) => _selectedGoals.add(goal));
+  }
+
+  changed() {
+    _isChanged.value = true;
   }
 
 // CHECK FOR ONESIGNAL ID AND SET IF NONE FOUND
@@ -88,6 +106,7 @@ class UserController extends GetxController {
       trainer.profilePicURL =
           await FirebaseStorage().getUserProfileImageURL(imageName, uid);
       await FirebaseFutures().updateUserInFirestore(trainer);
+      _image.value = XFile('');
       Get.back();
     } else {
       _isLoadingPic.toggle();
@@ -111,7 +130,6 @@ class UserController extends GetxController {
   get feedBack => _feedBack.value;
 
   submitFeedback() async {
-    _feedBack.value = '';
     _isSubmitting.toggle();
     FeedbackModel feedback = FeedbackModel();
     feedback.id = _user.value.id;
@@ -120,8 +138,9 @@ class UserController extends GetxController {
     feedback.timestamp = Timestamp.now();
 
     var sub = await FirebaseFutures().submitSuggestion(feedback);
-    Future.delayed(const Duration(seconds: 3));
+    // Future.delayed(const Duration(seconds: 3));
     if (sub) {
+      _feedBack.value = '';
       _isSubmitting.toggle();
       _submitted.value = true;
     }

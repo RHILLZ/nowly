@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../configs.dart';
 
 const Color kPrimaryColor = Color.fromARGB(255, 240, 107, 52);
+const Color kSecondaryColor = Color.fromARGB(255, 1, 13, 62);
 const Color kButtonTextGrayColor = Color.fromARGB(255, 150, 150, 150);
 const Color kGray = Color.fromARGB(255, 102, 102, 102);
 const Color kDisabledGray = Color.fromARGB(255, 200, 200, 200);
@@ -69,8 +70,10 @@ LinearGradient onBoardingGradient(BuildContext context) {
               const Color.fromARGB(255, 15, 15, 15),
             ]
           : [
-              const Color.fromARGB(255, 253, 172, 115),
-              const Color.fromARGB(255, 235, 120, 75),
+              // const Color.fromARGB(255, 253, 172, 115),
+              // const Color.fromARGB(255, 235, 120, 75),
+              const Color.fromARGB(255, 254, 254, 254),
+              const Color.fromARGB(255, 250, 250, 250),
             ]);
 }
 
@@ -90,6 +93,7 @@ LinearGradient authPagesGradient(BuildContext context) {
           : [
               const Color.fromARGB(255, 240, 107, 52),
               const Color.fromARGB(255, 240, 145, 50),
+              // Colors.white
             ]);
 }
 

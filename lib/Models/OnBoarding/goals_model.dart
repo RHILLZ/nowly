@@ -27,16 +27,16 @@ class GoalsQModel extends QuestionnaireModel {
             header: "No, we're not talking about Bae goals\n🥯🥯");
 
   final fitnessGoals = <String>[
-    'sport event',
-    'prepare for life event',
-    'improve overall health',
-    'get toned',
-    'cardiovascular fitness',
-    'recover from an injury',
-    'gain lean muscle mass',
-    'increase overall strength',
-    'increase flexibility',
-    'learn a new movement/tool',
+    'Sport event',
+    'Prepare for life event',
+    'Improve overall health',
+    'Get toned',
+    'Cardiovascular fitness',
+    'Recover from an injury',
+    'Gain lean muscle mass',
+    'Increase overall strength',
+    'Increase flexibility',
+    'Learn a new movement/tool',
   ];
 
   final primaryGoals = <String>[

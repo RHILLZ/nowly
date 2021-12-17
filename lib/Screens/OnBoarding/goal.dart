@@ -71,6 +71,7 @@ class Goal extends StatelessWidget {
                                         selectedGoal.add(item);
                                       }
                                       _goalsQModel.toogleFilled();
+                                      _controller.isEveryRequirmentsFilled();
                                     }),
                               )),
                     ),
@@ -84,6 +85,7 @@ class Goal extends StatelessWidget {
                     currentSliderValue: _goalsQModel.selectedTimeFrameIndex,
                     onChange: (int i) {
                       _goalsQModel.toogleFilled();
+                      _controller.isEveryRequirmentsFilled();
                     },
                     values: _goalsQModel.timeFrames,
                   ),
@@ -109,6 +111,7 @@ class Goal extends StatelessWidget {
                                       _goalsQModel.selectedPrimaryGoal.value =
                                           _goalsQModel.primaryGoals[index];
                                       _goalsQModel.toogleFilled();
+                                      _controller.isEveryRequirmentsFilled();
                                     }),
                               )),
                     ),

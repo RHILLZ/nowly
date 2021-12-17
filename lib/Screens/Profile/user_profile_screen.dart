@@ -3,11 +3,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
-import 'package:nowly/Screens/Messaging/messaging_screen.dart';
 import 'package:nowly/Screens/Nav/session_history_view.dart';
 import 'package:nowly/Screens/Profile/info_screen.dart';
 import 'package:nowly/Screens/Profile/profile_pic.dart';
 import 'package:nowly/Screens/Stripe/add_payment_methods.dart';
+import 'package:nowly/Widgets/Common/profile_image.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:sizer/sizer.dart';
 import 'my_goal_screen.dart';
@@ -66,22 +66,11 @@ class UserProfileScreen extends GetView<UserController> {
                     child: Row(
                       children: [
                         GestureDetector(
-                          onTap: () => Get.to(
-                              ProfileImageSetterScreen(controller: controller)),
-                          child: CircleAvatar(
-                            backgroundImage: controller.user.profilePicURL !=
-                                    null
-                                ? NetworkImage(controller.user.profilePicURL!)
-                                : null,
-                            child: controller.user.profilePicURL != null
-                                ? null
-                                : Icon(
-                                    Icons.person,
-                                    size: 40.sp,
-                                  ),
-                            maxRadius: 6.h,
-                          ),
-                        ),
+                            onTap: () => Get.to(ProfileImageSetterScreen(
+                                controller: controller)),
+                            child: ProfileImage(
+                              imageURL: controller.user.profilePicURL,
+                            )),
                         SizedBox(
                           width: 3.w,
                         ),

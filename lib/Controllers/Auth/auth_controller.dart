@@ -124,7 +124,7 @@ class AuthController extends GetxController {
                   height: 70.h,
                   width: 80.w,
                   decoration: BoxDecoration(
-                      gradient: authPagesGradient(context),
+                      gradient: onBoardingGradient(context),
                       borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(20),
                           topRight: Radius.circular(20))),
@@ -210,7 +210,10 @@ class AuthController extends GetxController {
                                             text: 'Terms of Services ',
                                             style: k10BoldTS.copyWith(
                                                 fontSize: 14,
-                                                color: kPrimaryColor),
+                                                color: UIParameters.isDarkMode(
+                                                        context)
+                                                    ? kPrimaryColor
+                                                    : kActiveButtonColor),
                                             recognizer: TapGestureRecognizer()
                                               ..onTap = () =>
                                                   loadDoc('nowlyTOS.pdf')),
@@ -219,7 +222,10 @@ class AuthController extends GetxController {
                                             text: 'Privacy Agreement',
                                             style: k10BoldTS.copyWith(
                                                 fontSize: 14,
-                                                color: kPrimaryColor),
+                                                color: UIParameters.isDarkMode(
+                                                        context)
+                                                    ? kPrimaryColor
+                                                    : kActiveButtonColor),
                                             recognizer: TapGestureRecognizer()
                                               ..onTap =
                                                   () => loadDoc('nowlyPA.pdf'))
@@ -236,7 +242,7 @@ class AuthController extends GetxController {
                       Visibility(
                           visible: onboardSelection == 'signin',
                           child: const Text(
-                            'Welcome back, Lets Gooooo!',
+                            'Welcome Back, Let GOOOO! 💥',
                             style: k16BoldTS,
                             textAlign: TextAlign.center,
                           )),
@@ -277,10 +283,10 @@ class AuthController extends GetxController {
                 ),
               ),
               Positioned(
-                top: -12.h,
+                top: -10.h,
                 child: SvgPicture.asset(
                   'assets/logo/mark.svg',
-                  height: 18.h,
+                  height: 14.h,
                 ),
               ),
             ]),

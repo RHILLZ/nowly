@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
+import 'package:nowly/Widgets/Common/profile_image.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:sizer/sizer.dart';
 
@@ -29,17 +30,8 @@ class ProfileDetailsScreen extends GetView<UserController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    CircleAvatar(
-                      backgroundImage: controller.user.profilePicURL != null
-                          ? NetworkImage(controller.user.profilePicURL!)
-                          : null,
-                      child: controller.user.profilePicURL != null
-                          ? null
-                          : Icon(
-                              Icons.person,
-                              size: 40.sp,
-                            ),
-                      maxRadius: 6.h,
+                    ProfileImage(
+                      imageURL: controller.user.profilePicURL,
                     ),
                     SizedBox(
                       height: 2.h,
@@ -61,9 +53,10 @@ class ProfileDetailsScreen extends GetView<UserController> {
                       trailing: Text(user.primaryGoal!, style: k16RegularTS),
                     ),
                     const Divider(height: 0),
-                    const ListTile(
+                    ListTile(
                       title: Text('NO. OF SESSIONS', style: k16BoldTS),
-                      // trailing: Text(user.sessionLength, style: k16RegularTS),
+                      trailing: Text('${user.sessionsCompleted}',
+                          style: k16RegularTS),
                     ),
                     const Divider(height: 0),
                     ListTile(
@@ -72,19 +65,19 @@ class ProfileDetailsScreen extends GetView<UserController> {
                           Text(user.rating.toString(), style: k16RegularTS),
                     ),
                     const Divider(height: 0),
-                    const ListTile(
-                      title: Text('SESSION LENGTH', style: k16BoldTS),
-                      // trailing: Text(user.sessionLength, style: k16RegularTS),
-                    ),
+                    // const ListTile(
+                    //   title: Text('SESSION LENGTH', style: k16BoldTS),
+                    //   // trailing: Text(user.sessionLength, style: k16RegularTS),
+                    // ),
                     const Spacer(),
-                    Padding(
-                      padding: UIParameters.screenPaddingHorizontal,
-                      child: CustomOutLinedButton(
-                        color: Theme.of(context).errorColor,
-                        onPressed: () {},
-                        title: 'DELETE ACCOUNT',
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: UIParameters.screenPaddingHorizontal,
+                    //   child: CustomOutLinedButton(
+                    //     color: Theme.of(context).errorColor,
+                    //     onPressed: () {},
+                    //     title: 'DELETE ACCOUNT',
+                    //   ),
+                    // ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: kScreenPadding, vertical: 10),

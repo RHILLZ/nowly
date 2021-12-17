@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nowly/Configs/configs.dart';
+import 'package:sizer/sizer.dart';
 
 class MainButton extends StatelessWidget {
   const MainButton({
@@ -18,7 +19,7 @@ class MainButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 55,
+      height: 8.h,
       child: InkWell(
         onTap: enabled == false ? null : onTap,
         child: Ink(

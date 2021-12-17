@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
+import 'package:sizer/sizer.dart';
 
 import '../widget_exporter.dart';
 
@@ -35,13 +36,17 @@ class TrainerPreference extends StatelessWidget {
                           child: Obx(
                             () => FittedBox(
                               fit: BoxFit.scaleDown,
-                              child: TextCard(
-                                isSelected: _sessionController.genderPref ==
-                                    trainerTypes,
-                                label: trainerTypes.type,
-                                onTap: () {
-                                  _sessionController.genderPref = trainerTypes;
-                                },
+                              child: SizedBox(
+                                width: 30.w,
+                                child: TextCard(
+                                  isSelected: _sessionController.genderPref ==
+                                      trainerTypes,
+                                  label: trainerTypes.type,
+                                  onTap: () {
+                                    _sessionController.genderPref =
+                                        trainerTypes;
+                                  },
+                                ),
                               ),
                             ),
                           ),

@@ -18,7 +18,7 @@ class OnBoardingView extends StatelessWidget {
         style: const TextStyle(color: Colors.white),
         child: Container(
           padding: UIParameters.screenPadding,
-          decoration: BoxDecoration(gradient: authPagesGradient(context)),
+          decoration: BoxDecoration(gradient: onBoardingGradient(context)),
           child: SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -27,19 +27,16 @@ class OnBoardingView extends StatelessWidget {
                 SizedBox(
                   height: 15.h,
                 ),
-                Logo.textLogoW(context, 18.h),
+                Logo.textLogoLD(context, 18.h),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    // const Flexible(
-                    //   child: AppLogo(),
-                    // ),
-
-                    const Text(
+                    Text(
                       "Nowly trainers coming your way!",
-                      style: k20RegularTS,
+                      style: k20RegularTS.copyWith(
+                          color: Get.isDarkMode ? null : kSecondaryColor),
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(
@@ -52,22 +49,32 @@ class OnBoardingView extends StatelessWidget {
                         children: [
                           SvgPicture.asset(
                             'assets/images/trainer/sessionCardCharacter.svg',
+                            color: Get.isDarkMode ? null : kSecondaryColor,
                             height: 10.h,
                           ),
                           SvgPicture.asset(
-                              'assets/images/trainer/jumpingManIcon.svg'),
+                            'assets/images/trainer/jumpingManIcon.svg',
+                            color: Get.isDarkMode ? null : kSecondaryColor,
+                          ),
                           SvgPicture.asset(
-                              'assets/images/trainer/darkTrainerIcon.svg'),
+                            'assets/images/trainer/darkTrainerIcon.svg',
+                            color: Get.isDarkMode ? null : kSecondaryColor,
+                          ),
                           SvgPicture.asset(
-                              'assets/images/trainer/darkManHeart.svg'),
+                            'assets/images/trainer/darkManHeart.svg',
+                            color: Get.isDarkMode ? null : kSecondaryColor,
+                          ),
                         ],
                       ),
                     ),
                     SizedBox(
                       height: 5.h,
                     ),
-                    const Text(
+                    Text(
                         'By creating an account, you agree to our \nTerms and Conditions',
+                        style: kRegularTS.copyWith(
+                          color: Get.isDarkMode ? null : kSecondaryColor,
+                        ),
                         textAlign: TextAlign.center),
                   ],
                 ),
@@ -84,6 +91,7 @@ class OnBoardingView extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 RectButton(
+                  fillColor: Get.isDarkMode ? null : kSecondaryColor,
                   onPressed: () {
                     // Get.toNamed(SignUpScreen.routeName);
                     GetStorage().write('onboardSelection', 'signin');

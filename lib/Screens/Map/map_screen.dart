@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
-import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Utils/logger.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 
 class MapScreen extends StatelessWidget {
-  MapScreen({Key? key}) : super(key: key);
-  final SessionListController _sessionListController = Get.find();
+  const MapScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +37,6 @@ class MapScreen extends StatelessWidget {
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
-                      // Positioned(
-                      //   bottom: 0,
-                      //   right: 0,
-                      //   left: 0,
-                      //   child: TrainersCardsList(),
-                      // ),
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.center,

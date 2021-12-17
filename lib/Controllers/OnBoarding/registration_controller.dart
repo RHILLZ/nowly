@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Services/service_exporter.dart';
-import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:nowly/root.dart';
 
 class RegistrationController extends GetxController {
@@ -16,6 +15,12 @@ class RegistrationController extends GetxController {
   final PscoreQModel pscoreQModel = PscoreQModel();
   final Rx<UserModel> _user = UserModel().obs;
   final _isProcessing = false.obs;
+  final _isOver18 = false.obs;
+  final _profileReady = false.obs;
+
+  get isOver18 => _isOver18.value;
+  get profileReady => _profileReady.value;
+  set isOver18(value) => _isOver18.value = value;
 
   get isProcessing => _isProcessing.value;
 
@@ -131,8 +136,9 @@ class RegistrationController extends GetxController {
     if (!medicalHistoryQModel.filled.value) {
       sections.add('Medical History');
     }
-    if (sections.isNotEmpty) {
-      showValidationDialog(sections);
+
+    if (sections.isEmpty) {
+      _profileReady.value = true;
     }
   }
 }

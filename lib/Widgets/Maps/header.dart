@@ -5,7 +5,6 @@ import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Screens/Map/search_dialog.dart';
 import '../widget_exporter.dart';
-import 'session_filter_button.dart';
 
 class MapHeader extends StatelessWidget {
   const MapHeader({
@@ -15,41 +14,40 @@ class MapHeader extends StatelessWidget {
   double get headerHeight => 55.0;
   double get dialogHeight => 400.0;
 
-  Future<void> showCalenderDialog() async {
-    showDialog(
-        barrierColor: Colors.black.withOpacity(0.65),
-        context: Get.overlayContext!,
-        builder: (_) => SafeArea(
-                child: Stack(
-              fit: StackFit.expand,
-              children: [
-                Positioned(
-                  top: headerHeight + kToolbarHeight,
-                  right: 0,
-                  left: 0,
-                  child: SimpleDialog(
-                      insetPadding: EdgeInsets.zero,
-                      contentPadding: EdgeInsets.zero,
-                      shape: const RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(10.0))),
-                      children: [
-                        SizedBox(
-                          //height: dialogHeight,
-                          width: Get.width,
-                          child: ScheduleCalendar(),
-                        )
-                      ]),
-                )
-              ],
-            )));
-  }
+  // Future<void> showCalenderDialog() async {
+  //   showDialog(
+  //       barrierColor: Colors.black.withOpacity(0.65),
+  //       context: Get.overlayContext!,
+  //       builder: (_) => SafeArea(
+  //               child: Stack(
+  //             fit: StackFit.expand,
+  //             children: [
+  //               Positioned(
+  //                 top: headerHeight + kToolbarHeight,
+  //                 right: 0,
+  //                 left: 0,
+  //                 child: SimpleDialog(
+  //                     insetPadding: EdgeInsets.zero,
+  //                     contentPadding: EdgeInsets.zero,
+  //                     shape: const RoundedRectangleBorder(
+  //                         borderRadius:
+  //                             BorderRadius.all(Radius.circular(10.0))),
+  //                     children: [
+  //                       // SizedBox(
+  //                       //   //height: dialogHeight,
+  //                       //   width: Get.width,
+  //                       //   child: ScheduleCalendar(),
+  //                       // )
+  //                     ]),
+  //               )
+  //             ],
+  //           )));
+  // }
 
   @override
   Widget build(BuildContext context) {
     final SessionScheduleController _scheduleController = Get.find();
     final MapController _mapController = Get.find();
-    final _dateDetails = _scheduleController.selectedDateDetail;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: SizedBox(

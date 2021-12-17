@@ -26,6 +26,19 @@ class FirebaseFutures {
     return isSuccessful;
   }
 
+  Future<bool> incrementSessionCount(String userID) async {
+    bool _isSuccessful = false;
+    try {
+      await _firestore
+          .collection(USERSCOLLECTION)
+          .doc(userID)
+          .update({'sessionsCompleted': FieldValue.increment(1)});
+    } catch (exception) {
+      print(exception.toString());
+    }
+    return _isSuccessful;
+  }
+
   // SET USER STRIPE CUSTOMER ID
   Future<bool> setUserStripeCustomerId(
       String uid, String stripeCustomerId) async {
@@ -231,59 +244,33 @@ class FirebaseFutures {
     return isSuccessful;
   }
 
-  //USER REVIEW CUD METHODS
-  //CREATE
-  //UPDATE
-  //DELETE
-  // Future<bool> createUserReview(ReviewModel review) async {
-  //   bool isSuccessful = false;
-  //   try {
-  //     var data = ReviewModel().toMap(review);
-  //     await _firestore
-  //         .collection(USERSCOLLECTION)
-  //         .doc(review.userID)
-  //         .collection(REVIEWS)
-  //         .doc(review.reviewID)
-  //         .set(data);
-  //     isSuccessful = true;
-  //   } catch (exception) {
-  //     print(exception.toString());
-  //   }
-  //   return isSuccessful;
-  // }
+  Future<bool> updateETA(SessionModel session, String eta) async {
+    bool isSuccessful = false;
+    try {
+      await _firestore
+          .collection(SESSIONCOLLECTION)
+          .doc(session.sessionID)
+          .update({'eta': eta});
+      isSuccessful = true;
+    } catch (exception) {
+      print(exception.toString());
+    }
+    return isSuccessful;
+  }
 
-  // Future<bool> updateUserReview(ReviewModel review) async {
-  //   bool isSuccessful = false;
-  //   try {
-  //     var data = ReviewModel().toMap(review);
-  //     await _firestore
-  //         .collection(USERSCOLLECTION)
-  //         .doc(review.userID)
-  //         .collection(REVIEWS)
-  //         .doc(review.reviewID)
-  //         .update(data);
-  //     isSuccessful = true;
-  //   } catch (exception) {
-  //     print(exception.toString());
-  //   }
-  //   return isSuccessful;
-  // }
-
-  // Future<bool> deleteUserReview(ReviewModel review) async {
-  //   bool isSuccessful = false;
-  //   try {
-  //     await _firestore
-  //         .collection(USERSCOLLECTION)
-  //         .doc(review.userID)
-  //         .collection(REVIEWS)
-  //         .doc(review.reviewID)
-  //         .delete();
-  //     isSuccessful = true;
-  //   } catch (exception) {
-  //     print(exception.toString());
-  //   }
-  //   return isSuccessful;
-  // }
+  Future<bool> updateGoals(String userId, List<String> goals) async {
+    bool isSuccessful = false;
+    try {
+      await _firestore
+          .collection(USERSCOLLECTION)
+          .doc(userId)
+          .update({'goals': goals});
+      isSuccessful = true;
+    } catch (exception) {
+      print(exception.toString());
+    }
+    return isSuccessful;
+  }
 
   //TRAINER CUD METHODS
   //CREATE
@@ -305,39 +292,6 @@ class FirebaseFutures {
     }
     return isSuccessful;
   }
-
-  // Future<bool> updateTrainerReview(ReviewModel review) async {
-  //   bool isSuccessful = false;
-  //   try {
-  //     var data = ReviewModel().toMap(review);
-  //     await _firestore
-  //         .collection(TRAINERSCOLLECTION)
-  //         .doc(review.trainerID)
-  //         .collection(REVIEWS)
-  //         .doc(review.reviewID)
-  //         .update(data);
-  //     isSuccessful = true;
-  //   } catch (exception) {
-  //     print(exception.toString());
-  //   }
-  //   return isSuccessful;
-  // }
-
-  // Future<bool> deleteTrainerReview(ReviewModel review) async {
-  //   bool isSuccessful = false;
-  //   try {
-  //     await _firestore
-  //         .collection(TRAINERSCOLLECTION)
-  //         .doc(review.trainerID)
-  //         .collection(REVIEWS)
-  //         .doc(review.reviewID)
-  //         .delete();
-  //     isSuccessful = true;
-  //   } catch (exception) {
-  //     print(exception.toString());
-  //   }
-  //   return isSuccessful;
-  // }
 
   //SESSION RECEIPT CRUD METHODS
   //CREATE
@@ -362,23 +316,6 @@ class FirebaseFutures {
     return isSuccessful;
   }
 
-  // Future<bool> createTrainerSessionReceipt(SessionReceiptModel receipt) async {
-  //   bool isSuccessful = false;
-  //   try {
-  //     var data = SessionReceiptModel().toMap(receipt);
-  //     await _firestore
-  //         .collection(TRAINERSCOLLECTION)
-  //         .doc(receipt.trainerID)
-  //         .collection(SESSIONRECEIPTS)
-  //         .doc(receipt.sessionID)
-  //         .set(data);
-  //     isSuccessful = true;
-  //   } catch (exception) {
-  //     print(exception.toString());
-  //   }
-  //   return isSuccessful;
-  // }
-
   Future<SessionReceiptModel> getSessionReceipt(
           String sessionId, String userId) async =>
       await _firestore
@@ -400,29 +337,6 @@ class FirebaseFutures {
               .map((doc) =>
                   SessionReceiptModel.fromDocumentSnapshot(doc.data(), doc.id))
               .toList());
-
-  // Future<SessionReceiptModel> getTrainerSessionReceipt(
-  //         String sessionId, String trainerId) async =>
-  //     await _firestore
-  //         .collection(TRAINERSCOLLECTION)
-  //         .doc(trainerId)
-  //         .collection(SESSIONRECEIPTS)
-  //         .doc(sessionId)
-  //         .get()
-  //         .then((doc) =>
-  //             SessionReceiptModel.fromDocumentSnapshot(doc.data(), doc.id));
-
-  // Future<List<SessionReceiptModel>> getTrainerSessionReceipts(
-  //         String trainerId) async =>
-  //     await _firestore
-  //         .collection(TRAINERSCOLLECTION)
-  //         .doc(trainerId)
-  //         .collection(SESSIONRECEIPTS)
-  //         .get()
-  //         .then((query) => query.docs
-  //             .map((doc) =>
-  //                 SessionReceiptModel.fromDocumentSnapshot(doc.data(), doc.id))
-  //             .toList());
 
   Future<bool> updateSessionReceipt(SessionReceiptModel receipt) async {
     bool isSuccessful = false;
@@ -469,174 +383,24 @@ class FirebaseFutures {
     return isSuccessful;
   }
 
-//APPOINTMENT CRUD METHODS
-//CREATE
-//RETRIEVE SINGLE APPOINTMENT
-//RETRIEVE ALL APPOINTMENTS
-//UPDATE
-//DELETE
-  // Future<bool> createNewAppointment(AppointmentModel appointment) async {
-  //   bool isSuccessful = false;
-  //   try {
-  //     var data = AppointmentModel().toMap(appointment);
-  //     await _firestore
-  //         .collection(USERSCOLLECTION)
-  //         .doc(appointment.userID)
-  //         .collection(APPOINTMENTS)
-  //         .doc(appointment.appointmentID)
-  //         .set(data);
-  //     await _firestore
-  //         .collection(TRAINERSCOLLECTION)
-  //         .doc(appointment.trainerID)
-  //         .collection(APPOINTMENTS)
-  //         .doc(appointment.appointmentID)
-  //         .set(data);
-  //     isSuccessful = true;
-  //   } catch (exception) {
-  //     print(exception.toString());
-  //   }
-  //   return isSuccessful;
-  // }
-
-  // Future<AppointmentModel> getUserAppointment(
-  //         String appontmentId, String userId) async =>
-  //     await _firestore
-  //         .collection(USERSCOLLECTION)
-  //         .doc(userId)
-  //         .collection(APPOINTMENTS)
-  //         .doc(appontmentId)
-  //         .get()
-  //         .then((doc) =>
-  //             AppointmentModel.fromDocumentSnapshot(doc.data(), doc.id));
-
-  // Future<List<AppointmentModel>> getUserAppoinments(String userId) async =>
-  //     await _firestore
-  //         .collection(USERSCOLLECTION)
-  //         .doc(userId)
-  //         .collection(APPOINTMENTS)
-  //         .get()
-  //         .then((query) => query.docs
-  //             .map((doc) =>
-  //                 AppointmentModel.fromDocumentSnapshot(doc.data(), doc.id))
-  //             .toList());
-
-  // Future<AppointmentModel> getTrainerAppointment(
-  //         String appontmentId, String trainerId) async =>
-  //     await _firestore
-  //         .collection(TRAINERSCOLLECTION)
-  //         .doc(trainerId)
-  //         .collection(APPOINTMENTS)
-  //         .doc(appontmentId)
-  //         .get()
-  //         .then((doc) =>
-  //             AppointmentModel.fromDocumentSnapshot(doc.data(), doc.id));
-
-  // Future<List<AppointmentModel>> getTrainerAppoinments(
-  //         String trainerId) async =>
-  //     await _firestore
-  //         .collection(TRAINERSCOLLECTION)
-  //         .doc(trainerId)
-  //         .collection(APPOINTMENTS)
-  //         .get()
-  //         .then((query) => query.docs
-  //             .map((doc) =>
-  //                 AppointmentModel.fromDocumentSnapshot(doc.data(), doc.id))
-  //             .toList());
-
-  // Future<bool> updateAppointment(AppointmentModel appointment) async {
-  //   bool isSuccessful = false;
-  //   try {
-  //     var data = AppointmentModel().toMap(appointment);
-  //     await _firestore
-  //         .collection(USERSCOLLECTION)
-  //         .doc(appointment.userID)
-  //         .collection(APPOINTMENTS)
-  //         .doc(appointment.appointmentID)
-  //         .update(data);
-  //     await _firestore
-  //         .collection(TRAINERSCOLLECTION)
-  //         .doc(appointment.trainerID)
-  //         .collection(APPOINTMENTS)
-  //         .doc(appointment.appointmentID)
-  //         .update(data);
-  //     isSuccessful = true;
-  //   } catch (exception) {
-  //     print(exception.toString());
-  //   }
-  //   return isSuccessful;
-  // }
-
-  // Future<bool> deleteAppointment(AppointmentModel appointment) async {
-  //   bool isSuccessful = false;
-  //   try {
-  //     await _firestore
-  //         .collection(USERSCOLLECTION)
-  //         .doc(appointment.userID)
-  //         .collection(APPOINTMENTS)
-  //         .doc(appointment.appointmentID)
-  //         .delete();
-  //     await _firestore
-  //         .collection(TRAINERSCOLLECTION)
-  //         .doc(appointment.trainerID)
-  //         .collection(APPOINTMENTS)
-  //         .doc(appointment.appointmentID)
-  //         .delete();
-  //     isSuccessful = true;
-  //   } catch (exception) {
-  //     print(exception.toString());
-  //   }
-  //   return isSuccessful;
-  // }
-
-  // Future<bool> updateUserRating(String userId, double rating) async {
-  //   bool isSuccessful = false;
-  //   try {
-  //     List<int> stars = [];
-  //     double totalStars = stars.fold(
-  //         rating, (previousValue, element) => previousValue + element);
-  //     int numOfratings = await _firestore
-  //         .collection(USERSCOLLECTION)
-  //         .doc(userId)
-  //         .collection(REVIEWS)
-  //         .get()
-  //         .then((value) => value.docs.length);
-  //     await _firestore
-  //         .collection(USERSCOLLECTION)
-  //         .doc(userId)
-  //         .collection(REVIEWS)
-  //         .get()
-  //         .then((QuerySnapshot query) => query.docs
-  //             .map((DocumentSnapshot doc) => stars.add(doc['rating'])));
-
-  //     var score = ((20 * totalStars) / numOfratings) / 20;
-  //     await _firestore
-  //         .collection(USERSCOLLECTION)
-  //         .doc(userId)
-  //         .update({'rating': score});
-  //     isSuccessful = true;
-  //   } catch (exception) {
-  //     print(exception.toString());
-  //   }
-  //   return isSuccessful;
-  // }
-
   Future<bool> updateTrainerRating(String trainerId, double rating) async {
     bool isSuccessful = false;
-
     try {
       double stars = rating;
       int totalReviews = await _firestore
-          .collection(TRAINERSCOLLECTION)
-          .doc(trainerId)
-          .collection(REVIEWS)
-          .get()
-          .then((value) => value.docs.length + 1);
+              .collection(TRAINERSCOLLECTION)
+              .doc(trainerId)
+              .collection(REVIEWS)
+              .get()
+              .then((value) => value.docs.length + 1) ??
+          2;
 
       await _firestore
           .collection(TRAINERSCOLLECTION)
           .doc(trainerId)
           .collection(REVIEWS)
           .get()
+          // ignore: avoid_function_literals_in_foreach_calls
           .then((QuerySnapshot query) => query.docs.forEach((doc) {
                 stars += doc['rating'];
               }));
@@ -656,21 +420,6 @@ class FirebaseFutures {
     }
     return isSuccessful;
   }
-
-  // Future<bool> updateTrainerActiveMode(String uid, String mode) async {
-  //   bool _isSuccessful = false;
-  //   try {
-  //     await _firestore
-  //         .collection(TRAINERSCOLLECTION)
-  //         .doc(uid)
-  //         .update({'activeMode': mode});
-
-  //     _isSuccessful = true;
-  //   } catch (exception) {
-  //     print(exception.toString());
-  //   }
-  //   return _isSuccessful;
-  // }
 
   Future<bool> reportIssueWithSession(SessionModel session, bool isUser) async {
     bool _isSuccessful = false;
@@ -697,77 +446,6 @@ class FirebaseFutures {
     }
     return _isSuccessful;
   }
-
-  // //INCREMENT SESSION COUNT ON SESSION COMPLETETION
-  // void incrementTrainerSessionCount(String uid, String sessionMode) async {
-  //   bool _isSuccessful = false;
-  //   DocumentReference docRef =
-  //       _firestore.collection(TRAINERSCOLLECTION).doc(uid);
-  //   _firestore
-  //       .runTransaction((transaction) async {
-  //         DocumentSnapshot snapshot = await transaction.get(docRef);
-  //         if (!snapshot.exists) {
-  //           throw Exception('User does not exist!');
-  //         }
-  //         final mode = {
-  //           'VIRTUAL': 'virtualSessionsCompleted',
-  //           'IN PERSON': 'inPersonSessionsCompleted'
-  //         };
-
-  //         int newSessionModeCount = snapshot.get(mode[sessionMode]!) + 1;
-  //         int newSessionCount = snapshot.get('totalSessionsCompleted') + 1;
-
-  //         transaction.update(docRef, {
-  //           'totalSessionsCompleted': newSessionCount,
-  //           mode[sessionMode]!: newSessionModeCount
-  //         });
-  //         _isSuccessful = true;
-  //         return _isSuccessful;
-  //       })
-  //       .then((value) => print(value))
-  //       .catchError((e) => Get.snackbar('Error', '${e.message}',
-  //           backgroundColor: Colors.red, colorText: Colors.white));
-  // }
-
-  // void incrementTrainerCancellations(String uid) async {
-  //   bool _isSuccessful = false;
-  //   DocumentReference docRef =
-  //       _firestore.collection(TRAINERSCOLLECTION).doc(uid);
-  //   _firestore
-  //       .runTransaction((transaction) async {
-  //         DocumentSnapshot snapshot = await transaction.get(docRef);
-  //         if (!snapshot.exists) {
-  //           throw Exception('User does not exist!');
-  //         }
-  //         int newCancellationCount = snapshot.get('declinedSessions') + 1;
-  //         transaction
-  //             .update(docRef, {'declinedSessions': newCancellationCount});
-  //         _isSuccessful = true;
-  //         return _isSuccessful;
-  //       })
-  //       .then((value) => print(value))
-  //       .catchError((e) => Get.snackbar('Error', '${e.message}',
-  //           backgroundColor: Colors.red, colorText: Colors.white));
-  // }
-
-  // // UPDATE TRAINER RANKING
-  // void updateTrainerRank(String uid, int currentIndex) async {
-  //   DocumentReference trainerDocRef =
-  //       _firestore.collection(TRAINERSCOLLECTION).doc(uid);
-  //   final numOfTrainers = await _firestore.collection(TRAINERSCOLLECTION).get();
-  //   _firestore
-  //       .runTransaction((transaction) async {
-  //         DocumentSnapshot trainerSnapshot =
-  //             await transaction.get(trainerDocRef);
-  //         int trainers = numOfTrainers.docs.length;
-  //         int newRanking =
-  //             trainerSnapshot.get('totalSessionsCompleted') / trainers;
-  //         transaction.update(trainerDocRef, {'ranking': newRanking});
-  //         return newRanking;
-  //       })
-  //       .then((value) => null)
-  //       .catchError((e) => null);
-  // }
 
   Future getOnlineTrainers(sessionLengths) async {
     List<TrainerInPersonSessionModel> trainers = await _firestore

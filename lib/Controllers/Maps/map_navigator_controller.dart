@@ -118,7 +118,7 @@ class MapNavigatorController extends GetxController {
         mapType: type,
         origin: Coords(_myLocation.latitude!, _myLocation.longitude!),
         destination: destination);
-    navigateToCurrentSessionDetailsScreen();
+    // navigateToCurrentSessionDetailsScreen();
   }
 
   void openBanner(TrainerInPersonSessionController sessionController) {

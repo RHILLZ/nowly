@@ -1,6 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:nowly/Configs/Logo/logos.dart';
@@ -24,7 +23,7 @@ class AuthView extends GetView<AuthController> {
         child: Container(
           width: 100.w,
           padding: UIParameters.screenPadding,
-          decoration: BoxDecoration(gradient: authPagesGradient(context)),
+          decoration: BoxDecoration(gradient: onBoardingGradient(context)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -35,11 +34,12 @@ class AuthView extends GetView<AuthController> {
                   // Flexible(
                   //   child: AppLogo(),
                   // ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 15),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 15),
                     child: Text(
                       "We’ve been missing \nyou dearly. 😭",
-                      style: k20RegularTS,
+                      style: k20RegularTS.copyWith(
+                          color: Get.isDarkMode ? null : kSecondaryColor),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -48,23 +48,29 @@ class AuthView extends GetView<AuthController> {
                     margin: EdgeInsets.only(left: 3.w),
                     child: Column(children: [Logo.squareLogoLD(context, 30.h)]),
                   ),
-                  const Text(
+                  Text(
                     'By creating an account, you agree to our \nTerms and Conditions',
+                    style: kRegularTS.copyWith(
+                      color: Get.isDarkMode ? Colors.white : kSecondaryColor,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ],
               )),
               SizedBox(height: 2.h),
               AuthButton(
+                color: Get.isDarkMode ? Colors.white : kSecondaryColor,
                 onPressed: () {
                   // Get.toNamed(BaseScreen.routeName);
                   authController.emailOption(context);
                 },
-                title: '    Continue with Email    ',
+                title: 'Continue with Email',
+                iconPath: 'assets/icons/email.svg',
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: AuthButton(
+                  color: Get.isDarkMode ? Colors.white : kSecondaryColor,
                   onPressed: () {
                     controller.agreedToTerms
                         ? GoogleAuth().signInWithGoogle()
@@ -77,6 +83,7 @@ class AuthView extends GetView<AuthController> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: AuthButton(
+                  color: Get.isDarkMode ? Colors.white : kSecondaryColor,
                   onPressed: () {
                     controller.agreedToTerms
                         ? AppleAuth().signInWithApple()
@@ -108,7 +115,9 @@ class AuthView extends GetView<AuthController> {
                           softWrap: true,
                           text: TextSpan(
                               style: kRegularTS.copyWith(
-                                  fontSize: 14, height: 1.4),
+                                  fontSize: 14,
+                                  height: 1.4,
+                                  color: Get.isDarkMode ? null : kGray),
                               children: [
                                 const TextSpan(
                                     text:
@@ -116,7 +125,10 @@ class AuthView extends GetView<AuthController> {
                                 TextSpan(
                                     text: 'Terms of Services ',
                                     style: k10BoldTS.copyWith(
-                                        fontSize: 14, color: kPrimaryColor),
+                                        fontSize: 14,
+                                        color: UIParameters.isDarkMode(context)
+                                            ? kPrimaryColor
+                                            : kActiveButtonColor),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () =>
                                           controller.loadDoc('nowlyTOS.pdf')),
@@ -124,7 +136,10 @@ class AuthView extends GetView<AuthController> {
                                 TextSpan(
                                     text: 'Privacy Agreement',
                                     style: k10BoldTS.copyWith(
-                                        fontSize: 14, color: kPrimaryColor),
+                                        fontSize: 14,
+                                        color: UIParameters.isDarkMode(context)
+                                            ? kPrimaryColor
+                                            : kActiveButtonColor),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () =>
                                           controller.loadDoc('nowlyPA.pdf'))

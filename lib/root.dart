@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Screens/Auth/auth_view.dart';
 import 'package:nowly/Screens/Nav/base_screen.dart';
-import 'package:nowly/Screens/OnBoarding/user_registration_view.dart';
 
 import 'Controllers/controller_exporter.dart';
 
