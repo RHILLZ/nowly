@@ -10,7 +10,6 @@ import 'package:nowly/Screens/Sessions/session_complete_screen.dart';
 import 'package:nowly/Screens/Sessions/virtual_session_view.dart';
 import 'package:nowly/Services/service_exporter.dart';
 import 'package:nowly/Utils/logger.dart';
-import 'package:nowly/Widgets/BottomSheets/virtual_session_search_bottomsheet.dart';
 import 'package:nowly/Widgets/Dialogs/dialogs.dart';
 import 'package:nowly/keys.dart';
 import 'package:nowly/root.dart';
@@ -32,7 +31,9 @@ class AgoraController extends GetxController {
   String? _connectId;
   final _sessionController = SessionController().obs;
   final _isSearching = false.obs;
+  BuildContext? _context;
 
+//GETTERS AND SETTERS////////////////////////////////////////////////////////////
   get isSearching => _isSearching.value;
   get client => _client.value;
   get isJoined => _isJoined.value;
@@ -61,16 +62,20 @@ class AgoraController extends GetxController {
     ever(_currentSession, (callback) => isAccepted(_context));
   }
 
+//STREAM SESSION AND LISTEN FFOR CHANGES///////////////////////////////////////
   updateSession() async {
     AppLogger.i('UPDATING SESSION');
     _currentSession.bindStream(
         FirebaseStreams().streamSession(_currentSession.value.sessionID!));
   }
 
-  initAgora() async {
+//INIT THE AGORA CLIENT////////////////////////////////////////////////////////
+  initAgora(String sessionId) async {
+    final tokenUrl =
+        "http://192.168.1.29:5888/xdiAgoraTokenGenerator/$sessionId";
     AppLogger.i('HERE!!');
-    final agoraConnectionData =
-        AgoraConnectionData(appId: AGORA_ID, channelName: _channel.value);
+    final agoraConnectionData = AgoraConnectionData(
+        appId: AGORA_ID, channelName: _channel.value, tokenUrl: tokenUrl);
     final enabledPermission = [Permission.microphone, Permission.camera];
     _client.value = AgoraClient(
         agoraEventHandlers: AgoraEventHandlers(
@@ -84,32 +89,32 @@ class AgoraController extends GetxController {
         ),
         agoraConnectionData: agoraConnectionData,
         enabledPermission: enabledPermission);
-    _client.value!.sessionController.value.generatedToken = _token;
     await client.initialize();
   }
+////////////////////////////////////////////////////////////////////////////
 
-  BuildContext? _context;
-
+//START A VIRTUAL SESSION/////////////////////////////////////////////////////
   void startSession(
       BuildContext context, SessionModel session, AgoraController agora) async {
     _context = context;
     _isSearching.toggle();
-    String _agoraToken =
-        await AgoraService().generateAgoraToken(session.sessionID!);
-    _token = _agoraToken;
+    // String _agoraToken =
+    await AgoraService().generateAgoraToken(session.sessionID!);
+    // _token = _agoraToken;
     _channel.value = session.sessionID!;
     // ignore: unused_local_variable
     final sess = SessionModel().toMap(session);
-    final sessionCreated =
-        await initTrainerSearch(_agoraToken, session, context);
+    final sessionCreated = await initTrainerSearch('', session, context);
     if (sessionCreated) {
       updateSession();
     }
   }
 
+  //////////////////////////////////////////////////////////////////////////
+//LISTENING FOR SESSION TO BE ACCEPTED///////////////////////////////////////
   isAccepted(_context) async {
     if (_currentSession.value.isAccepted) {
-      await initAgora();
+      await initAgora(_currentSession.value.sessionID!);
       _isSearching.toggle();
       Get.off(() => VideoCallView(
             agoraController: this,
@@ -117,10 +122,12 @@ class AgoraController extends GetxController {
     }
     if (_currentSession.value.sessionStatus == 'unanswered') {
       _isSearching.toggle();
-      Get.dialog(Dialogs().noTrainersUnavailable(_context));
+      final result = Dialogs().noTrainersUnavailable(_context);
+      AppLogger.i(result);
     }
   }
 
+////////////////////////////////////////////////////////////////////////////
   initTrainerSearch(
       String agoraToken, SessionModel session, BuildContext context) async {
     final uid = session.userID!;
@@ -152,12 +159,11 @@ class AgoraController extends GetxController {
             )));
   }
 
+//CANCEL A SESSION
   cancel() {
     Get.back();
-    _timer!.cancel();
-    _client.value?.sessionController.dispose();
-    _client.value?.sessionController.endCall();
-    Get.off(() => const Root());
+    _timer!.isActive ? _timer!.cancel() : null;
+    Get.to(() => const Root());
   }
 
   void userJoin() {
@@ -173,9 +179,10 @@ class AgoraController extends GetxController {
     startSessionTimer();
     updateSession();
     _isJoined.toggle();
-    Get.isBottomSheetOpen != null ? Get.back() : null;
+    // Get.isBottomSheetOpen != null ? Get.back() : null;
   }
 
+//VIRTUAL SESSION TIMER/////////////////////////////////////////////////////////
   void startSessionTimer() {
     const sec = Duration(seconds: 1);
     _timer = Timer.periodic(sec, (timer) => _sessionTimer.value--);
@@ -198,6 +205,8 @@ class AgoraController extends GetxController {
     return numberStr;
   }
 
+//////////////////////////////////////////////////////////////////////////////
+//CHECK FOR END OF SESSION////////////////////////////////////////////////
   void checkSessionTimer() {
     var check = _sessionTimer.value == 0;
     if (check) {

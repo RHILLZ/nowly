@@ -4,16 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Models/Session/workout_type_model.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Screens/Map/session_details.dart';
-import 'package:nowly/Screens/Sessions/current_session_details_screen.dart';
-import 'package:nowly/Services/Firebase/firebase_futures.dart';
-import 'package:nowly/Services/Firebase/firebase_streams.dart';
-import 'package:nowly/Utils/logger.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'package:sizer/sizer.dart';
 import '../controller_exporter.dart';
 
 class TrainerInPersonSessionController extends GetxController {
@@ -22,22 +15,16 @@ class TrainerInPersonSessionController extends GetxController {
   final _isProcessing = false.obs;
   final _currentSession = SessionModel().obs;
   // ignore: non_constant_identifier_names
-  TrainerSessionController(
-      {required TrainerInPersonSessionModel trainerSessionModel}) {
-    trainerSession = trainerSessionModel;
-  }
+  // TrainerSessionController(
+  //     {required TrainerInPersonSessionModel trainerSessionModel}) {
+  //   trainerSession = trainerSessionModel;
+  // }
 
   set sessionTime(value) => _sessionTime.value = value;
   get sessionTime => _sessionTime.value;
   get isProcessing => _isProcessing.value;
   get currentSession => _currentSession.value;
 
-  @override
-  void onInit() {
-    // ignore: todo
-    // TODO: implement onInit
-    super.onInit();
-  }
 
   final selectedLength = SessionDurationAndCostModel(duration: '', cost: 0).obs;
   late TrainerInPersonSessionModel trainerSession;
@@ -46,6 +33,7 @@ class TrainerInPersonSessionController extends GetxController {
   final sessionDistandeDuratiom = Rxn<Leg>();
   final distanceAndDuraionText = Rxn<String>();
   final distanceText = ''.obs;
+  final durationText = ''.obs;
 
   final selectedWorkoutType =
       WorkoutType(imagePath: '', type: '', headerData: []).obs;
@@ -58,6 +46,7 @@ class TrainerInPersonSessionController extends GetxController {
     final text = '${details.duration.text} and ${details.distance.text} Away';
     distanceAndDuraionText.value = text;
     distanceText.value = details.distance.text;
+    durationText.value = details.duration.text;
   }
 
   void setTrainerDetails(TrainerInPersonSessionModel trainer) {

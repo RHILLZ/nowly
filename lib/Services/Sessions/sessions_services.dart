@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:get/get_connect.dart';
-import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Utils/logger.dart';
 
 class SessionServices extends GetConnect {

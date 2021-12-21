@@ -258,9 +258,13 @@ class FirebaseFutures {
     return isSuccessful;
   }
 
-  Future<bool> updateGoals(String userId, List<String> goals) async {
+  Future<bool> updateGoals(String userId, List goals) async {
     bool isSuccessful = false;
+    List _goals = [];
     try {
+      for (var element in goals) {
+        _goals.add(element);
+      }
       await _firestore
           .collection(USERSCOLLECTION)
           .doc(userId)

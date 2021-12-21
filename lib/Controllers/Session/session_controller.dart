@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nowly/Configs/Logo/logos.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Screens/Sessions/current_session_details_screen.dart';
@@ -23,6 +21,7 @@ class SessionController extends GetxController {
   final _currentSession = SessionModel().obs;
   Timer? _timer;
   final RxInt _sessionTime = 0.obs;
+  BuildContext? _context;
 
   //SESSION PARMAS
   final _sessionMode = SessionModeModel(id: '', mode: '').obs;
@@ -32,59 +31,7 @@ class SessionController extends GetxController {
       WorkoutType(imagePath: '', type: '', headerData: []).obs;
   final _genderPref = ''.obs;
   final _sessionIssueContext = ''.obs;
-  final _sessionEta =
-      Get.put(TrainerInPersonSessionController()).sessionDistandeDuratiom;
-
-  set sessionIssueContext(value) => _sessionIssueContext.value = value;
-  get isProcessing => _isProcessing.value;
-
-  void startSessionTimer() {
-    const sec = Duration(seconds: 1);
-    _timer = Timer.periodic(sec, (timer) => _sessionTime.value--);
-  }
-
-  buildTimer() {
-    final String minutes = _formatNumber(_sessionTime.value ~/ 60);
-    final String seconds = _formatNumber(_sessionTime.value % 60);
-    return Text('$minutes : $seconds',
-        style: TextStyle(fontSize: 60.sp, color: kPrimaryColor));
-  }
-
-  String _formatNumber(int number) {
-    String numberStr = number.toString();
-    if (number < 10) {
-      numberStr = '0' + numberStr;
-    }
-    return numberStr;
-  }
-
-  @override
-  void onInit() {
-    super.onInit();
-    ever(_currentSession, (callback) => checkAccepted());
-    ever(_sessionEta, (callback) => updateEta());
-    _fetchWorkOutData();
-    _fetchSessionDurationAndCosts();
-    _fethSessionTypes();
-  }
-
-  get currentSession => _currentSession.value;
-  get sessionTime => _sessionTime.value;
-  get user => _user.value;
-  get trainer => _trainer.value;
-  get sessionMode => _sessionMode.value;
-  get sessionDurationAndCost => _sessionDurationAndCost.value;
-  get sessionWorkOutType => _sessionWorkOutType.value;
-  get genderPref => _genderPref.value;
-  get sessionEta => _sessionEta.value;
-
-  set trainer(value) => _trainer.value = value;
-  set user(value) => _user.value = value;
-  set sessionMode(value) => _sessionMode.value = value;
-  set sessionDurationAndCost(value) => _sessionDurationAndCost.value = value;
-  set sessionWorkOutType(value) => _sessionWorkOutType.value = value;
-  set genderPref(value) => _genderPref.value = value;
-  set sessionTime(value) => _sessionTime.value = value;
+  final _sessionEta = ''.obs;
 
   var isSessionTypeLoaded = false.obs;
   var isSessionLengthsLoaded = false.obs;
@@ -97,7 +44,59 @@ class SessionController extends GetxController {
   var sessionModes = <SessionModeModel>[].obs;
 
   final showTimes = false.obs;
+//GETTERS AND SETTERS////////////////////////////////////////////////////////
+  get isProcessing => _isProcessing.value;
+  get currentSession => _currentSession.value;
+  get sessionTime => _sessionTime.value;
+  get user => _user.value;
+  get trainer => _trainer.value;
+  get sessionMode => _sessionMode.value;
+  get sessionDurationAndCost => _sessionDurationAndCost.value;
+  get sessionWorkOutType => _sessionWorkOutType.value;
+  get genderPref => _genderPref.value;
+  get sessionEta => _sessionEta.value;
 
+  set sessionEta(value) => _sessionEta.value = value;
+  set sessionIssueContext(value) => _sessionIssueContext.value = value;
+  set trainer(value) => _trainer.value = value;
+  set user(value) => _user.value = value;
+  set sessionMode(value) => _sessionMode.value = value;
+  set sessionDurationAndCost(value) => _sessionDurationAndCost.value = value;
+  set sessionWorkOutType(value) => _sessionWorkOutType.value = value;
+  set genderPref(value) => _genderPref.value = value;
+  set sessionTime(value) => _sessionTime.value = value;
+//SESSION CLOCK//////////////////////////////////////////////////////////////
+  void startSessionTimer() {
+    const sec = Duration(seconds: 1);
+    _timer = Timer.periodic(sec, (timer) => _sessionTime.value--);
+  }
+
+  String _formatNumber(int number) {
+    String numberStr = number.toString();
+    if (number < 10) {
+      numberStr = '0' + numberStr;
+    }
+    return numberStr;
+  }
+
+  buildTimer() {
+    final String minutes = _formatNumber(_sessionTime.value ~/ 60);
+    final String seconds = _formatNumber(_sessionTime.value % 60);
+    return Text('$minutes : $seconds',
+        style: TextStyle(fontSize: 60.sp, color: kPrimaryColor));
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    ever(_currentSession, (callback) => checkAccepted());
+    ever(_sessionEta, (callback) => updateEta());
+    _fetchWorkOutData();
+    _fetchSessionDurationAndCosts();
+    _fethSessionTypes();
+  }
+
+//INITIAL METHODS AND LOADERS//////////////////////////////////////////////////
   void _fetchWorkOutData() {
     allWorkoutTypes.addAll(WorkoutType.types);
     _sessionWorkOutType.value = allWorkoutTypes[0];
@@ -203,6 +202,7 @@ class SessionController extends GetxController {
     await submitTrainerRating(session.trainerID!, starRating);
   }
 
+//CREATE SESSION RECIEPT ON COMPLETE///////////////////////////////////////////
   createSessionReceipt(SessionModel session) async {
     final status = session.reportedIssue! ? 'Complete With ISSUE' : 'Completed';
     final receipt = SessionReceiptModel(
@@ -234,6 +234,7 @@ class SessionController extends GetxController {
 
   @override
   void onClose() {
+    // ignore: todo
     // TODO: implement onClose
     super.onClose();
     _timer!.cancel();
@@ -246,6 +247,7 @@ class SessionController extends GetxController {
         const Duration(seconds: 3), () => qrLoaded.value = true);
   }
 
+//ENGAGE A TRAINER FOR IN PERSON SESSION////////////////////////////////////////
   engageTrainer(SessionModel sess, String tokenId, BuildContext context) async {
     _isProcessing.toggle();
     _context = context;
@@ -255,6 +257,7 @@ class SessionController extends GetxController {
     if (sessionCreated) {
       _currentSession
           .bindStream(FirebaseStreams().streamSession(sess.sessionID!));
+      await Future.delayed(const Duration(seconds: 2), () => null);
       OneSignal.shared.postNotification(OSCreateNotification(
           playerIds: [tokenId],
           content: 'In Person',
@@ -272,16 +275,15 @@ class SessionController extends GetxController {
     }
   }
 
-  BuildContext? _context;
-
+//CHECK IF SESSION IS ACCEPTED AFTER ITS CREATED////////////////////////////////
   checkAccepted() {
     if (_currentSession.value.isAccepted == true &&
         !_currentSession.value.isScanned) {
       _isProcessing.toggle();
-      Get.off(() => CurrentSessionDetailsScreen(
+      Get.to(() => CurrentSessionDetailsScreen(
             session: _currentSession.value,
             mapNavController: Get.find<MapNavigatorController>(),
-            trainerSessionC: Get.put(TrainerInPersonSessionController()),
+            trainerSessionC: Get.find<TrainerInPersonSessionController>(),
             sessionController: this,
           ));
       return;
@@ -294,24 +296,19 @@ class SessionController extends GetxController {
     trainerUnavailable();
   }
 
+//FIRES WHEN TRAIINER IS UNAVAILABLE///////////////////////////////////////////
   trainerUnavailable() {
     Future.delayed(const Duration(seconds: 15), () {
       if (_currentSession.value.isAccepted == false) {
         _isProcessing.toggle();
-        Get.dialog(Dialogs().trainerUnavailable(_context));
-        // Get.snackbar('Trainer Unavailable',
-        //     'Trainer has not accepted request, Please try again or choose another trainer.',
-        //     icon: Logo.mark(4.h),
-        //     backgroundColor: kPrimaryColor,
-        //     colorText: Colors.white,
-        //     dismissDirection: SnackDismissDirection.VERTICAL,
-        //     duration: const Duration(seconds: 5));
+        Dialogs().trainerUnavailable(_context);
       }
     });
   }
 
+//UPDATE ETA WHILE EN ROUTE/////////////////////////////////////////////////////
   updateEta() async {
-    final eta = _sessionEta.value!.duration.text;
+    final eta = _sessionEta.value;
     AppLogger.i('ETA: $eta');
 
     if (_currentSession.value.sessionID != null) {
@@ -319,10 +316,11 @@ class SessionController extends GetxController {
     }
   }
 
+//END SESSION//////////////////////////////////////////////////////////////////
   endSession(context) async {
-    await Get.dialog(Dialogs().sessionCancellation(
+    await Dialogs().sessionCancellation(
         context,
         () => Get.off(() => SessionCompleteScreen(
-            session: _currentSession.value, sessionController: this))));
+            session: _currentSession.value, sessionController: this)));
   }
 }

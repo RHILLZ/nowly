@@ -54,7 +54,7 @@ class ProfileDetailsScreen extends GetView<UserController> {
                     ),
                     const Divider(height: 0),
                     ListTile(
-                      title: Text('NO. OF SESSIONS', style: k16BoldTS),
+                      title: const Text('NO. OF SESSIONS', style: k16BoldTS),
                       trailing: Text('${user.sessionsCompleted}',
                           style: k16RegularTS),
                     ),
@@ -83,7 +83,10 @@ class ProfileDetailsScreen extends GetView<UserController> {
                           horizontal: kScreenPadding, vertical: 10),
                       child: CustomOutLinedButton(
                         color: getWidgetSelectedColor(context),
-                        onPressed: () => Get.find<AuthController>().signOut(),
+                        onPressed: () {
+                          Get.find<AuthController>().signOut();
+                          Get.back();
+                        },
                         title: 'LOG OUT',
                       ),
                     ),

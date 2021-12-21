@@ -4,7 +4,6 @@ import 'package:nowly/Configs/Logo/logos.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
-import 'package:nowly/Screens/Messaging/messaging_screen.dart';
 import 'package:nowly/Screens/Sessions/live_session_screen.dart';
 import 'package:nowly/Widgets/Common/profile_image.dart';
 import 'package:nowly/Widgets/Sessions/active_session_banner.dart';
@@ -12,7 +11,7 @@ import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:sizer/sizer.dart';
 
 class CurrentSessionDetailsScreen extends StatelessWidget {
-  CurrentSessionDetailsScreen(
+  const CurrentSessionDetailsScreen(
       {Key? key,
       required SessionModel session,
       required MapNavigatorController mapNavController,
@@ -20,7 +19,6 @@ class CurrentSessionDetailsScreen extends StatelessWidget {
       required SessionController sessionController})
       : _sessionController = sessionController,
         _mapNavController = mapNavController,
-        _trainerSessionC = trainerSessionC,
         _session = session,
         super(key: key);
 
@@ -28,7 +26,6 @@ class CurrentSessionDetailsScreen extends StatelessWidget {
   final SessionModel _session;
   final MapNavigatorController _mapNavController;
   final SessionController _sessionController;
-  final TrainerInPersonSessionController _trainerSessionC;
 
   @override
   Widget build(BuildContext context) {

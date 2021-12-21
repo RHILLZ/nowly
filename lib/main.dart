@@ -8,7 +8,6 @@ import 'package:nowly/Controllers/Theme/theme_controller.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Routes/pages.dart';
 import 'package:nowly/Services/service_exporter.dart';
-import 'package:nowly/Utils/logger.dart';
 import 'package:sizer/sizer.dart';
 
 void main() async {
@@ -17,17 +16,16 @@ void main() async {
   await initServices();
   await GetStorage.init();
   InitialBinding().dependencies();
-  BaseScreenBinding().dependencies();
-  runApp(NowlyApp());
+  runApp(const NowlyApp());
 }
 
 class NowlyApp extends StatelessWidget {
-  NowlyApp({Key? key}) : super(key: key);
-  final _user = Get.put(AuthController(), permanent: true).firebaseUser;
+  const NowlyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    AppLogger.i(_user);
+    final AuthController _authController = Get.put(AuthController());
+
     return Sizer(builder: (ctx, _, deviceType) {
       return GetMaterialApp(
         title: 'Nowly',
@@ -35,7 +33,8 @@ class NowlyApp extends StatelessWidget {
         darkTheme: Get.find<ThemeController>().getDarkTheme(),
         debugShowCheckedModeBanner: false,
         getPages: Pages.routes,
-        initialRoute: _user != null ? Pages.ROOT : Pages.INITIAL,
+        initialRoute:
+            _authController.firebaseUser != null ? Pages.ROOT : Pages.INITIAL,
         initialBinding: BaseScreenBinding(),
       );
     });
@@ -43,7 +42,7 @@ class NowlyApp extends StatelessWidget {
 }
 
 initServices() async {
-  await Get.putAsync(() => OneSignalService().init());
+  await Get.putAsync(() => OneSignalService().init(), permanent: true);
   // ignore: avoid_print
   print('All services started...');
 }

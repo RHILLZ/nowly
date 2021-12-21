@@ -11,6 +11,7 @@ import 'package:stripe_payment/stripe_payment.dart';
 import '../controller_exporter.dart';
 
 class StripeController extends GetxController {
+  //PAYMENT VARIABLES//////////////////////////////////////////////
   final _cardNum = ''.obs;
   final _cardExpMonth = 0.obs;
   final _cardExpYear = 0.obs;
@@ -31,7 +32,15 @@ class StripeController extends GetxController {
   final _paymentIntentID = ''.obs;
   final _expM = 0.obs;
   final _expY = 0.obs;
+  final _activePaymentMethod = UserPaymentMethodModel(
+    id: '',
+    last4: '',
+    exp: '',
+    brand: '',
+  ).obs;
+  final _paymentMethods = <UserPaymentMethodModel>[].obs;
 
+//GETTERS AND SETTERS//////////////////////////////////////////////////////////
   set cardNum(value) => _cardNum.value = value;
   set cardExpMonth(value) => _cardExpMonth.value = value;
   set cardExpYear(value) => _cardExpYear.value = value;
@@ -63,14 +72,7 @@ class StripeController extends GetxController {
   get activePaymentMethod => _activePaymentMethod.value;
   get paymentMethods => _paymentMethods;
 
-  final _activePaymentMethod = UserPaymentMethodModel(
-    id: '',
-    last4: '',
-    exp: '',
-    brand: '',
-  ).obs;
-  final _paymentMethods = <UserPaymentMethodModel>[].obs;
-
+//INIT STRIPE CUSTOMER FLOW////////////////////////////////////////////////////
   initStripeCustomerFlow() async {
     _isProcessing.toggle();
     _loadMessage.value = 'Connecting with stripe...';
@@ -111,6 +113,8 @@ class StripeController extends GetxController {
     }
   }
 
+////////////////////////////////////////////////////////////////////////////
+  ///
   loadScreen() => Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -129,6 +133,7 @@ class StripeController extends GetxController {
         ],
       );
 
+//CREATE A PAYMENT METHOD ON STRIPE/////////////////////////////////////////////
   createPaymentMethod() async {
     CreditCard card = CreditCard();
     card.number = _cardNum.value;
@@ -148,6 +153,8 @@ class StripeController extends GetxController {
     return result;
   }
 
+////////////////////////////////////////////////////////////////////////////////
+  ///LINK PAYMENT METHOD TO STRIPE ACCOUNT////////////////////////////////////////
   _linkStripePaymentMethod() async {
     bool _linkedAccount = false;
     final customerID = _user.stripeCustomerId ?? _stripeCustomerID.value;
@@ -161,6 +168,7 @@ class StripeController extends GetxController {
     }
   }
 
+///////////////////////////////////////////////////////////////////////////////
   addNewPaymentMethod() async {
     _isProcessing.toggle();
     _loadMessage.value = 'Creating payment method with stripe...';
@@ -184,6 +192,7 @@ class StripeController extends GetxController {
     }
   }
 
+//GET STRIPE ACCOUNT DETAILS////////////////////////////////////////////////////
   getAccountDetails() async {
     _isGettingAccount.toggle();
     _loadMessage.value = 'Getting account details...';
@@ -213,11 +222,14 @@ class StripeController extends GetxController {
     }
   }
 
+///////////////////////////////////////////////////////////////////////////////
+//SET THE ACTIVE PAYMENT METHOD///////////////////////////////////////////////
   setActivePaymentId(activePaymentId) async {
     await FirebaseFutures()
         .setUserActiveStripePaymentMethodId(_user.id, activePaymentId);
   }
 
+/////////////////////////////////////////////////////////////////////////////
   @override
   void onInit() {
     // ignore: todo
@@ -227,6 +239,7 @@ class StripeController extends GetxController {
     _isProcessing.value = false;
   }
 
+//CHECK IF THE USER SHOULD FETCH THE STRIPE ACCOUNT//////////////////////////////
   shouldGetStripeAccount() {
     if (_user.stripeCustomerId != null && _user.stripeCustomerId.isNotEmpty) {
       getAccountDetails();
@@ -234,6 +247,7 @@ class StripeController extends GetxController {
     }
   }
 
+//CREATE A PAYMENT INTENT /////////////////////////////////////////////////////
   createPaymentIntent(int amount, String desc, String connectId) async {
     _isProcessing.toggle();
     _loadMessage.value = 'Initiating payment intent...';

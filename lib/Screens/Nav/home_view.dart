@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
-import 'package:nowly/Models/models_exporter.dart';
-import 'package:nowly/Screens/OnBoarding/user_registration_view.dart';
-import 'package:nowly/Screens/Sessions/location_selection_screen.dart';
-import 'package:nowly/Screens/Sessions/session_complete_screen.dart';
 import 'package:nowly/Screens/Sessions/session_confirmation_screen.dart';
 import 'package:nowly/Utils/logger.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
@@ -18,8 +14,6 @@ class UserHomeView extends StatelessWidget {
   // ignore: unused_field
   final UserController _userController = Get.put(UserController());
   final FilterController _filterController = Get.put(FilterController());
-  final MapController _mapController = Get.put(MapController());
-  final SessionListController _sController = Get.put(SessionListController());
 
   @override
   Widget build(BuildContext context) {
@@ -148,10 +142,10 @@ class UserHomeView extends StatelessWidget {
                           final _ = _sessionController;
                           // ignore: unused_local_variable
 
-                          // Get.to(() => SessionConfirmationScreen());
-                          Get.to(() => SessionCompleteScreen(
-                              session: SessionModel.dummySessionModel,
-                              sessionController: _sessionController));
+                          Get.to(() => SessionConfirmationScreen());
+                          // Get.to(() => SessionCompleteScreen(
+                          //     session: SessionModel.dummySessionModel,
+                          //     sessionController: _sessionController));
                         },
                       )
                     ],

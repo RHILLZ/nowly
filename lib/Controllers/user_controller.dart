@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Services/Firebase/firebase_futures.dart';
 import 'package:nowly/Services/Firebase/firebase_streams.dart';
@@ -19,18 +20,20 @@ class UserController extends GetxController {
   RxList<SessionReceiptModel> sessionReceipts = <SessionReceiptModel>[].obs;
   RxList<SessionModel> scheduledSessions = <SessionModel>[].obs;
   final visibleAppointIndex = 0.obs;
+  final _isUploading = false.obs;
 
   //FROM MYFITNESSGOALSCONTROLLER
   final _allFitnessGoals = <FitnessGoals>[].obs;
   final _myFavoriteWorkouts = <WorkoutType>[].obs;
   final _isChanged = false.obs;
-  final _selectedGoals = [].obs;
+  final _selectedGoals = <String>[].obs;
 
   get user => _user.value;
   get allFitnessGoals => _allFitnessGoals;
   get myFavoriteWorkouts => _myFavoriteWorkouts;
   get selectedGoals => _selectedGoals;
   get isChanged => _isChanged.value;
+  get isUploading => _isUploading.value;
 
   set myWeight(value) => _myWeight.value = value;
   set isChanged(value) => _isChanged.value = value;
@@ -42,8 +45,25 @@ class UserController extends GetxController {
     _user.bindStream(FirebaseStreams().streamUser(uid));
     _getAllFitnessGoals();
     Future.delayed(const Duration(seconds: 2), () => checkOneSignalId());
-    Get.put(SessionController()).user = _user.value;
     sessionReceipts.value = await FirebaseFutures().getSessionReceipts(uid);
+  }
+
+//USER PROFILE METHODS AMD CONFIG//////////////////////////////////////////////////////
+  updateGoals() async {
+    _isUploading.toggle();
+    final result =
+        await FirebaseFutures().updateGoals(_user.value.id!, selectedGoals);
+    if (result) {
+      _isUploading.toggle();
+      _isChanged.value = false;
+      Get.snackbar('Goals Uploaded Successfully', '',
+          backgroundColor: kActiveColor);
+    } else {
+      _isUploading.toggle();
+      Get.snackbar('Something went wrong',
+          'could not upload goals at the moment. Please try again.',
+          backgroundColor: kerroreColor, colorText: Colors.white);
+    }
   }
 
   @override
@@ -53,7 +73,9 @@ class UserController extends GetxController {
   }
 
   setGoals() {
-    _user.value.goals!.forEach((goal) => _selectedGoals.add(goal));
+    for (var goal in _user.value.goals!) {
+      _selectedGoals.add(goal);
+    }
   }
 
   changed() {

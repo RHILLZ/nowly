@@ -20,8 +20,6 @@ import 'package:nowly/Screens/Profile/user_profile_screen.dart';
 import 'package:nowly/Screens/Sessions/current_session_details_screen.dart';
 import 'package:nowly/Screens/Sessions/feedback.dart';
 import 'package:nowly/Screens/Sessions/live_session_screen.dart';
-import 'package:nowly/Screens/Sessions/location_selection_screen.dart';
-import 'package:nowly/Screens/Sessions/scheduled_session_confirmation_screen.dart';
 import 'package:nowly/Screens/Sessions/session_complete_screen.dart';
 import 'package:nowly/Screens/Sessions/session_confirmation_screen.dart';
 import 'package:nowly/Screens/Sessions/session_confirmation_screen_2.dart';
@@ -69,15 +67,18 @@ class Pages {
         page: () => SessionHistoryAndUpcomingView()),
     GetPage(name: _Paths.PROFILE, page: () => const UserProfileScreen()),
     GetPage(
+        binding: BaseScreenBinding(),
         name: _Paths.SESSION_CONFIRMATION,
         page: () => SessionConfirmationScreen()),
     GetPage(
+        binding: BaseScreenBinding(),
         name: _Paths.SESSION_CONFIRMATION_2,
         page: () => SessionConfirmationScreen2(
               trainerInPersonSessionController:
                   TrainerInPersonSessionController(),
             )),
     GetPage(
+        binding: BaseScreenBinding(),
         name: _Paths.SESSION_COMPLETE_SCREEN,
         page: () => SessionCompleteScreen(
             session: SessionModel(), sessionController: SessionController())),
@@ -85,16 +86,16 @@ class Pages {
         name: _Paths.SESSION_IN_PROGRESS,
         page: () => CurrentSessionDetailsScreen(
             session: SessionModel(),
-            mapNavController: MapNavigatorController(),
-            trainerSessionC: TrainerInPersonSessionController(),
-            sessionController: SessionController()),
+            mapNavController: Get.find<MapNavigatorController>(),
+            trainerSessionC: Get.find<TrainerInPersonSessionController>(),
+            sessionController: Get.find<SessionController>()),
         binding: InitialBinding()),
     GetPage(
         name: _Paths.LIVE_SESSION,
         page: () => LiveSessionView(
               controller: SessionController(),
             ),
-        binding: InitialBinding()),
+        binding: BaseScreenBinding()),
 
     GetPage(
         name: _Paths.ADD_PAYMENT_METHOD,
@@ -104,8 +105,10 @@ class Pages {
     // GetPage(
     //     name: _Paths.IN_PERSON_SESSION, page: () => const LiveSessionView()),
     GetPage(
+        binding: BaseScreenBinding(),
         name: _Paths.VIRTUAL_SESSION,
-        page: () => VideoCallView(agoraController: AgoraController())),
+        page: () =>
+            VideoCallView(agoraController: Get.find<AgoraController>())),
     GetPage(
         name: _Paths.PROFILE_DETAILS, page: () => const ProfileDetailsScreen()),
     GetPage(
@@ -113,9 +116,13 @@ class Pages {
         page: () => UserRegistrationView(),
         binding: RegistrationBinding()),
 
-    GetPage(name: _Paths.GOALS_SCREEN, page: () => MyGoalScreen()),
+    GetPage(
+        name: _Paths.GOALS_SCREEN,
+        page: () => MyGoalScreen(),
+        binding: BaseScreenBinding()),
     GetPage(name: _Paths.INFORMATION, page: () => UserInfoScreen()),
     GetPage(
+        binding: BaseScreenBinding(),
         name: _Paths.MESSENGER_SCREEN,
         page: () => MessagingScreen(session: SessionModel())),
   ];

@@ -44,7 +44,7 @@ class AuthController extends GetxController {
       await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
 
-      Get.off(UserRegistrationView());
+      Get.to(UserRegistrationView());
 
       //CHECK ACCOUNT TYPE THEN NAVIGATE TO APPROPIATE SCREEN
     } on FirebaseAuthException catch (e) {
@@ -58,7 +58,7 @@ class AuthController extends GetxController {
   void login(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-      Get.off(const Root());
+      Get.to(() => const Root());
     } on FirebaseAuthException catch (e) {
       Get.snackbar('Problem signing in user', e.message!,
           snackPosition: SnackPosition.BOTTOM);

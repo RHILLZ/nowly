@@ -7,6 +7,7 @@ import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/Session/workout_type_model.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Screens/Sessions/session_confirmation_screen_2.dart';
+import 'package:nowly/Widgets/Common/profile_image.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:sizer/sizer.dart';
 
@@ -68,24 +69,12 @@ class SessionDetails extends StatelessWidget {
             child: Material(
               type: MaterialType.transparency,
               child: Column(
-                // crossAxisAlignment: WrapCrossAlignment.center,
-                // alignment: WrapAlignment.center,
                 children: [
                   Row(
                     children: [
-                      CircleAvatar(
-                        backgroundImage:
-                            _sessionDetails.trainer.profilePicURL != null
-                                ? NetworkImage(
-                                    _sessionDetails.trainer.profilePicURL!)
-                                : null,
-                        child: _sessionDetails.trainer.profilePicURL != null
-                            ? null
-                            : Icon(
-                                Icons.person,
-                                size: 40.sp,
-                              ),
-                        maxRadius: 3.h,
+                      ProfileImage(
+                        imageURL: _sessionDetails.trainer.profilePicURL,
+                        rad: 3,
                       ),
                       SizedBox(
                         width: 3.w,
@@ -99,10 +88,6 @@ class SessionDetails extends StatelessWidget {
                             '${_sessionDetails.trainer.firstName} ${_sessionDetails.trainer.lastName}',
                             style: k18BoldTS,
                           ),
-                          // Text(
-                          //   _sessionDetails.trainer.address ?? '',
-                          //   style: kRegularTS,
-                          // )
                         ],
                       ),
                       Expanded(

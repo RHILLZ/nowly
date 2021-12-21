@@ -10,6 +10,7 @@ class Root extends GetWidget<AuthController> {
 
   @override
   Widget build(BuildContext context) {
-    return controller.firebaseUser != null ? BaseScreen() : AuthView();
+    final _user = Get.find<AuthController>().firebaseUser;
+    return _user != null ? BaseScreen() : AuthView();
   }
 }

@@ -6,6 +6,7 @@ import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Screens/Stripe/add_payment_methods.dart';
+import 'package:nowly/Utils/logger.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 import 'package:sizer/sizer.dart';
@@ -19,7 +20,7 @@ class SessionConfirmationScreen2 extends StatelessWidget {
         super(key: key);
 
   static const routeName = '/session_confirmation_2';
-  final SessionController _controller = Get.find();
+  final SessionController _controller = Get.put(SessionController());
   final UserController _userController = Get.find();
   final StripeController _stripeController = Get.put(StripeController());
   final MapNavigatorController _mapNavigatorController =
@@ -52,6 +53,7 @@ class SessionConfirmationScreen2 extends StatelessWidget {
                               ? 'CANCEL'
                               : 'I’M SO PUMPED',
                           onTap: () {
+                            // ;
                             final userName =
                                 '${_userController.user.firstName} ${_userController.user.lastName}';
                             final trainerName =
@@ -84,21 +86,17 @@ class SessionConfirmationScreen2 extends StatelessWidget {
                                     _sessionDetails.trainer.profilePicURL,
                                 trainerStripeID:
                                     _sessionDetails.trainer.stripeAccountId,
-                                eta: _controller.sessionEta.duration.text);
+                                eta: _trainerInPersonSessionController
+                                    .durationText.value);
                             final durTimer = _controller
                                 .sessionDurationAndCost.duration
                                 .substring(0, 2);
                             _controller.sessionTime = int.parse(durTimer) * 60;
 
                             final tokenId = _sessionDetails.trainer.oneSignalId;
-
+                            AppLogger.i('RLX!');
                             _controller.engageTrainer(
                                 _session, tokenId!, context);
-                            // _mapNavigatorController.openAvialableMaps(
-                            //     sessionController:
-                            //         _trainerInPersonSessionController);
-                            // _mapNavigatorController
-                            //     .navigateToCurrentSessionDetailsScreen();
                           }))
                   : Padding(
                       padding: UIParameters.screenPadding,
@@ -222,11 +220,7 @@ class SessionConfirmationScreen2 extends StatelessWidget {
 
                         Row(
                           children: [
-                            const Expanded(
-                                child: FittedBox(
-                                    alignment: Alignment.centerLeft,
-                                    fit: BoxFit.scaleDown,
-                                    child: Text('PAYMENT METHOD'))),
+                            const Expanded(child: Text('PAYMENT METHOD')),
                             TextButton(
                               onPressed: () {
                                 Get.to(AddPaymentMethodsScreen());
@@ -242,14 +236,12 @@ class SessionConfirmationScreen2 extends StatelessWidget {
                                               CrossAxisAlignment.center,
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                              FittedBox(
-                                                  fit: BoxFit.contain,
-                                                  child: _stripeController
-                                                              .activePaymentMethod
-                                                              .brand ==
-                                                          'visa'
-                                                      ? VISAIMAGE
-                                                      : MASTERCARDIMAGE),
+                                              _stripeController
+                                                          .activePaymentMethod
+                                                          .brand ==
+                                                      'visa'
+                                                  ? VISAIMAGE
+                                                  : MASTERCARDIMAGE,
                                               SizedBox(
                                                 width: 2.w,
                                               ),

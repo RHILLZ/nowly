@@ -4,7 +4,7 @@ import 'package:nowly/Controllers/controller_exporter.dart';
 class BaseScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.put(SessionController());
+    Get.put(() => SessionController(), permanent: true);
     Get.put(() => StripeController());
 
     //for map screen
@@ -14,8 +14,9 @@ class BaseScreenBinding extends Bindings {
     Get.lazyPut(() => SessionScheduleController());
     Get.lazyPut(() => FilterController());
 
-    // Get.lazyPut(() => AgoraController());
+    Get.lazyPut(() => AgoraController());
     Get.put(() => UserController());
     Get.put(() => MapNavigatorController());
+    Get.lazyPut(() => MessagingController());
   }
 }

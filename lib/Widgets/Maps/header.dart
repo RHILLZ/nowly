@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Screens/Map/search_dialog.dart';
-import '../widget_exporter.dart';
 
 class MapHeader extends StatelessWidget {
   const MapHeader({
