@@ -48,7 +48,7 @@ class VirtualSessionInitSearch extends StatelessWidget {
               Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextButton.icon(
-                      onPressed: () => _agoraController.cancel(),
+                      onPressed: () => null,
                       icon: const Icon(Icons.close),
                       label: const Text('cancel')))
             ]));

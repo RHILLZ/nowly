@@ -25,6 +25,8 @@ class SessionModel {
   String? sessionWorkoutTypeImagePath;
   int? sessionChargedAmount;
   List? sessionCoordinates;
+  bool salesTaxApplied;
+  double? sessionSalesTax;
   String sessionStatus;
   String? eta;
   bool isScanned;
@@ -53,6 +55,8 @@ class SessionModel {
       this.sessionWorkoutType,
       this.sessionWorkoutTypeImagePath,
       this.sessionChargedAmount,
+      this.salesTaxApplied = false,
+      this.sessionSalesTax,
       this.sessionCoordinates,
       this.eta,
       this.isScanned = false,
@@ -85,6 +89,8 @@ class SessionModel {
         sessionWorkoutType: doc['sessionWorkoutType'],
         sessionWorkoutTypeImagePath: doc['sessionWorkoutTypeImagePath'],
         sessionChargedAmount: doc['sessionChargedAmount'],
+        salesTaxApplied: doc['salesTaxApplied'],
+        sessionSalesTax: doc['sessionSalesTax'],
         sessionCoordinates: doc['sessionCoordinates'],
         eta: doc['eta'],
         isScanned: doc['isScanned'],
@@ -116,6 +122,8 @@ class SessionModel {
     data['sessionWorkoutType'] = session.sessionWorkoutType;
     data['sessionWorkoutTypeImagePath'] = session.sessionWorkoutTypeImagePath;
     data['sessionChargedAmount'] = session.sessionChargedAmount;
+    data['salesTaxApplied'] = session.salesTaxApplied;
+    data['sessionSalesTax'] = session.sessionSalesTax;
     data['sessionCoordinates'] = session.sessionCoordinates;
     data['eta'] = session.eta;
     data['isScanned'] = session.isScanned;

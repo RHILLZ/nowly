@@ -31,6 +31,16 @@ class SessionDetails extends StatelessWidget {
         e == w.type ? trainerSkills.add(w) : null;
       }
     }
+    for (var skill in skills!) {
+      skill == 'General'
+          ? trainerSkills.add(WorkoutType(
+              imagePath: 'assets/logo/mark.svg',
+              type: 'General',
+              headerData: [
+                  HomeHeaderData(title: '', description: '', imagePath: '')
+                ]))
+          : null;
+    }
     _controller.selectedWorkoutType = trainerSkills[0];
     return Stack(
       clipBehavior: Clip.none,
@@ -118,11 +128,14 @@ class SessionDetails extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const Divider(),
-                      const Align(
+                      Align(
                           alignment: Alignment.center,
-                          child: Text(
-                            'CHOOSE TRAINING TYPE OFFERED',
-                            style: k16BoldTS,
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              'CHOOSE TRAINING TYPE OFFERED',
+                              style: k16BoldTS.copyWith(fontSize: 14.sp),
+                            ),
                           )),
                       Padding(
                         padding: EdgeInsets.symmetric(
@@ -156,15 +169,15 @@ class SessionDetails extends StatelessWidget {
                       const Divider(
                         height: 25,
                       ),
-                      const Align(
+                      Align(
                           alignment: Alignment.center,
                           child: Text(
                             'CHOOSE SESSION LENGTH',
-                            style: k16BoldTS,
+                            style: k16BoldTS.copyWith(fontSize: 14.sp),
                           )),
                       Padding(
                         padding: EdgeInsets.symmetric(
-                            vertical: 2.h, horizontal: 15.w),
+                            vertical: 2.h, horizontal: 5.w),
                         child: Align(
                           alignment: Alignment.center,
                           child: SeperatedRow(
@@ -175,29 +188,32 @@ class SessionDetails extends StatelessWidget {
                               final sessionLength =
                                   _sessionDetails.sessionLengths[index];
                               return Obx(
-                                () => SessionLengthCard(
-                                  isSelected:
-                                      _controller.selectedLength.value ==
-                                          sessionLength,
-                                  cost: '\$${sessionLength.cost / 100}'
-                                      .split('.')[0],
-                                  imagePath: _sessionDetails
-                                      .sessionLengths[index].imagepath!,
-                                  length: sessionLength.duration,
-                                  onTap: () {
-                                    final strDur =
-                                        sessionLength.duration.substring(0, 2);
-                                    final dur = int.parse(strDur);
-                                    _controller.selectedLength.value =
-                                        sessionLength;
-                                    _controller.sessionTime = dur * 60;
-                                  },
+                                () => Visibility(
+                                  visible: sessionLength.duration != '15MIN',
+                                  child: SessionLengthCard(
+                                    isSelected:
+                                        _controller.selectedLength.value ==
+                                            sessionLength,
+                                    cost: '\$${sessionLength.cost / 100}'
+                                        .split('.')[0],
+                                    imagePath: _sessionDetails
+                                        .sessionLengths[index].imagepath!,
+                                    length: sessionLength.duration,
+                                    onTap: () {
+                                      final strDur = sessionLength.duration
+                                          .substring(0, 2);
+                                      final dur = int.parse(strDur);
+                                      _controller.selectedLength.value =
+                                          sessionLength;
+                                      _controller.sessionTime = dur * 60;
+                                    },
+                                  ),
                                 ),
                               );
                             }),
                             separatorBuilder:
                                 (BuildContext context, int index) => SizedBox(
-                              width: 3.w,
+                              width: 10.w,
                             ),
                           ),
                         ),

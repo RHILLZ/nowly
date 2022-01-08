@@ -11,7 +11,7 @@ class TrainerModel {
   List? pScore;
   String? bio;
   String? profilePicURL;
-  String? oneSignalId;
+  String? tokenId;
   late bool agreedToTerms;
   late String activeMode;
   late double rating;
@@ -21,6 +21,7 @@ class TrainerModel {
   List? skillSet;
   List availability;
   GeoPoint? lastLocation;
+  bool showOnMap;
   Timestamp? createdAt;
   Timestamp? updatedAt;
   late bool validCertification;
@@ -41,12 +42,13 @@ class TrainerModel {
       this.sex,
       this.stripeAccountId,
       this.profilePicURL,
-      this.oneSignalId,
+      this.tokenId,
       this.agreedToTerms = false,
       this.activeMode = 'Not Available',
       this.skillSet,
       this.availability = const [],
       this.lastLocation,
+      this.showOnMap = false,
       this.createdAt,
       this.updatedAt,
       this.validCertification = false,
@@ -73,7 +75,7 @@ class TrainerModel {
       birthYear: doc['birthYear'],
       sex: doc['sex'],
       profilePicURL: doc['profilePicURL'],
-      oneSignalId: doc['oneSignalId'],
+      tokenId: doc['tokenId'],
       stripeAccountId: doc['stripeAccountId'],
       createdAt: doc['createdAt'],
       updatedAt: doc['updatedAt'],
@@ -82,6 +84,7 @@ class TrainerModel {
       skillSet: doc['skillSet'],
       availability: doc['availability'],
       lastLocation: doc['lastLoction'],
+      showOnMap: doc['showOnMap'],
       validCertification: doc['validCertification'],
       validInsurance: doc['validInsurance'],
       virtualSessionsCompleted: doc['virtualSessionsCompleted'],
@@ -106,7 +109,7 @@ class TrainerModel {
     data['birthYear'] = trainer.birthYear;
     data['sex'] = trainer.sex;
     data['profilePicURL'] = trainer.profilePicURL;
-    data['oneSignalId'] = trainer.oneSignalId;
+    data['tokenId'] = trainer.tokenId;
     data['stripeAccountId'] = trainer.stripeAccountId;
     data['createdAt'] = trainer.createdAt;
     data['updatedAt'] = trainer.updatedAt;
@@ -115,6 +118,7 @@ class TrainerModel {
     data['skillSet'] = trainer.skillSet;
     data['availability'] = trainer.availability;
     data['lastLocation'] = trainer.lastLocation;
+    data['showOnMap'] = trainer.showOnMap;
     data['validCertification'] = trainer.validCertification;
     data['validInsurance'] = trainer.validInsurance;
     data['virtualSessionsCompleted'] = trainer.virtualSessionsCompleted;

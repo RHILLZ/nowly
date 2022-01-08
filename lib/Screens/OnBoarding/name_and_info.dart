@@ -37,7 +37,7 @@ class NameAndInfo extends StatelessWidget {
         content: Material(
           type: MaterialType.transparency,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+            padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 20),
             child: SeperatedColumn(
               separatorBuilder: (BuildContext context, int index) {
                 return SizedBox(

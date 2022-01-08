@@ -26,30 +26,33 @@ class SessionLengthCard extends StatelessWidget {
         onTap: onTap,
         child: Padding(
           padding: UIParameters.screenPadding2,
-          child: Column(
-            children: [
-              SvgPicture.asset(
-                imagePath,
-                color: isSelected
-                    ? getSelectedTxtColor(context) ?? Colors.white
-                    : Theme.of(context).iconTheme.color,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                length,
-                style: isSelected
-                    ? kRegularTS.copyWith(color: getSelectedTxtColor(context))
-                    : kRegularTS,
-              ),
-              Text(
-                cost,
-                style: isSelected
-                    ? kRegularTS.copyWith(color: getSelectedTxtColor(context))
-                    : kRegularTS,
-              )
-            ],
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Column(
+              children: [
+                SvgPicture.asset(
+                  imagePath,
+                  color: isSelected
+                      ? getSelectedTxtColor(context) ?? Colors.white
+                      : Theme.of(context).iconTheme.color,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  length,
+                  style: isSelected
+                      ? kRegularTS.copyWith(color: getSelectedTxtColor(context))
+                      : kRegularTS,
+                ),
+                Text(
+                  cost,
+                  style: isSelected
+                      ? kRegularTS.copyWith(color: getSelectedTxtColor(context))
+                      : kRegularTS,
+                )
+              ],
+            ),
           ),
         ));
   }

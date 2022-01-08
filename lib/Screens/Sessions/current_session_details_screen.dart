@@ -20,12 +20,14 @@ class CurrentSessionDetailsScreen extends StatelessWidget {
       : _sessionController = sessionController,
         _mapNavController = mapNavController,
         _session = session,
+        _trainerSessionC = trainerSessionC,
         super(key: key);
 
   static const routeName = '/currentSession';
   final SessionModel _session;
   final MapNavigatorController _mapNavController;
   final SessionController _sessionController;
+  final TrainerInPersonSessionController _trainerSessionC;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +75,7 @@ class CurrentSessionDetailsScreen extends StatelessWidget {
                 ),
                 onPressed: () {
                   _mapNavController.openAvialableMaps(
-                      sessionController: Get.find());
+                      sessionController: _trainerSessionC);
                 },
               ),
               SizedBox(
@@ -121,7 +123,7 @@ class CurrentSessionDetailsScreen extends StatelessWidget {
               MainButton(
                 cornerRadius: 5,
                 onTap: () {
-                  Get.off(() => LiveSessionView(
+                  Get.to(() => LiveSessionView(
                         controller: _sessionController,
                       ));
                 },
@@ -181,37 +183,6 @@ class CurrentSessionDetailsScreen extends StatelessWidget {
                   style: k20BoldTS),
             ),
             const Divider(height: 20, thickness: 3),
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(vertical: 10),
-            //   child: Obx(() => Row(
-            //         crossAxisAlignment: CrossAxisAlignment.center,
-            //         children: [
-            //           StaticsWidget(
-            //               imagePath: 'assets/icons/map.svg',
-            //               lable1: 'DISTANCE',
-            //               lable2:
-            //                   _trainerSessionC.sessionDistandeDuratiom.value ==
-            //                           null
-            //                       ? 'N/A'
-            //                       : _trainerSessionC.sessionDistandeDuratiom
-            //                           .value!.distance.text),
-            //           // StaticsWidget(
-            //           //     imagePath: 'assets/icons/clock1.svg',
-            //           //     lable1: 'DURATION',
-            //           //     lable2: _trainerSessionC.selectedLength.value.duration),
-            //           StaticsWidget(
-            //             imagePath: 'assets/icons/clock2.svg',
-            //             lable1: 'ETA',
-            //             lable2:
-            //                 _trainerSessionC.sessionDistandeDuratiom.value ==
-            //                         null
-            //                     ? 'N/A'
-            //                     : _trainerSessionC.sessionDistandeDuratiom
-            //                         .value!.duration.text,
-            //           )
-            //         ],
-            //       )),
-            // ),
           ],
         ),
       ),

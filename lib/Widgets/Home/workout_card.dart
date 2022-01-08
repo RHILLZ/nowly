@@ -28,7 +28,7 @@ class WorkOutCard extends StatelessWidget {
     return SizedBox(
       // height: 20.h,
       child: CustomCard(
-        borderRadius: 15,
+        borderRadius: 10,
         padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 1.w),
         child: child ??
             Column(
@@ -40,11 +40,11 @@ class WorkOutCard extends StatelessWidget {
                   child: SvgPicture.asset(
                     imagePath,
                     // fit: BoxFit.scaleDown,
-                    height: 6.h,
+                    height: 5.h,
                   ),
                 ),
                 SizedBox(
-                  height: .5.h,
+                  height: 1.h,
                 ),
                 FittedBox(
                   fit: BoxFit.scaleDown,
@@ -67,7 +67,7 @@ class WorkOutCard extends StatelessWidget {
             color: isSelected
                 ? getWidgetSelectedColor(context)
                 : Theme.of(context).cardColor,
-            borderRadius: const BorderRadius.all(Radius.circular(20.0))),
+            borderRadius: const BorderRadius.all(Radius.circular(15.0))),
         onSelecte: onSelecte,
       ),
     );

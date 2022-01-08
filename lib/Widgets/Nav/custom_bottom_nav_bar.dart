@@ -18,6 +18,7 @@ class CustomBottomNavBar extends StatelessWidget {
     BottomNavigationBarItem getButton(
         {required String icon,
         required double size,
+        required double selectedSize,
         required String selectedIcon,
         required String label,
         required bool isSelected}) {
@@ -25,7 +26,7 @@ class CustomBottomNavBar extends StatelessWidget {
           ? BottomNavigationBarItem(
               icon: SvgPicture.asset(
                 selectedIcon,
-                height: size.h,
+                height: selectedSize.h,
               ),
               label: label,
             )
@@ -46,6 +47,7 @@ class CustomBottomNavBar extends StatelessWidget {
         items: <BottomNavigationBarItem>[
           getButton(
               size: 5,
+              selectedSize: 5,
               icon: 'assets/icons/bottom_app_bar_icons/home.svg',
               label: 'Home',
               selectedIcon:
@@ -53,12 +55,14 @@ class CustomBottomNavBar extends StatelessWidget {
               isSelected: 0 == _selectedIndex.value),
           getButton(
               size: 5,
+              selectedSize: 6,
               icon: 'assets/icons/bottom_app_bar_icons/training.svg',
               label: 'Training',
               selectedIcon: 'assets/logo/mark.svg',
               isSelected: 1 == _selectedIndex.value),
           getButton(
               size: 5,
+              selectedSize: 5,
               icon: 'assets/icons/bottom_app_bar_icons/history.svg',
               label: 'Schedule',
               selectedIcon:
@@ -66,6 +70,7 @@ class CustomBottomNavBar extends StatelessWidget {
               isSelected: 2 == _selectedIndex.value),
           getButton(
               size: 5,
+              selectedSize: 5,
               icon: 'assets/icons/bottom_app_bar_icons/profile.svg',
               label: 'Profile',
               selectedIcon:

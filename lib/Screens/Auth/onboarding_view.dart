@@ -25,7 +25,7 @@ class OnBoardingView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: 15.h,
+                  height: 12.h,
                 ),
                 Logo.textLogoLD(context, 18.h),
                 Column(
@@ -99,17 +99,17 @@ class OnBoardingView extends StatelessWidget {
                   },
                   title: '                 Sign In                 ',
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: TextButton(
-                    onPressed: () {},
-                    child: const Text(
-                      'Trouble Signing In?',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white),
-                    ),
-                  ),
-                )
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 10),
+                //   child: TextButton(
+                //     onPressed: () {},
+                //     child: const Text(
+                //       'Trouble Signing In?',
+                //       style: TextStyle(
+                //           fontWeight: FontWeight.bold, color: Colors.white),
+                //     ),
+                //   ),
+                // )
               ],
             ),
           ),

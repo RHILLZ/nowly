@@ -47,7 +47,7 @@ class CreditCardWidget extends StatelessWidget {
       elevation: 4.0,
       color: color,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Container(
         height: 25.h,
@@ -59,12 +59,15 @@ class CreditCardWidget extends StatelessWidget {
             _buildLogosBlock(visaImagePath, masterCardImagePath),
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
-              child: Text(
-                cardNumber!,
-                style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 21,
-                    fontFamily: 'CourrierPrime'),
+              child: FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Text(
+                  cardNumber!,
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 21,
+                      fontFamily: 'CourrierPrime'),
+                ),
               ),
             ),
             Row(
@@ -86,14 +89,9 @@ class CreditCardWidget extends StatelessWidget {
   // Build the top row containing logos
   Row _buildLogosBlock(String visa, String mastercard) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-        Container(),
-        // Image.asset(
-        //   "assets/images/contact_less.png",
-        //   height: 20,
-        //   width: 18,
-        // ),
+        // Container(),
         FittedBox(
           fit: BoxFit.contain,
           child: Padding(
@@ -102,7 +100,7 @@ class CreditCardWidget extends StatelessWidget {
                 ? Container()
                 : SvgPicture.asset(
                     _cc.brand == 'visa' ? visa : mastercard,
-                    height: _cc.brand == 'visa' ? 3.h : 6.h,
+                    height: _cc.brand == 'visa' ? 3.h : 8.h,
                   ),
           ),
         )
@@ -115,6 +113,7 @@ class CreditCardWidget extends StatelessWidget {
       {@required String? label, @required String? value}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(
           '$label',

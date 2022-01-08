@@ -13,7 +13,7 @@ class UserModel {
   String? profilePicURL;
   late bool isReady;
   late double rating;
-  String? oneSignalId;
+  String? tokenId;
   String? stripeCustomerId;
   String? activePaymentMethodId;
   List? stripePaymentMethodIds;
@@ -47,7 +47,7 @@ class UserModel {
       this.pScore,
       this.profilePicURL,
       this.isReady = false,
-      this.oneSignalId,
+      this.tokenId,
       this.stripeCustomerId,
       this.activePaymentMethodId,
       this.stripePaymentMethodIds,
@@ -67,46 +67,47 @@ class UserModel {
       this.yesToMedHistoryQuestions,
       this.medicalHistoryDetails,
       this.favoriteWorkouts,
-      this.rating = 4.9,
-      this.sessionsCompleted = 0});
+      this.sessionsCompleted = 0,
+      this.rating = 4.9});
 
   factory UserModel.fromDocumentSnapshot(
       Map<String, dynamic>? document, String id) {
     final doc = document!;
     return UserModel(
-        id: id,
-        firstName: doc['firstName'],
-        lastName: doc['lastName'],
-        height: doc['height'],
-        weight: doc['weight'],
-        birthYear: doc['birthYear'],
-        sex: doc['sex'],
-        email: doc['email'],
-        pScore: doc['pScore'],
-        profilePicURL: doc['profilePicURL'],
-        isReady: doc['isReady']!,
-        oneSignalId: doc['oneSignalId'],
-        stripeCustomerId: doc['stripeCustomerId'],
-        activePaymentMethodId: doc['activePaymentMethodId'],
-        stripePaymentMethodIds: doc['stripePaymentMethodIds'],
-        createdAt: doc['createdAt'],
-        updatedAt: doc['updatedAt'],
-        agreedToTerms: doc['agreedToTerms']!,
-        goals: doc['goals'],
-        goalTimeFrame: doc['goalTimeFrame'],
-        primaryGoal: doc['primaryGoal'],
-        fitnessLevel: doc['fitnessLevel'],
-        activeDaysWeekly: doc['activeDaysWeekly'],
-        hadPastTrainer: doc['hadPastTrainer'],
-        experienceWithPastTrainer: doc['experienceWithPastTrainer'],
-        hasInjury: doc['hasInjury']!,
-        injuryDetails: doc['injuryDetails'],
-        hasMedicalHistory: doc['hasMedicalHistory']!,
-        yesToMedHistoryQuestions: doc['yesToMedHistoryQuestions'],
-        medicalHistoryDetails: doc['medicalHistoryDetails'],
-        favoriteWorkouts: doc['favoriteWorkouts'],
-        rating: doc['rating']!,
-        sessionsCompleted: doc['sessionsCompleted']);
+      id: id,
+      firstName: doc['firstName'],
+      lastName: doc['lastName'],
+      height: doc['height'],
+      weight: doc['weight'],
+      birthYear: doc['birthYear'],
+      sex: doc['sex'],
+      email: doc['email'],
+      pScore: doc['pScore'],
+      profilePicURL: doc['profilePicURL'],
+      isReady: doc['isReady']!,
+      tokenId: doc['tokenId'],
+      stripeCustomerId: doc['stripeCustomerId'],
+      activePaymentMethodId: doc['activePaymentMethodId'],
+      stripePaymentMethodIds: doc['stripePaymentMethodIds'],
+      createdAt: doc['createdAt'],
+      updatedAt: doc['updatedAt'],
+      agreedToTerms: doc['agreedToTerms']!,
+      goals: doc['goals'],
+      goalTimeFrame: doc['goalTimeFrame'],
+      primaryGoal: doc['primaryGoal'],
+      fitnessLevel: doc['fitnessLevel'],
+      activeDaysWeekly: doc['activeDaysWeekly'],
+      hadPastTrainer: doc['hadPastTrainer'],
+      experienceWithPastTrainer: doc['experienceWithPastTrainer'],
+      hasInjury: doc['hasInjury']!,
+      injuryDetails: doc['injuryDetails'],
+      hasMedicalHistory: doc['hasMedicalHistory']!,
+      yesToMedHistoryQuestions: doc['yesToMedHistoryQuestions'],
+      medicalHistoryDetails: doc['medicalHistoryDetails'],
+      favoriteWorkouts: doc['favoriteWorkouts'],
+      sessionsCompleted: doc['sessionsCompleted'],
+      rating: doc['rating']!,
+    );
   }
 
   Map<String, dynamic> toMap(UserModel user) {
@@ -122,7 +123,7 @@ class UserModel {
     data['sex'] = user.sex;
     data['profilePicURL'] = user.profilePicURL;
     data['isReady'] = user.isReady;
-    data['oneSignalId'] = user.oneSignalId;
+    data['tokenId'] = user.tokenId;
     data['stripeCustomerId'] = user.stripeCustomerId;
     data['activePaymentMethodId'] = user.activePaymentMethodId;
     data['stripePaymentMethodIds'] = user.stripePaymentMethodIds;

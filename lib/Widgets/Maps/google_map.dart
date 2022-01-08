@@ -6,8 +6,8 @@ import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 
 class GoogleMapWidget extends GetView<MapController> {
-  const GoogleMapWidget({Key? key}) : super(key: key);
-
+  GoogleMapWidget({Key? key}) : super(key: key);
+  final MapController _controller = Get.put(MapController());
   @override
   Widget build(BuildContext context) {
     // Get.find<AppPermissionController>().requestPermission();
@@ -21,29 +21,29 @@ class GoogleMapWidget extends GetView<MapController> {
         compassEnabled: false,
         myLocationButtonEnabled: false,
         zoomControlsEnabled: false,
-        initialCameraPosition: controller.initialPosition,
+        initialCameraPosition: _controller.initialPosition,
         markers: {
-          ...controller.destinationMarkers,
-          if (controller.originMarker.value != null)
-            controller.originMarker.value!,
-          if (controller.showPlaceIcons.value) ...controller.placeMarkers
+          ..._controller.destinationMarkers,
+          if (_controller.originMarker.value != null)
+            _controller.originMarker.value!,
+          if (_controller.showPlaceIcons.value) ..._controller.placeMarkers
         },
         polylines: {
-          if (controller.polylinesPoints.isNotEmpty)
+          if (_controller.polylinesPoints.isNotEmpty)
             Polyline(
                 polylineId: const PolylineId('polylines'),
                 color: kPrimaryColor.withOpacity(0.7),
                 width: 5,
-                points: controller.polylinesPoints)
+                points: _controller.polylinesPoints)
         },
         onCameraIdle: () {
-          controller.onMapCameraIdle();
+          _controller.onMapCameraIdle();
         },
         onCameraMove: (cameraPosition) {
-          controller.onMapCameraMove(cameraPosition);
+          _controller.onMapCameraMove(cameraPosition);
         },
         onMapCreated: (GoogleMapController controller) {
-          this.controller.onMapCreate(controller);
+          _controller.onMapCreate(controller);
         },
       ),
     );

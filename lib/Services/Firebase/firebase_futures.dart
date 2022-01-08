@@ -93,13 +93,13 @@ class FirebaseFutures {
       .get()
       .then((doc) => UserModel.fromDocumentSnapshot(doc.data(), doc.id));
 
-  Future<bool> setUserOneSignalId(String uid, String oneSignalId) async {
+  Future<bool> setUserTokenId(String uid, String tokenId) async {
     bool _isSuccessful = false;
     try {
       await _firestore
           .collection(USERSCOLLECTION)
           .doc(uid)
-          .update({'oneSignalId': oneSignalId});
+          .update({'tokenId': tokenId});
       _isSuccessful = true;
     } catch (exception) {
       print(exception.toString());
@@ -230,6 +230,21 @@ class FirebaseFutures {
     return isSuccessful;
   }
 
+  Future<bool> cancelSession(SessionModel session) async {
+    bool isSuccessful = false;
+    try {
+      var data = SessionModel().toMap(session);
+      await _firestore
+          .collection(SESSIONCOLLECTION)
+          .doc(session.sessionID)
+          .update({'sessionStatus': 'cancelled'});
+      isSuccessful = true;
+    } catch (exception) {
+      print(exception.toString());
+    }
+    return isSuccessful;
+  }
+
   Future<bool> deleteSession(SessionModel session) async {
     bool isSuccessful = false;
     try {
@@ -336,6 +351,7 @@ class FirebaseFutures {
           .collection(USERSCOLLECTION)
           .doc(userId)
           .collection(SESSIONRECEIPTS)
+          .orderBy('sessionTimestamp', descending: true)
           .get()
           .then((query) => query.docs
               .map((doc) =>

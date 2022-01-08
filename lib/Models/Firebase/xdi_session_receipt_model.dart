@@ -16,6 +16,8 @@ class SessionReceiptModel {
   Timestamp? sessionEndTime;
   String? sessionDuration;
   String? sessionCharged;
+  String? sessionBookingFee;
+  String? sessionSalesTax;
   String? sessionMode;
   String? sessionWorkoutType;
 
@@ -35,6 +37,8 @@ class SessionReceiptModel {
       this.sessionEndTime,
       this.sessionDuration,
       this.sessionCharged,
+      this.sessionBookingFee,
+      this.sessionSalesTax,
       this.sessionMode,
       this.sessionWorkoutType});
 
@@ -53,6 +57,8 @@ class SessionReceiptModel {
       paidTo: doc['paidTo'],
       sessionTimestamp: doc['sessionTimestamp'],
       sessionCharged: doc['sessionCharged'],
+      sessionBookingFee: doc['sessionBookingFee'],
+      sessionSalesTax: doc['sessionSalesTax'],
       sessionStartTime: doc['sessionStartTime'],
       sessionEndTime: doc['sessionEndTime'],
       sessionDuration: doc['sessionDuration'],
@@ -75,13 +81,14 @@ class SessionReceiptModel {
     data['paidTo'] = receipt.paidTo;
     data['sessionTimestamp'] = receipt.sessionTimestamp;
     data['sessionCharged'] = receipt.sessionCharged;
+    data['sessionBookingFee'] = receipt.sessionBookingFee;
+    data['sessionSalesTax'] = receipt.sessionSalesTax;
     data['sessionStartTime'] = receipt.sessionStartTime;
     data['sessionEndTime'] = receipt.sessionEndTime;
     data['sessionDuration'] = receipt.sessionDuration;
     data['sessionMode'] = receipt.sessionMode;
     data['sessionWorkoutType'] = receipt.sessionWorkoutType;
     data['sessionStatus'] = receipt.sessionStatus;
-
     return data;
   }
 }

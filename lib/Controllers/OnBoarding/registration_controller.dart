@@ -75,7 +75,7 @@ class RegistrationController extends GetxController {
     var result = await FirebaseFutures().createUserInFirestore(user);
     if (result == true) {
       _isProcessing.toggle();
-      Get.off(const Root());
+      Get.to(() => const Root());
     } else {
       _isProcessing.toggle();
       Get.snackbar('Something went wrong.',

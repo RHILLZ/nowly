@@ -1,16 +1,19 @@
 import 'dart:async';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Screens/Sessions/current_session_details_screen.dart';
 import 'package:nowly/Screens/Sessions/session_complete_screen.dart';
+import 'package:nowly/Services/Firebase/fcm.dart';
 import 'package:nowly/Services/Firebase/firebase_futures.dart';
 import 'package:nowly/Services/service_exporter.dart';
 import 'package:nowly/Utils/logger.dart';
 import 'package:nowly/Widgets/Dialogs/dialogs.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:nowly/root.dart';
 import 'package:sizer/sizer.dart';
 import '../controller_exporter.dart';
 
@@ -26,7 +29,7 @@ class SessionController extends GetxController {
   //SESSION PARMAS
   final _sessionMode = SessionModeModel(id: '', mode: '').obs;
   final _sessionDurationAndCost =
-      SessionDurationAndCostModel(duration: '', cost: 0).obs;
+      SessionDurationAndCostModel(duration: '', cost: 0, bookingFee: 0).obs;
   final _sessionWorkOutType =
       WorkoutType(imagePath: '', type: '', headerData: []).obs;
   final _genderPref = ''.obs;
@@ -44,6 +47,70 @@ class SessionController extends GetxController {
   var sessionModes = <SessionModeModel>[].obs;
 
   final showTimes = false.obs;
+
+  buildSessionFee() => ListTile(
+      contentPadding: const EdgeInsets.all(0),
+      title: const Text('Session Fee:'),
+      trailing: Text(
+          '\$' + (sessionDurationAndCost.cost / 100).toString().split('.')[0])
+      // Text('\$$_sessionFee'.split('.')[0]),
+      );
+
+  buildBookingFee() {
+    final num _sessionFee = (sessionDurationAndCost.cost / 100);
+    final num _bookingFee = (_sessionFee * sessionDurationAndCost.bookingFee);
+    return ListTile(
+      contentPadding: const EdgeInsets.all(0),
+      title: const Text('Booking Fee:'),
+      trailing: Text('\$' + _bookingFee.toStringAsFixed(2)),
+    );
+  }
+
+  buildSalesTax() {
+    final num _sessionFee = (sessionDurationAndCost.cost / 100);
+    final num _bookingFee = (_sessionFee * sessionDurationAndCost.bookingFee);
+    final sb = _sessionFee + _bookingFee;
+    final _city = Get.find<MapController>().city;
+    final st = SessionDurationAndCostModel.salesTaxByLoc[_city] ?? 0.0;
+    final _salesTax = sb * st;
+    return ListTile(
+      contentPadding: const EdgeInsets.all(0),
+      title: const Text('Sales Tax :'),
+      trailing: Text('\$' + _salesTax.toStringAsFixed(2)),
+    );
+  }
+
+  buildTotalCost() {
+    final num _sessionFee = (sessionDurationAndCost.cost / 100);
+    final num _bookingFee = (_sessionFee * sessionDurationAndCost.bookingFee);
+    final sb = _sessionFee + _bookingFee;
+    final _city = Get.find<MapController>().city;
+    final st = SessionDurationAndCostModel.salesTaxByLoc[_city] ?? 0.0;
+    final _salesTax = sb * st;
+    final _totalCost = _sessionFee + _bookingFee + _salesTax;
+    return ListTile(
+      contentPadding: const EdgeInsets.all(0),
+      title: const Text(
+        'Total Cost :',
+        style: k20BoldTS,
+      ),
+      trailing: Text(
+        '\$' + _totalCost.toStringAsFixed(2),
+        style: k20BoldTS,
+      ),
+    );
+  }
+
+  bool applySalesTax() {
+    final num _sessionFee = (sessionDurationAndCost.cost / 100);
+    final num _bookingFee = (_sessionFee * sessionDurationAndCost.bookingFee);
+    final sb = _sessionFee + _bookingFee;
+    final _city = Get.find<MapController>().city;
+    final st = SessionDurationAndCostModel.salesTaxByLoc[_city] ?? 0.0;
+    final _salesTax = sb * st;
+    return _salesTax != 0.0;
+  }
+
 //GETTERS AND SETTERS////////////////////////////////////////////////////////
   get isProcessing => _isProcessing.value;
   get currentSession => _currentSession.value;
@@ -65,6 +132,7 @@ class SessionController extends GetxController {
   set sessionWorkOutType(value) => _sessionWorkOutType.value = value;
   set genderPref(value) => _genderPref.value = value;
   set sessionTime(value) => _sessionTime.value = value;
+  set currentSession(value) => _currentSession.value = value;
 //SESSION CLOCK//////////////////////////////////////////////////////////////
   void startSessionTimer() {
     const sec = Duration(seconds: 1);
@@ -205,6 +273,13 @@ class SessionController extends GetxController {
 //CREATE SESSION RECIEPT ON COMPLETE///////////////////////////////////////////
   createSessionReceipt(SessionModel session) async {
     final status = session.reportedIssue! ? 'Complete With ISSUE' : 'Completed';
+    final num _sessionFee = (sessionDurationAndCost.cost / 100);
+    final num _bookingFee = (_sessionFee * sessionDurationAndCost.bookingFee);
+    final sb = _sessionFee + _bookingFee;
+    final _city = Get.find<MapController>().city;
+    final st = SessionDurationAndCostModel.salesTaxByLoc[_city] ?? 0.0;
+    final _salesTax = sb * st;
+    final _totalCost = _sessionFee + _bookingFee + _salesTax;
     final receipt = SessionReceiptModel(
       sessionID: session.sessionID,
       userID: session.userID,
@@ -216,8 +291,9 @@ class SessionController extends GetxController {
       paymentMethod: session.userPaymentMethodID,
       paidTo: session.trainerStripeID,
       sessionTimestamp: Timestamp.now(),
-      sessionCharged:
-          '\$' + (session.sessionChargedAmount! / 100).toString() + '0',
+      sessionBookingFee: '\$' + _bookingFee.toStringAsFixed(2),
+      sessionSalesTax: '\$' + _salesTax.toStringAsFixed(2),
+      sessionCharged: '\$' + _totalCost.toStringAsFixed(2),
       sessionMode: session.sessionMode,
       sessionStatus: status,
       sessionDuration: session.sessionDuration,
@@ -230,6 +306,41 @@ class SessionController extends GetxController {
 
   reportIssue(SessionModel session, bool isUSer) async {
     await FirebaseFutures().reportIssueWithSession(session, isUSer);
+  }
+
+  //SKIP REVIEW
+  skip(SessionModel session, context) async {
+    final status = session.reportedIssue! ? 'Complete With ISSUE' : 'Completed';
+    final num _sessionFee = (sessionDurationAndCost.cost / 100);
+    final num _bookingFee = (_sessionFee * sessionDurationAndCost.bookingFee);
+    final sb = _sessionFee + _bookingFee;
+    final _city = Get.find<MapController>().city;
+    final st = SessionDurationAndCostModel.salesTaxByLoc[_city] ?? 0.0;
+    final _salesTax = sb * st;
+    final _totalCost = _sessionFee + _bookingFee + _salesTax;
+    final receipt = SessionReceiptModel(
+      sessionID: session.sessionID,
+      userID: session.userID,
+      trainerID: session.trainerID,
+      userName: session.userName,
+      trainerName: session.trainerName,
+      userProfilePicURL: session.userProfilePicURL,
+      trainerProfilePicURL: session.trainerProfilePicURL,
+      paymentMethod: session.userPaymentMethodID,
+      paidTo: session.trainerStripeID,
+      sessionTimestamp: Timestamp.now(),
+      sessionBookingFee: '\$' + _bookingFee.toStringAsFixed(2),
+      sessionSalesTax: '\$' + _salesTax.toStringAsFixed(2),
+      sessionCharged: '\$' + _totalCost.toStringAsFixed(2),
+      sessionMode: session.sessionMode,
+      sessionStatus: status,
+      sessionDuration: session.sessionDuration,
+      sessionWorkoutType: session.sessionWorkoutType,
+    );
+    await FirebaseFutures().incrementSessionCount(session.userID!);
+    await FirebaseFutures().createSessionReceipt(receipt);
+    Get.to(() => const Root());
+    Phoenix.rebirth(context);
   }
 
   @override
@@ -258,13 +369,9 @@ class SessionController extends GetxController {
       _currentSession
           .bindStream(FirebaseStreams().streamSession(sess.sessionID!));
       await Future.delayed(const Duration(seconds: 2), () => null);
-      OneSignal.shared.postNotification(OSCreateNotification(
-          playerIds: [tokenId],
-          content: 'In Person',
-          heading: 'InPerson',
-          additionalData: {'session': session, 'signal_Type': 'in person'},
-          contentAvailable: true));
-      // trainerUnavailable();
+      //SEND SIGNAL HEREfire
+      AppLogger.i(session);
+      FCM().sendInPersonSessionSignal(session, tokenId);
     } else {
       _isProcessing.toggle();
       Get.snackbar('Something went wrong.',
@@ -276,7 +383,12 @@ class SessionController extends GetxController {
   }
 
 //CHECK IF SESSION IS ACCEPTED AFTER ITS CREATED////////////////////////////////
-  checkAccepted() {
+
+  checkAccepted() async {
+    if (_currentSession.value.sessionStatus == 'cancelled') {
+      await Dialogs().sessionCancelledByOther(_context);
+      Phoenix.rebirth(_context!);
+    }
     if (_currentSession.value.isAccepted == true &&
         !_currentSession.value.isScanned) {
       _isProcessing.toggle();
@@ -316,11 +428,19 @@ class SessionController extends GetxController {
     }
   }
 
+//CANCEL SESSION///////////////////////////////////////////////////////////////
+  cancel(context) async {
+    final cancelled =
+        await FirebaseFutures().cancelSession(_currentSession.value);
+    _timer!.isActive ? _timer!.cancel() : null;
+    Get.to(() => const Root());
+    Dialogs().sessionCancelled(context);
+  }
+
 //END SESSION//////////////////////////////////////////////////////////////////
   endSession(context) async {
-    await Dialogs().sessionCancellation(
-        context,
-        () => Get.off(() => SessionCompleteScreen(
-            session: _currentSession.value, sessionController: this)));
+    _timer!.cancel();
+    Get.off(() => SessionCompleteScreen(
+        session: _currentSession.value, sessionController: this));
   }
 }

@@ -7,6 +7,8 @@ import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Screens/Stripe/add_payment_methods.dart';
 import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Widgets/Common/profile_image.dart';
+import 'package:nowly/Widgets/Dialogs/dialogs.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 import 'package:sizer/sizer.dart';
@@ -34,10 +36,20 @@ class SessionConfirmationScreen2 extends StatelessWidget {
         _trainerInPersonSessionController.trainerSession.sessionLengths;
     _controller.sessionDurationAndCost =
         _trainerInPersonSessionController.selectedLength.value;
+    final _city = Get.find<MapController>().city;
+    final _sessionFee = (_controller.sessionDurationAndCost.cost / 100);
+    final _bookingFee =
+        (_sessionFee * _controller.sessionDurationAndCost.bookingFee);
+    final sb = _sessionFee + _bookingFee;
+    final st = SessionDurationAndCostModel.salesTaxByLoc['New York'] ?? 0.0;
+    final _salesTax = sb * st;
+    final _totalCost = _sessionFee + _bookingFee + _salesTax;
+    final _totalCharge = (_totalCost * 100).toString().split('.')[0];
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text('SESSION CONFIRMATION'),
+          title: const FittedBox(
+              fit: BoxFit.fitWidth, child: Text('SESSION CONFIRMATION')),
           centerTitle: true,
         ),
         bottomNavigationBar: BottomAppBar(
@@ -70,8 +82,9 @@ class SessionConfirmationScreen2 extends StatelessWidget {
                                         .selectedWorkoutType.value.imagePath,
                                 sessionDuration:
                                     _controller.sessionDurationAndCost.duration,
-                                sessionChargedAmount:
-                                    _controller.sessionDurationAndCost.cost,
+                                sessionChargedAmount: int.parse(_totalCharge),
+                                salesTaxApplied: _salesTax > 0.0,
+                                sessionSalesTax: _salesTax,
                                 userID: _userController.user.id,
                                 userName: userName,
                                 userPaymentMethodID:
@@ -93,8 +106,11 @@ class SessionConfirmationScreen2 extends StatelessWidget {
                                 .substring(0, 2);
                             _controller.sessionTime = int.parse(durTimer) * 60;
 
-                            final tokenId = _sessionDetails.trainer.oneSignalId;
-                            AppLogger.i('RLX!');
+                            final tokenId = _sessionDetails.trainer.tokenId;
+                            if (_stripeController.activePaymentMethod == null) {
+                              Dialogs().addPayMethod(context);
+                              return;
+                            }
                             _controller.engageTrainer(
                                 _session, tokenId!, context);
                           }))
@@ -118,42 +134,33 @@ class SessionConfirmationScreen2 extends StatelessWidget {
                           margin: const EdgeInsets.symmetric(
                               vertical: kScreenPadding2),
                           padding: UIParameters.screenPadding,
-                          height: Get.height * 0.25,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                'YOU HAVE CHOSEN',
-                                style: k20BoldTS.copyWith(color: Colors.white),
-                              ),
-                              Expanded(
-                                  child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: CircleAvatar(
-                                  backgroundImage:
-                                      _sessionDetails.trainer.profilePicURL !=
-                                              null
-                                          ? NetworkImage(_sessionDetails
-                                              .trainer.profilePicURL!)
-                                          : null,
-                                  child:
-                                      _sessionDetails.trainer.profilePicURL !=
-                                              null
-                                          ? null
-                                          : Icon(
-                                              Icons.person,
-                                              size: 40.sp,
-                                            ),
-                                  maxRadius: 6.h,
+                          height: 25.h,
+                          child: FittedBox(
+                            fit: BoxFit.contain,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'YOU HAVE CHOSEN',
+                                  style:
+                                      k20BoldTS.copyWith(color: Colors.white),
                                 ),
-                              )),
-                              Text(
-                                _sessionDetails.trainer.firstName!,
-                                style: k20BoldTS.copyWith(color: Colors.white),
-                              ),
-                              // Text(_sessionDetails.trainer.address ?? '',
-                              //     style: kRegularTS.copyWith(color: Colors.white))
-                            ],
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 1.h),
+                                  child: ProfileImage(
+                                      imageURL:
+                                          _sessionDetails.trainer.profilePicURL,
+                                      rad: 5),
+                                ),
+                                Text(
+                                  '${_sessionDetails.trainer.firstName} ${_sessionDetails.trainer.lastName}',
+                                  style:
+                                      k20BoldTS.copyWith(color: Colors.white),
+                                ),
+                                // Text(_sessionDetails.trainer.address ?? '',
+                                //     style: kRegularTS.copyWith(color: Colors.white))
+                              ],
+                            ),
                           ),
                           decoration: BoxDecoration(
                               image: DecorationImage(
@@ -170,6 +177,7 @@ class SessionConfirmationScreen2 extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(top: 15.0, bottom: 5),
                           child: SvgPicture.asset('assets/images/clock.svg',
+                              height: 5.h,
                               color: UIParameters.isDarkMode(context)
                                   ? Colors.white
                                   : null),
@@ -180,17 +188,24 @@ class SessionConfirmationScreen2 extends StatelessWidget {
                         const SizedBox(height: 10),
                         const Divider(height: 20, thickness: 3),
                         ListTile(
-                          title: Text(
-                              '${_trainerInPersonSessionController.selectedWorkoutType.value.type} SESSION'
-                                  .toUpperCase(),
-                              style: k16BoldTS),
-
-                          // subtitle: Text(_trainerSessionC.trainerSession.type.type,
-                          //     style: kRegularTS),
-                          trailing: Text(
-                              '\$${_trainerInPersonSessionController.selectedLength.value.cost / 100}0',
-                              style: k20BoldTS),
+                          title: FittedBox(
+                            fit: BoxFit.contain,
+                            child: Text(
+                                '${_trainerInPersonSessionController.selectedWorkoutType.value.type} SESSION'
+                                    .toUpperCase(),
+                                style: k16BoldTS),
+                          ),
                         ),
+                        _controller.buildSessionFee(),
+                        _controller.buildBookingFee(),
+                        Visibility(
+                            visible: _controller.applySalesTax(),
+                            child: _controller.buildSalesTax()),
+                        SizedBox(
+                          height: 1.h,
+                        ),
+                        _controller.buildTotalCost(),
+
                         const Divider(height: 20, thickness: 3),
 
                         // if (_trainerInPersonSessionController.showTimes.value) {

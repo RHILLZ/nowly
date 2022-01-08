@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
+import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Utils/logger.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 
 class MapScreen extends StatelessWidget {
-  const MapScreen({Key? key}) : super(key: key);
-
+  MapScreen({Key? key}) : super(key: key);
+  final MapController _mapController = Get.put(MapController());
   @override
   Widget build(BuildContext context) {
     AppLogger.i('Map Screen');
     return Scaffold(
       body: Stack(
         children: [
-          const Positioned.fill(child: GoogleMapWidget()),
+          Positioned.fill(child: GoogleMapWidget()),
           Positioned(
             top: 0,
             right: 0,
@@ -45,7 +47,6 @@ class MapScreen extends StatelessWidget {
                           Text('TRAINERS AVAILABLE NEAR YOU', style: k16BoldTS),
                           SizedBox(height: 10),
                           MapHeader(),
-                          // Visibility(visible: true, child: ScheduleCalendar())
                         ],
                       ),
                     ],

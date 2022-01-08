@@ -2,19 +2,12 @@
 # See https://dart.dev/tools/pub/glossary#lockfile
 packages:
   agora_rtc_engine:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: agora_rtc_engine
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.7"
-  agora_uikit:
-    dependency: "direct main"
-    description:
-      name: agora_uikit
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.4"
   archive:
     dependency: transitive
     description:
@@ -43,6 +36,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.20.1"
+  awesome_notifications:
+    dependency: "direct main"
+    description:
+      name: awesome_notifications
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.6.19"
   badges:
     dependency: "direct main"
     description:
@@ -280,21 +280,42 @@ packages:
       name: firebase_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.8.0"
+    version: "1.10.6"
   firebase_core_platform_interface:
     dependency: transitive
     description:
       name: firebase_core_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.1"
+    version: "4.2.3"
   firebase_core_web:
     dependency: transitive
     description:
       name: firebase_core_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.0"
+    version: "1.5.3"
+  firebase_messaging:
+    dependency: "direct main"
+    description:
+      name: firebase_messaging
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "11.2.4"
+  firebase_messaging_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_messaging_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.1.4"
+  firebase_messaging_web:
+    dependency: transitive
+    description:
+      name: firebase_messaging_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.5"
   firebase_storage:
     dependency: "direct main"
     description:
@@ -384,6 +405,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.1"
+  flutter_phoenix:
+    dependency: "direct main"
+    description:
+      name: flutter_phoenix
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -653,13 +681,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0+1"
-  onesignal_flutter:
-    dependency: "direct main"
-    description:
-      name: onesignal_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.2.4"
   package_info:
     dependency: "direct main"
     description:

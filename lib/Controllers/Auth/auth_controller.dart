@@ -70,6 +70,7 @@ class AuthController extends GetxController {
   signOut() async {
     try {
       await _auth.signOut();
+      Get.to(() => const Root());
     } on FirebaseAuthException catch (e) {
       Get.snackbar('Error signing out user', e.message!,
           snackPosition: SnackPosition.BOTTOM);
@@ -121,7 +122,7 @@ class AuthController extends GetxController {
               SingleChildScrollView(
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 3.w),
-                  height: 70.h,
+                  height: 75.h,
                   width: 80.w,
                   decoration: BoxDecoration(
                       gradient: onBoardingGradient(context),
@@ -201,7 +202,7 @@ class AuthController extends GetxController {
                                   softWrap: true,
                                   text: TextSpan(
                                       style: kRegularTS.copyWith(
-                                          fontSize: 14, height: 1.4),
+                                          fontSize: 10.sp, height: 1.4),
                                       children: [
                                         const TextSpan(
                                             text:
@@ -209,7 +210,7 @@ class AuthController extends GetxController {
                                         TextSpan(
                                             text: 'Terms of Services ',
                                             style: k10BoldTS.copyWith(
-                                                fontSize: 14,
+                                                fontSize: 10.sp,
                                                 color: UIParameters.isDarkMode(
                                                         context)
                                                     ? kPrimaryColor
@@ -221,7 +222,7 @@ class AuthController extends GetxController {
                                         TextSpan(
                                             text: 'Privacy Agreement',
                                             style: k10BoldTS.copyWith(
-                                                fontSize: 14,
+                                                fontSize: 10.sp,
                                                 color: UIParameters.isDarkMode(
                                                         context)
                                                     ? kPrimaryColor
@@ -290,7 +291,7 @@ class AuthController extends GetxController {
                 ),
               ),
             ]),
-        barrierColor: Colors.black.withOpacity(.9));
+        barrierColor: Colors.black.withOpacity(1));
   }
 
   termsWarningSnackbar() => Get.snackbar('Please Review Terms and Conditions.',

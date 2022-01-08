@@ -28,23 +28,26 @@ class AuthButton extends StatelessWidget {
           side: BorderSide(width: 2.0, color: _color!),
           onSurface: Colors.white),
       onPressed: onPressed,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          if (iconPath != null)
-            SvgPicture.asset(
-              iconPath!,
-              height: _imageSize!.h,
-              color: _color,
-            ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Text(
-              title,
-              style: k18BoldTS.copyWith(color: _color),
-            ),
-          )
-        ],
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (iconPath != null)
+              SvgPicture.asset(
+                iconPath!,
+                height: _imageSize!.h,
+                color: _color,
+              ),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Text(
+                title,
+                style: k18BoldTS.copyWith(color: _color),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

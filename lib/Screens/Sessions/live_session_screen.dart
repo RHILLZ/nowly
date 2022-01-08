@@ -5,6 +5,7 @@ import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Widgets/Common/main_button.dart';
 import 'package:nowly/Widgets/Common/profile_image.dart';
+import 'package:nowly/Widgets/Dialogs/dialogs.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart' as img;
 import 'package:sizer/sizer.dart';
@@ -31,7 +32,8 @@ class LiveSessionView extends StatelessWidget {
       bottomSheet: MainButton(
         title: 'End Session'.toUpperCase(),
         onTap: () {
-          _controller.endSession(context);
+          Dialogs()
+              .sessionCancellation(context, _controller.endSession(context));
         },
       ),
       body: Container(
@@ -62,8 +64,8 @@ class LiveSessionView extends StatelessWidget {
                   height: 4.h,
                 ),
                 SizedBox(
-                    height: 25.h,
-                    width: 25.h,
+                    height: 20.h,
+                    width: 20.h,
                     child: Obx(
                       () => _controller.qrLoaded.value == false
                           ? const Center(
@@ -71,19 +73,27 @@ class LiveSessionView extends StatelessWidget {
                                 color: kPrimaryColor,
                               ),
                             )
-                          : PrettyQr(
-                              data: Get.find<AuthController>().firebaseUser.uid,
-                              image: const img.Svg(
-                                'assets/logo/mark.svg',
-                              ),
-                              roundEdges: true,
-                              elementColor: kPrimaryColor),
+                          : Container(
+                              padding: EdgeInsets.all(2.w),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white),
+                              child: PrettyQr(
+                                  data: Get.find<AuthController>()
+                                      .firebaseUser
+                                      .uid,
+                                  image: const img.Svg(
+                                    'assets/logo/mark.svg',
+                                  ),
+                                  roundEdges: true,
+                                  elementColor: kPrimaryColor),
+                            ),
                     )),
                 SizedBox(
                   height: 6.h,
                 ),
                 Text('Session Duration'.toUpperCase(),
-                    textAlign: TextAlign.center, style: k20BoldTS),
+                    textAlign: TextAlign.center, style: k16BoldTS),
                 SizedBox(
                   height: 2.h,
                 ),

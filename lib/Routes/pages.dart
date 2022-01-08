@@ -60,7 +60,7 @@ class Pages {
     GetPage(name: _Paths.HOME, page: () => UserHomeView()),
     GetPage(
         name: _Paths.MAP,
-        page: () => const MapScreen(),
+        page: () => MapScreen(),
         binding: BaseScreenBinding()),
     GetPage(
         name: _Paths.SESSION_HISTORY,

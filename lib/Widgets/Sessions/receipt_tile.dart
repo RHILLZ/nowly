@@ -12,12 +12,15 @@ class ReceiptListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: ProfileImage(
-        imageURL: _receipt.userProfilePicURL,
+        imageURL: _receipt.trainerProfilePicURL,
         rad: 2.5,
       ),
-      title: Text(
-          '${_receipt.sessionDuration} ${_receipt.sessionWorkoutType} session'),
-      subtitle: Text(_receipt.userName!),
+      title: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            '${_receipt.sessionWorkoutType} Session',
+          )),
+      subtitle: Text(_receipt.trainerName!),
       trailing: Text('${_receipt.sessionCharged}'),
     );
   }

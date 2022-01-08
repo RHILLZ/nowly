@@ -31,8 +31,8 @@ class InPersonScheduledSessionModel {
       sessionTimeCheckValue: 17.3,
       sessionDay: 'WED',
       sessionDate: 'OCT 7TH',
-      sessionDurationAndCost:
-          SessionDurationAndCostModel(duration: '30MIN', cost: 1000),
+      sessionDurationAndCost: SessionDurationAndCostModel(
+          duration: '30MIN', cost: 1000, bookingFee: 0.019),
       workoutType: 'Boxing',
       workoutTypeImagePath: 'assets/images/workout/boxing.svg');
 }

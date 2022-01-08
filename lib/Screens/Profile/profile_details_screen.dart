@@ -15,7 +15,7 @@ class ProfileDetailsScreen extends GetView<UserController> {
     var user = controller.user;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('PROFILE'),
+        title: const Text('PROFILE DETAILS'),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -49,7 +49,7 @@ class ProfileDetailsScreen extends GetView<UserController> {
                       ),
                     ),
                     ListTile(
-                      title: const Text('PRIMARY GOAL', style: k16BoldTS),
+                      title: Text('PRIMARY GOAL', style: k16BoldTS),
                       trailing: Text(user.primaryGoal!, style: k16RegularTS),
                     ),
                     const Divider(height: 0),

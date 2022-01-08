@@ -26,21 +26,11 @@ class UserProfileScreen extends GetView<UserController> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Profile'),
+        title: const Text('ACCOUNT'),
         actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: RoundedCornerButton(
-              onTap: () {},
-              child: (UIParameters.isDarkMode(context))
-                  ? Image.asset(notifications
-                      ? 'assets/images/profile/notifications_w.png'
-                      : 'assets/images/profile/notifications_empty_w.png')
-                  : Image.asset(notifications
-                      ? 'assets/images/profile/notifications.png'
-                      : 'assets/images/profile/notifications_empty.png'),
-            ),
-          ),
+          IconButton(
+              onPressed: () => Get.find<AuthController>().signOut(),
+              icon: const Icon(Icons.logout))
         ],
       ),
       body: Obx(
@@ -57,67 +47,65 @@ class UserProfileScreen extends GetView<UserController> {
                   // Get.toNamed(ProfileDetailsScreen.routeName);
                   Get.to(const ProfileDetailsScreen());
                 },
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
-                  elevation: 10,
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Row(
-                      children: [
-                        GestureDetector(
-                            onTap: () => Get.to(ProfileImageSetterScreen(
-                                controller: controller)),
-                            child: ProfileImage(
-                              imageURL: controller.user.profilePicURL,
-                            )),
-                        SizedBox(
-                          width: 3.w,
-                        ),
-                        Expanded(
-                          child: Padding(
+                child: FittedBox(
+                  fit: BoxFit.contain,
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0)),
+                    elevation: 10,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                              onTap: () => Get.to(ProfileImageSetterScreen(
+                                  controller: controller)),
+                              child: ProfileImage(
+                                imageURL: controller.user.profilePicURL,
+                              )),
+                          SizedBox(
+                            width: 3.w,
+                          ),
+                          Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: FittedBox(
-                              fit: BoxFit.fitWidth,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    '${controller.user.firstName} ${controller.user.lastName}',
-                                    style: k20RegularTS,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '${controller.user.firstName} ${controller.user.lastName}',
+                                  style: k20RegularTS,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Padding(
+                                  padding:
+                                      EdgeInsets.only(top: 1.h, bottom: 1.h),
+                                  child: Text(
+                                    Get.find<MapController>().cityState,
+                                    style: kRegularTS,
+                                    maxLines: 4,
                                   ),
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.only(top: 1.h, bottom: 1.h),
-                                    child: Text(
-                                      Get.find<MapController>().cityState,
-                                      style: kRegularTS,
-                                      maxLines: 4,
-                                    ),
-                                  ),
-                                  Text(
-                                      'Primary goal: ${controller.user.primaryGoal}'),
-                                  SizedBox(
-                                    height: 1.h,
-                                  ),
-                                  RatingStars(rating: controller.user.rating)
-                                ],
-                              ),
+                                ),
+                                Text(
+                                    'Primary goal: ${controller.user.primaryGoal}'),
+                                SizedBox(
+                                  height: 1.h,
+                                ),
+                                RatingStars(rating: controller.user.rating)
+                              ],
                             ),
                           ),
-                        ),
-                        // SvgPicture.asset(
-                        //   controller
-                        //       .userModel!.myPrimaryFitnessGoals.imagePath,
-                        //   color: Theme.of(context).iconTheme.color,
-                        // ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                      ],
+                          // SvgPicture.asset(
+                          //   controller
+                          //       .userModel!.myPrimaryFitnessGoals.imagePath,
+                          //   color: Theme.of(context).iconTheme.color,
+                          // ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

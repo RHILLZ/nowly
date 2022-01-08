@@ -13,40 +13,9 @@ class MapHeader extends StatelessWidget {
   double get headerHeight => 55.0;
   double get dialogHeight => 400.0;
 
-  // Future<void> showCalenderDialog() async {
-  //   showDialog(
-  //       barrierColor: Colors.black.withOpacity(0.65),
-  //       context: Get.overlayContext!,
-  //       builder: (_) => SafeArea(
-  //               child: Stack(
-  //             fit: StackFit.expand,
-  //             children: [
-  //               Positioned(
-  //                 top: headerHeight + kToolbarHeight,
-  //                 right: 0,
-  //                 left: 0,
-  //                 child: SimpleDialog(
-  //                     insetPadding: EdgeInsets.zero,
-  //                     contentPadding: EdgeInsets.zero,
-  //                     shape: const RoundedRectangleBorder(
-  //                         borderRadius:
-  //                             BorderRadius.all(Radius.circular(10.0))),
-  //                     children: [
-  //                       // SizedBox(
-  //                       //   //height: dialogHeight,
-  //                       //   width: Get.width,
-  //                       //   child: ScheduleCalendar(),
-  //                       // )
-  //                     ]),
-  //               )
-  //             ],
-  //           )));
-  // }
-
   @override
   Widget build(BuildContext context) {
-    final SessionScheduleController _scheduleController = Get.find();
-    final MapController _mapController = Get.find();
+    final MapController _mapController = Get.put(MapController());
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: SizedBox(
@@ -155,7 +124,6 @@ class MapHeader extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 5),
-            // const SessionFilterButton(),
           ],
         ),
       ),

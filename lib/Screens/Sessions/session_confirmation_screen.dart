@@ -7,6 +7,7 @@ import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Screens/Stripe/add_payment_methods.dart';
 import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Widgets/Dialogs/dialogs.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 import 'package:sizer/sizer.dart';
@@ -19,54 +20,91 @@ class SessionConfirmationScreen extends StatelessWidget {
   final StripeController _stripeController = Get.put(StripeController());
   final AgoraController _agoraVideoCallController = Get.put(AgoraController());
   final FilterController _filterController = Get.find();
+  final UserController _userController = Get.find();
 
   @override
   Widget build(BuildContext context) {
     _controller.user = Get.find<UserController>().user;
-    AppLogger.i(_controller.user.id);
+    final _city = Get.find<MapController>().city;
+    final _sessionFee = (_controller.sessionDurationAndCost.cost / 100);
+    final _bookingFee =
+        (_sessionFee * _controller.sessionDurationAndCost.bookingFee);
+    final sb = _sessionFee + _bookingFee;
+    final st = SessionDurationAndCostModel.salesTaxByLoc['New York'] ?? 0.0;
+    final _salesTax = sb * st;
+    final _totalCost = _sessionFee + _bookingFee + _salesTax;
+    final _totalCharge = (_totalCost * 100).toString().split('.')[0];
+
+    AppLogger.i(_salesTax);
+
     return Scaffold(
         appBar: AppBar(
-          title: const Text('SESSION CONFIRMATION'),
+          title: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                'SESSION CONFIRMATION',
+                style: k16BoldTS.copyWith(fontSize: 14),
+              )),
           centerTitle: true,
         ),
-        bottomNavigationBar: BottomAppBar(
-          child: Padding(
-            padding: UIParameters.screenPadding,
-            child: MainButton(onTap: () async {
-              final userName =
-                  '${_controller.user.firstName} ${_controller.user.lastName}';
+        bottomNavigationBar: Obx(() => BottomAppBar(
+              child: Padding(
+                padding: UIParameters.screenPadding,
+                child: _agoraVideoCallController.isSearching
+                    ? MainButton(
+                        title: 'CANCEL',
+                        onTap: () => _agoraVideoCallController.cancel(context))
+                    : MainButton(onTap: () async {
+                        final userName =
+                            '${_controller.user.firstName} ${_controller.user.lastName}';
 
-              final _session = SessionModel(
-                  userID: _controller.user.id,
-                  userName: userName,
-                  userProfilePicURL: _controller.user.profilePicURL,
-                  userStripeID: _controller.user.stripeCustomerId,
-                  userPaymentMethodID: _controller.user.activePaymentMethodId,
-                  trainerGenderPref: _filterController.genderPref.type,
-                  sessionMode: 'Virtual',
-                  sessionDuration: _controller.sessionDurationAndCost.duration,
-                  sessionChargedAmount: _controller.sessionDurationAndCost.cost,
-                  sessionID: 'NWLY${DateTime.now().millisecondsSinceEpoch}',
-                  sessionWorkoutType: _controller.sessionWorkOutType.type,
-                  sessionWorkoutTypeImagePath:
-                      _controller.sessionWorkOutType.imagePath);
+                        final _session = SessionModel(
+                            userID: _controller.user.id,
+                            userName: userName,
+                            userProfilePicURL: _controller.user.profilePicURL,
+                            userStripeID: _controller.user.stripeCustomerId,
+                            userPaymentMethodID:
+                                _controller.user.activePaymentMethodId,
+                            trainerGenderPref:
+                                _filterController.genderPref.type,
+                            sessionMode: 'Virtual',
+                            salesTaxApplied: _salesTax > 0.0,
+                            sessionSalesTax: _salesTax,
+                            sessionDuration:
+                                _controller.sessionDurationAndCost.duration,
+                            sessionChargedAmount: int.parse(_totalCharge),
+                            sessionID:
+                                'NWLY${DateTime.now().millisecondsSinceEpoch}',
+                            sessionWorkoutType:
+                                _controller.sessionWorkOutType.type,
+                            sessionWorkoutTypeImagePath:
+                                _controller.sessionWorkOutType.imagePath);
 
-              // ignore: unused_local_variable
-              final durTimer =
-                  _controller.sessionDurationAndCost.duration.substring(0, 2);
-              final amount = _controller.sessionDurationAndCost.cost;
-              final desc =
-                  '${_controller.sessionDurationAndCost.duration} Minute ${_controller.sessionWorkOutType.type} Session';
-              _agoraVideoCallController.currentSession = _session;
-              _agoraVideoCallController.user = _controller.user;
-              _agoraVideoCallController.sessionDescription = desc;
-              _agoraVideoCallController.sessionAmount = amount;
-              _agoraVideoCallController.sessionTimer = int.parse(durTimer) * 60;
-              _agoraVideoCallController.startSession(
-                  context, _session, _agoraVideoCallController);
-            }),
-          ),
-        ),
+                        // ignore: unused_local_variable
+                        final durTimer = _controller
+                            .sessionDurationAndCost.duration
+                            .substring(0, 2);
+                        final amount = int.parse(_totalCharge);
+                        final desc =
+                            '${_controller.sessionDurationAndCost.duration} Minute ${_controller.sessionWorkOutType.type} Session';
+                        _agoraVideoCallController.currentSession = _session;
+                        _controller.currentSession = _session;
+                        _agoraVideoCallController.user = _controller.user;
+                        _agoraVideoCallController.sessionDescription = desc;
+                        _agoraVideoCallController.sessionAmount = amount;
+                        _agoraVideoCallController.sessionTimer =
+                            int.parse(durTimer) * 60;
+
+                        if (_stripeController.activePaymentMethod == null) {
+                          Dialogs().addPayMethod(context);
+                          return;
+                        }
+
+                        _agoraVideoCallController.startSession(
+                            context, _session, _agoraVideoCallController);
+                      }),
+              ),
+            )),
         body: Obx(
           () => _stripeController.isProcessing
               ? _stripeController.loadScreen()
@@ -140,28 +178,31 @@ class SessionConfirmationScreen extends StatelessWidget {
                             ),
                             ListTile(
                               isThreeLine: true,
-                              title: Text(
-                                '${_controller.sessionDurationAndCost.duration} Minute ${_controller.sessionWorkOutType.type} Session',
-                                style: k16BoldTS,
+                              leading: FittedBox(
+                                fit: BoxFit.contain,
+                                child: Text(
+                                  '${_controller.sessionWorkOutType.type} Session',
+                                  style: k20BoldTS,
+                                ),
                               ),
-                              subtitle: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                      'Trainer Preference: ${_filterController.genderPref.type}'),
-                                ],
-                              ),
-                              trailing: Text(
-                                '\$' +
-                                    (_controller.sessionDurationAndCost.cost ~/
-                                            100)
-                                        .toString(),
-                                style: k20BoldTS,
+                              subtitle: Visibility(
+                                visible:
+                                    _filterController.genderPref.type != 'NONE',
+                                child: Text(
+                                    'Trainer Preference: ${_filterController.genderPref.type}'),
                               ),
                             ),
+                            _controller.buildSessionFee(),
+                            _controller.buildBookingFee(),
+                            Visibility(
+                                visible: _controller.applySalesTax(),
+                                child: _controller.buildSalesTax()),
+                            SizedBox(
+                              height: 1.h,
+                            ),
+                            _controller.buildTotalCost(),
                             const Divider(
-                              height: 20,
+                              height: 1,
                               thickness: 3,
                             ),
                             Obx(() {
@@ -275,6 +316,7 @@ class SessionConfirmationScreen extends StatelessWidget {
             const Text(
               'Please wait, searching for available trainer..',
               style: k16BoldTS,
+              textAlign: TextAlign.center,
             )
           ],
         ),

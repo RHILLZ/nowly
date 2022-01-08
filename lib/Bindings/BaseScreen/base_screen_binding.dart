@@ -11,7 +11,6 @@ class BaseScreenBinding extends Bindings {
     Get.put(() => SessionListController());
     Get.create(() => TrainerInPersonSessionController());
     Get.put(() => MapController());
-    Get.lazyPut(() => SessionScheduleController());
     Get.lazyPut(() => FilterController());
 
     Get.lazyPut(() => AgoraController());

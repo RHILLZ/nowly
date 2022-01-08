@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nowly/Configs/configs.dart';
+import 'package:sizer/sizer.dart';
 
 class CustomCard extends StatelessWidget {
   const CustomCard(
@@ -26,7 +27,7 @@ class CustomCard extends StatelessWidget {
       onTap: onSelecte,
       child: Ink(
         padding:
-            padding ?? const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+            padding ?? EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.w),
         child: child,
         decoration: decoration ??
             BoxDecoration(

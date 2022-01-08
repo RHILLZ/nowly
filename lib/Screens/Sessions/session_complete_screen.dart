@@ -43,7 +43,7 @@ class SessionCompleteScreen extends StatelessWidget {
           actions: [
             TextButton(
                 onPressed: () {
-                  Get.offAll(() => BaseScreen());
+                  _controller.skip(_session, context);
                 },
                 child: const Text('Skip'))
           ],

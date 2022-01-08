@@ -1,20 +1,47 @@
 import 'package:cool_alert/cool_alert.dart';
+import 'package:get/get.dart';
+import 'package:nowly/Configs/Logo/logos.dart';
 import 'package:nowly/Configs/configs.dart';
+import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:sizer/sizer.dart';
 
 class Dialogs {
+  sessionCancelled(context) => CoolAlert.show(
+      context: context,
+      type: CoolAlertType.info,
+      backgroundColor: kPrimaryColor,
+      title: 'Session Cancelled',
+      text: 'Your session has been cancelled successfully.',
+      barrierDismissible: true,
+      // widget: Logo.mark(context, 8.h),
+      lottieAsset: 'assets/alert.json',
+      confirmBtnText: 'OK',
+      confirmBtnColor: kPrimaryColor,
+      width: 90.w);
+  sessionCancelledByOther(context) => CoolAlert.show(
+      context: context,
+      type: CoolAlertType.info,
+      backgroundColor: kPrimaryColor,
+      title: 'Session Cancelled',
+      text: 'This session was cancelled.',
+      barrierDismissible: true,
+      // widget: Logo.mark(context, 8.h),
+      lottieAsset: 'assets/alert.json',
+      confirmBtnText: 'OK',
+      confirmBtnColor: kPrimaryColor,
+      width: 90.w);
   sessionCancellation(context, Function onTap) => CoolAlert.show(
       context: context,
       type: CoolAlertType.confirm,
-      onConfirmBtnTap: () => onTap,
+      onConfirmBtnTap: () => onTap(),
       backgroundColor: kPrimaryColor,
-      title: 'Premature Cancellation',
-      text:
-          'Are you sure you want to end this session before the duration has completed?',
+      title: 'Early Cancellation',
+      text: 'End this session before the duration has completed?',
       barrierDismissible: false,
       // widget: Logo.mark(context, 8.h),
       lottieAsset: 'assets/alert.json',
       confirmBtnText: 'Yes',
+      onCancelBtnTap: () => Get.back(),
       cancelBtnText: 'Nevermind',
       confirmBtnColor: kPrimaryColor,
       width: 80.w);
@@ -48,6 +75,20 @@ class Dialogs {
       loopAnimation: false,
       width: 80.w);
 
+  contactInfo(context) => CoolAlert.show(
+      context: context,
+      type: CoolAlertType.info,
+      backgroundColor: kPrimaryColor,
+      title: 'Contact Us',
+      text: 'support@nowly.io',
+      barrierDismissible: true,
+      // widget: Logo.mark(5.h),
+      lottieAsset: 'assets/alert.json',
+      confirmBtnText: 'Ok',
+      confirmBtnColor: kPrimaryColor,
+      loopAnimation: false,
+      width: 90.w);
+
   noTrainersUnavailable(context) => CoolAlert.show(
       context: context,
       type: CoolAlertType.error,
@@ -62,4 +103,36 @@ class Dialogs {
       confirmBtnColor: kPrimaryColor,
       loopAnimation: false,
       width: 80.w);
+
+  deletePayMethod(context, pmID) => CoolAlert.show(
+      context: context,
+      type: CoolAlertType.confirm,
+      backgroundColor: kPrimaryColor,
+      title: 'Delete Card',
+      text: 'Are you sure you want to delete payment card?',
+      barrierDismissible: false,
+      // widget: Logo.mark(context, 8.h),
+      lottieAsset: 'assets/alert.json',
+      confirmBtnText: 'Delete',
+      onConfirmBtnTap: () =>
+          Get.find<StripeController>().removePaymentMethod(pmID),
+      onCancelBtnTap: () => Get.back(),
+      cancelBtnText: 'Nevermind',
+      confirmBtnColor: kPrimaryColor,
+      loopAnimation: false,
+      width: 90.w);
+
+  addPayMethod(context) => CoolAlert.show(
+      context: context,
+      type: CoolAlertType.warning,
+      backgroundColor: kPrimaryColor,
+      title: 'No Payment Method',
+      text: 'Please add payment method before you can continue.',
+      barrierDismissible: false,
+      // widget: Logo.mark(context, 8.h),
+      lottieAsset: 'assets/alert.json',
+      confirmBtnText: 'Ok',
+      confirmBtnColor: kPrimaryColor,
+      loopAnimation: false,
+      width: 90.w);
 }

@@ -43,10 +43,11 @@ class UserAddCardScreen extends StatelessWidget {
 
                   if (_formKey.currentState!.validate()) {
                     await _controller.initStripeCustomerFlow();
-                    // await _controller.addNewPaymentMethod();
+                    await _controller.addNewPaymentMethod();
+                    Get.back();
                   }
 
-                  _controller.getAccountDetails();
+                  // _controller.getAccountDetails();
                 },
                 title: _controller.last4.isEmpty
                     ? 'CONFIRM'

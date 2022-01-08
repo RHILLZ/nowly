@@ -48,13 +48,13 @@ class AuthView extends GetView<AuthController> {
                     margin: EdgeInsets.only(left: 3.w),
                     child: Column(children: [Logo.squareLogoLD(context, 30.h)]),
                   ),
-                  Text(
-                    'By creating an account, you agree to our \nTerms and Conditions',
-                    style: kRegularTS.copyWith(
-                      color: Get.isDarkMode ? Colors.white : kSecondaryColor,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+                  // Text(
+                  //   'By creating an account, you agree to our \nTerms and Conditions',
+                  //   style: kRegularTS.copyWith(
+                  //     color: Get.isDarkMode ? Colors.white : kSecondaryColor,
+                  //   ),
+                  //   textAlign: TextAlign.center,
+                  // ),
                 ],
               )),
               SizedBox(height: 2.h),
@@ -115,7 +115,7 @@ class AuthView extends GetView<AuthController> {
                           softWrap: true,
                           text: TextSpan(
                               style: kRegularTS.copyWith(
-                                  fontSize: 14,
+                                  fontSize: 10.sp,
                                   height: 1.4,
                                   color: Get.isDarkMode ? null : kGray),
                               children: [
@@ -125,7 +125,7 @@ class AuthView extends GetView<AuthController> {
                                 TextSpan(
                                     text: 'Terms of Services ',
                                     style: k10BoldTS.copyWith(
-                                        fontSize: 14,
+                                        fontSize: 10.sp,
                                         color: UIParameters.isDarkMode(context)
                                             ? kPrimaryColor
                                             : kActiveButtonColor),
@@ -136,7 +136,7 @@ class AuthView extends GetView<AuthController> {
                                 TextSpan(
                                     text: 'Privacy Agreement',
                                     style: k10BoldTS.copyWith(
-                                        fontSize: 14,
+                                        fontSize: 10.sp,
                                         color: UIParameters.isDarkMode(context)
                                             ? kPrimaryColor
                                             : kActiveButtonColor),

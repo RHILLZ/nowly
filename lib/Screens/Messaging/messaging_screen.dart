@@ -56,9 +56,17 @@ class MessagingScreen extends GetView<MessagingController> {
                           style: kRegularTS.copyWith(color: Colors.white),
                         ),
                       ),
+
                       // const SizedBox(height: 20)
                     ],
                   ),
+                  Expanded(
+                    child: SizedBox(
+                      width: 1.w,
+                    ),
+                  ),
+                  TextButton(
+                      onPressed: () => Get.back(), child: const Text('back'))
                 ],
               ),
             ),

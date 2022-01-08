@@ -61,12 +61,26 @@ class ReceiptDetailInfo extends StatelessWidget {
         //   ),
         // ),
         ListTile(
+          title: Text('Booking Fee'.toUpperCase()),
+          trailing: Text(
+            _receipt.sessionBookingFee!,
+            style: kRegularTS.copyWith(color: kActiveColor),
+          ),
+        ),
+        ListTile(
+          title: Text('Sales Tax'.toUpperCase()),
+          trailing: Text(
+            _receipt.sessionSalesTax!,
+            style: kRegularTS.copyWith(color: kActiveColor),
+          ),
+        ),
+        ListTile(
           title: Text('status'.toUpperCase()),
           trailing: Text(
             _receipt.sessionStatus!,
             style: kRegularTS.copyWith(color: kActiveColor),
           ),
-        )
+        ),
       ],
     );
   }

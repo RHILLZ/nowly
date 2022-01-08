@@ -4,6 +4,7 @@ import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Services/Firebase/firebase_futures.dart';
 import 'package:nowly/Services/service_exporter.dart';
+import 'package:nowly/Widgets/Dialogs/dialogs.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stripe_payment/stripe_payment.dart';
@@ -282,9 +283,8 @@ class StripeController extends GetxController {
   //     _isProcessing.toggle();
   //   }
   // }
-  deletePaymentMethodDialog(pmID) => Get.dialog(RemovePaymentMethodDialog(
-        pmID: pmID,
-      ));
+  deletePaymentMethodDialog(context, pmID) =>
+      Dialogs().deletePayMethod(context, pmID);
   removePaymentMethod(pmID) async {
     final result =
         await StripeServices().unlinkStripePaymentMethodFromUser(pmID);

@@ -73,18 +73,18 @@ class Filters extends StatelessWidget {
                       const SizedBox(
                         height: 20.0,
                       ),
-                      RectButton(
-                        onPressed: () {
-                          final SessionScheduleController controller =
-                              Get.find();
-                          controller.changeDate(
-                              date: controller.selectedDay.value);
-                          _controller.applyFilters();
-                          Get.back();
-                        },
-                        title: 'APPLY',
-                        isSelected: true,
-                      ),
+                      // RectButton(
+                      //   onPressed: () {
+                      //     final SessionScheduleController controller =
+                      //         Get.find();
+                      //     controller.changeDate(
+                      //         date: controller.selectedDay.value);
+                      //     _controller.applyFilters();
+                      //     Get.back();
+                      //   },
+                      //   title: 'APPLY',
+                      //   isSelected: true,
+                      // ),
                     ],
                   ),
                 ),

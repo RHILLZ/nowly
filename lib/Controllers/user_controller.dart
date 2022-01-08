@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,11 +11,10 @@ import 'package:nowly/Services/Firebase/firebase_futures.dart';
 import 'package:nowly/Services/Firebase/firebase_streams.dart';
 import 'package:nowly/Services/service_exporter.dart';
 import 'package:nowly/Utils/logger.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
-
 import 'controller_exporter.dart';
 
 class UserController extends GetxController {
+  final _fcm = FirebaseMessaging.instance;
   final Rx<UserModel> _user = UserModel().obs;
   final _myWeight = ''.obs;
   RxList<SessionReceiptModel> sessionReceipts = <SessionReceiptModel>[].obs;
@@ -44,8 +44,9 @@ class UserController extends GetxController {
     final uid = Get.put(AuthController()).firebaseUser.uid;
     _user.bindStream(FirebaseStreams().streamUser(uid));
     _getAllFitnessGoals();
-    Future.delayed(const Duration(seconds: 2), () => checkOneSignalId());
+    Future.delayed(const Duration(seconds: 2), () => checkTokenId());
     sessionReceipts.value = await FirebaseFutures().getSessionReceipts(uid);
+    _fcm.onTokenRefresh.listen((token) => checkTokenId());
   }
 
 //USER PROFILE METHODS AMD CONFIG//////////////////////////////////////////////////////
@@ -83,12 +84,12 @@ class UserController extends GetxController {
   }
 
 // CHECK FOR ONESIGNAL ID AND SET IF NONE FOUND
-  checkOneSignalId() async {
-    final currentOneSignalId = _user.value.oneSignalId ?? '';
-    final oneSignalId =
-        await OneSignal.shared.getDeviceState().then((value) => value!.userId);
-    if (currentOneSignalId != oneSignalId) {
-      FirebaseFutures().setUserOneSignalId(_user.value.id!, oneSignalId!);
+  Future<void> checkTokenId() async {
+    final currentTokenId = _user.value.tokenId ?? '';
+    final tokenId = await FirebaseMessaging.instance.getToken();
+
+    if (currentTokenId != tokenId) {
+      FirebaseFutures().setUserTokenId(_user.value.id!, tokenId!);
     }
   }
 

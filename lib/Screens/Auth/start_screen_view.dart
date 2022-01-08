@@ -64,7 +64,7 @@ class StartScreenView extends GetView<AuthController> {
                     child: CarouselSlider(
                       items: _texts
                           .map((e) => Text(e,
-                              textAlign: TextAlign.center, style: k16TS))
+                              textAlign: TextAlign.center, style: kRegularTS))
                           .toList(),
                       options: CarouselOptions(
                           height: 10.h,

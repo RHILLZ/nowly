@@ -100,35 +100,34 @@ class ActiveSessionBanner extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Expanded(
+                      SizedBox(
+                        width: 40.w,
                         child: RectButton(
                             fillColor: kLightGray,
                             title: 'Cancel',
                             onPressed: () {
-                              // controller.endNavigations();
+                              _controller.cancel(context);
                             }),
                       ),
                       const SizedBox(
                         width: 10,
                       ),
-                      Obx(() => Expanded(
-                            child: Badge(
-                              showBadge: _mController.showBadge,
-                              badgeColor: kPrimaryColor,
-                              badgeContent: const Icon(
-                                Icons.notifications_active,
-                                color: Colors.white,
-                              ),
-                              child: RectButton(
-                                  fillColor: getWidgetSelectedColor(context),
-                                  title: 'Message',
-                                  onPressed: () {
-                                    final session = _controller.currentSession;
-                                    _mController.showBadge = false;
-                                    Get.to(() =>
-                                        MessagingScreen(session: session));
-                                  }),
+                      Obx(() => Badge(
+                            showBadge: _mController.showBadge,
+                            badgeColor: kPrimaryColor,
+                            badgeContent: const Icon(
+                              Icons.notifications_active,
+                              color: Colors.white,
                             ),
+                            child: RectButton(
+                                fillColor: getWidgetSelectedColor(context),
+                                title: 'Message',
+                                onPressed: () {
+                                  final session = _controller.currentSession;
+                                  _mController.showBadge = false;
+                                  Get.to(
+                                      () => MessagingScreen(session: session));
+                                }),
                           )),
                     ],
                   )

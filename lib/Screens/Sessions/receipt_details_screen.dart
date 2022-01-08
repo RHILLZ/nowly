@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Models/models_exporter.dart';
+import 'package:nowly/Widgets/Common/profile_image.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:sizer/sizer.dart';
 
@@ -44,20 +45,15 @@ class ReceiptDetailsScreen extends GetView {
           child: Column(
             children: [
               Center(
-                child: CircleAvatar(
-                    foregroundImage: _receipt.userProfilePicURL != null
-                        ? NetworkImage(_receipt.userProfilePicURL!)
-                        : null,
-                    child: _receipt.userProfilePicURL != null
-                        ? null
-                        : SvgPicture.asset('assets/icons/logo.svg'),
-                    radius: 8.h),
-              ),
+                  child: ProfileImage(
+                imageURL: _receipt.trainerProfilePicURL,
+                rad: 8,
+              )),
               const SizedBox(
                 height: 10,
               ),
               Text(
-                _receipt.userName!,
+                _receipt.trainerName!,
                 style: k20BoldTS,
               ),
               Padding(
@@ -68,7 +64,7 @@ class ReceiptDetailsScreen extends GetView {
                 ),
               ),
               Text(
-                _receipt.sessionCharged! + '0',
+                _receipt.sessionCharged!,
                 style: k20BoldTS,
               ),
               const SizedBox(
@@ -78,23 +74,6 @@ class ReceiptDetailsScreen extends GetView {
               ReceiptDetailInfo(
                 receipt: _receipt,
               ),
-              // if (appoinment.status == 'Upcoming')
-              //   Padding(
-              //     padding: UIParameters.screenPadding,
-              //     child: RectButton(
-              //       onPressed: () {},
-              //       title: 'RESCHEDULE',
-              //       isSelected: true,
-              //     ),
-              //   ),
-              // if (appoinment.status == 'Completed')
-              //   Padding(
-              //     padding: UIParameters.screenPadding,
-              //     child: MainButton(
-              //       onTap: () {},
-              //       title: 'BOOK AGAIN',
-              //     ),
-              //   )
             ],
           ),
         ),

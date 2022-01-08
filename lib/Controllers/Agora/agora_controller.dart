@@ -1,8 +1,10 @@
 // ignore_for_file: unused_field, avoid_print
 
 import 'dart:async';
-import 'package:agora_uikit/agora_uikit.dart';
+import 'package:agora_rtc_engine/rtc_engine.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
@@ -11,16 +13,17 @@ import 'package:nowly/Screens/Sessions/virtual_session_view.dart';
 import 'package:nowly/Services/service_exporter.dart';
 import 'package:nowly/Utils/logger.dart';
 import 'package:nowly/Widgets/Dialogs/dialogs.dart';
+import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:nowly/keys.dart';
 import 'package:nowly/root.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sizer/sizer.dart';
 
 class AgoraController extends GetxController {
   Timer? _timer;
-  final Rxn<AgoraClient> _client = Rxn<AgoraClient>();
+  late RtcEngine _engine;
   final _channel = ''.obs;
   final Rx<UserModel> _user = UserModel().obs;
-  // final Rx<TrainerModel> _trainer = TrainerModel().obs;
   final Rx<SessionModel> _currentSession = SessionModel().obs;
   final RxBool _isJoined = false.obs;
   final _sessionTimer = 0.obs;
@@ -31,20 +34,28 @@ class AgoraController extends GetxController {
   String? _connectId;
   final _sessionController = SessionController().obs;
   final _isSearching = false.obs;
+  final _localUserJoined = false.obs;
+  int? _remoteUid;
   BuildContext? _context;
+  final _isMuted = false.obs;
+  final _cameraOff = false.obs;
+  final _infoWindowHidden = false.obs;
 
 //GETTERS AND SETTERS////////////////////////////////////////////////////////////
   get isSearching => _isSearching.value;
-  get client => _client.value;
   get isJoined => _isJoined.value;
-  get sessionTime => _sessionTimer.value;
+  get sessionTimer => _sessionTimer.value;
   get currentSession => _currentSession.value;
   get user => _user.value;
   get trainer => trainer.value;
+  get remoteUid => _remoteUid;
+  get localUserJoined => _localUserJoined.value;
+  get isMuted => _isMuted.value;
+  get cameraOff => _cameraOff.value;
+  get infoWindowHidden => _infoWindowHidden.value;
 
   set token(value) => _token = value;
   set user(value) => _user.value = value;
-  // set trainer(value) => _trainer.value = value;
   set currentSession(value) => _currentSession.value = value;
   set sessionDuration(value) => _sessionDuration = value;
   set sessionAmount(value) => _sessionAmount = value;
@@ -52,6 +63,12 @@ class AgoraController extends GetxController {
   set connectId(value) => _connectId = value;
   set sessionTimer(value) => _sessionTimer.value = value;
   set sessionController(value) => _sessionController.value = value;
+  set isMuted(value) => _isMuted.value = value;
+  set cameraOff(value) => _cameraOff.value = value;
+
+  toggleInfoWindow() {
+    _infoWindowHidden.toggle();
+  }
 
   @override
   void onInit() async {
@@ -70,27 +87,38 @@ class AgoraController extends GetxController {
   }
 
 //INIT THE AGORA CLIENT////////////////////////////////////////////////////////
-  initAgora(String sessionId) async {
-    final tokenUrl =
-        "http://192.168.1.29:5888/xdiAgoraTokenGenerator/$sessionId";
-    AppLogger.i('HERE!!');
-    final agoraConnectionData = AgoraConnectionData(
-        appId: AGORA_ID, channelName: _channel.value, tokenUrl: tokenUrl);
-    final enabledPermission = [Permission.microphone, Permission.camera];
-    _client.value = AgoraClient(
-        agoraEventHandlers: AgoraEventHandlers(
-          joinChannelSuccess: (channel, uid, elapsed) => userJoin(),
-          userJoined: (uid, elapsed) => trainerJoin(),
-          leaveChannel: (stats) => kill(),
-          localVideoStateChanged: (state, err) =>
-              state == LocalVideoStreamState.Stopped ? kill() : null,
-          remoteVideoStateChanged: (uid, state, reason, elapsed) =>
-              state == VideoRemoteState.Stopped ? kill() : null,
-        ),
-        agoraConnectionData: agoraConnectionData,
-        enabledPermission: enabledPermission);
-    await client.initialize();
+  Future<void> initAgora() async {
+    // retrieve permissions
+    await [Permission.microphone, Permission.camera].request();
+    //create the engine
+    _engine = await RtcEngine.create(AGORA_ID);
+    await _engine.enableVideo();
+    AppLogger.i('CREATED ENGINE');
+    _engine.setEventHandler(
+      RtcEngineEventHandler(
+        joinChannelSuccess: (String channel, int uid, int elapsed) {
+          AppLogger.i("local user $uid joined");
+          _localUserJoined.value = true;
+        },
+        userJoined: (int uid, int elapsed) {
+          AppLogger.i("remote user $uid joined");
+          _remoteUid = uid;
+          trainerJoin();
+        },
+        userOffline: (int uid, UserOfflineReason reason) {
+          AppLogger.i("remote user $uid left channel");
+          _remoteUid = null;
+        },
+        remoteVideoStateChanged: (uid, state, reason, elapsed) {
+          state == VideoRemoteState.Stopped ? kill() : null;
+        },
+        leaveChannel: (stats) => kill(),
+      ),
+    );
+    _token = await AgoraService().generateAgoraToken(currentSession.sessionID!);
+    await _engine.joinChannel(_token, _channel.value, null, 0);
   }
+
 ////////////////////////////////////////////////////////////////////////////
 
 //START A VIRTUAL SESSION/////////////////////////////////////////////////////
@@ -99,7 +127,7 @@ class AgoraController extends GetxController {
     _context = context;
     _isSearching.toggle();
     // String _agoraToken =
-    await AgoraService().generateAgoraToken(session.sessionID!);
+    //     await AgoraService().generateAgoraToken(session.sessionID!);
     // _token = _agoraToken;
     _channel.value = session.sessionID!;
     // ignore: unused_local_variable
@@ -114,9 +142,9 @@ class AgoraController extends GetxController {
 //LISTENING FOR SESSION TO BE ACCEPTED///////////////////////////////////////
   isAccepted(_context) async {
     if (_currentSession.value.isAccepted) {
-      await initAgora(_currentSession.value.sessionID!);
+      // await initAgora();
       _isSearching.toggle();
-      Get.off(() => VideoCallView(
+      Get.to(() => VideoCallView(
             agoraController: this,
           ));
     }
@@ -148,8 +176,7 @@ class AgoraController extends GetxController {
     AppLogger.i('KILL INITIATED!!!');
     _isJoined.toggle();
     _timer!.cancel();
-    _client.value?.sessionController.dispose();
-    _client.value?.sessionController.endCall();
+    _engine.destroy();
 
     Future.delayed(
         const Duration(seconds: 1),
@@ -160,18 +187,20 @@ class AgoraController extends GetxController {
   }
 
 //CANCEL A SESSION
-  cancel() {
-    Get.back();
-    _timer!.isActive ? _timer!.cancel() : null;
-    Get.to(() => const Root());
+  cancel(context) async {
+    final cancelled =
+        await FirebaseFutures().cancelSession(_currentSession.value);
+    _isSearching.toggle();
+    await Dialogs().sessionCancelled(context);
+    Get.off(() => const Root());
   }
 
   void userJoin() {
     AppLogger.i('USER JOINED!!!');
-    // Get.bottomSheet(VirtualSessionInitSearch(),
-    //     isDismissible: false,
-    //     enableDrag: false,
-    //     backgroundColor: Colors.transparent);
+    Get.bottomSheet(VirtualSessionInitSearch(),
+        isDismissible: false,
+        enableDrag: false,
+        backgroundColor: Colors.transparent);
   }
 
   void trainerJoin() async {
@@ -193,7 +222,7 @@ class AgoraController extends GetxController {
     final String seconds = _formatNumber(_sessionTimer.value % 60);
     return Text('$minutes : $seconds',
         style: TextStyle(
-            fontSize: 18.sp,
+            fontSize: 16.sp,
             color: Get.isDarkMode ? Colors.blue : Colors.white));
   }
 
@@ -212,6 +241,24 @@ class AgoraController extends GetxController {
     if (check) {
       _timer!.cancel();
       kill();
+    }
+  }
+
+  void toggleAudio() {
+    _isMuted.toggle();
+    if (isMuted) {
+      _engine.enableAudio();
+    } else {
+      _engine.disableAudio();
+    }
+  }
+
+  void toggleVideo() {
+    _cameraOff.toggle();
+    if (cameraOff) {
+      _engine.enableVideo();
+    } else {
+      _engine.disableVideo();
     }
   }
 }

@@ -15,18 +15,14 @@ class TrainerInPersonSessionController extends GetxController {
   final _isProcessing = false.obs;
   final _currentSession = SessionModel().obs;
   // ignore: non_constant_identifier_names
-  // TrainerSessionController(
-  //     {required TrainerInPersonSessionModel trainerSessionModel}) {
-  //   trainerSession = trainerSessionModel;
-  // }
 
   set sessionTime(value) => _sessionTime.value = value;
   get sessionTime => _sessionTime.value;
   get isProcessing => _isProcessing.value;
   get currentSession => _currentSession.value;
 
-
-  final selectedLength = SessionDurationAndCostModel(duration: '', cost: 0).obs;
+  final selectedLength =
+      SessionDurationAndCostModel(duration: '', cost: 0, bookingFee: 0).obs;
   late TrainerInPersonSessionModel trainerSession;
   final showTimes = false.obs;
 
