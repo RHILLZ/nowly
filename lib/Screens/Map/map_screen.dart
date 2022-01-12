@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Widgets/Dialogs/dialogs.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 
 class MapScreen extends StatelessWidget {
@@ -10,6 +12,15 @@ class MapScreen extends StatelessWidget {
   final MapController _mapController = Get.put(MapController());
   @override
   Widget build(BuildContext context) {
+    Future.delayed(const Duration(seconds: 3), () {
+      if (GetStorage().read('showMapDialog') ?? true) {
+        final showAgain = Get.find<UserController>().showMapDialogAgain;
+        final dontShowAgain = Get.find<UserController>().dontShowMapDialogAgain;
+
+        Dialogs().mapInfo(context, showAgain, dontShowAgain);
+      }
+    });
+
     AppLogger.i('Map Screen');
     return Scaffold(
       body: Stack(

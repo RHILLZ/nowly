@@ -133,6 +133,7 @@ class SessionController extends GetxController {
   set genderPref(value) => _genderPref.value = value;
   set sessionTime(value) => _sessionTime.value = value;
   set currentSession(value) => _currentSession.value = value;
+  set context(value) => _context = value;
 //SESSION CLOCK//////////////////////////////////////////////////////////////
   void startSessionTimer() {
     const sec = Duration(seconds: 1);
@@ -157,8 +158,9 @@ class SessionController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    ever(_currentSession, (callback) => checkAccepted());
+
     ever(_sessionEta, (callback) => updateEta());
+
     _fetchWorkOutData();
     _fetchSessionDurationAndCosts();
     _fethSessionTypes();
@@ -369,6 +371,7 @@ class SessionController extends GetxController {
       _currentSession
           .bindStream(FirebaseStreams().streamSession(sess.sessionID!));
       await Future.delayed(const Duration(seconds: 2), () => null);
+      ever(_currentSession, (callback) => checkSessionStatus());
       //SEND SIGNAL HEREfire
       AppLogger.i(session);
       FCM().sendInPersonSessionSignal(session, tokenId);
@@ -384,10 +387,13 @@ class SessionController extends GetxController {
 
 //CHECK IF SESSION IS ACCEPTED AFTER ITS CREATED////////////////////////////////
 
-  checkAccepted() async {
+  checkSessionStatus() async {
     if (_currentSession.value.sessionStatus == 'cancelled') {
-      await Dialogs().sessionCancelledByOther(_context);
+      _currentSession.close();
+      Get.off(() => const Root());
+      Dialogs().sessionCancelledByOther(_context);
       Phoenix.rebirth(_context!);
+      return;
     }
     if (_currentSession.value.isAccepted == true &&
         !_currentSession.value.isScanned) {
@@ -430,11 +436,13 @@ class SessionController extends GetxController {
 
 //CANCEL SESSION///////////////////////////////////////////////////////////////
   cancel(context) async {
-    final cancelled =
-        await FirebaseFutures().cancelSession(_currentSession.value);
+    await FirebaseFutures().cancelSession(_currentSession.value);
     _timer!.isActive ? _timer!.cancel() : null;
-    Get.to(() => const Root());
-    Dialogs().sessionCancelled(context);
+    // if (cancelled) {
+    //   _currentSession.close();
+    //   Get.to(() => const Root());
+    //   Dialogs().sessionCancelledByOther(context);
+    // }
   }
 
 //END SESSION//////////////////////////////////////////////////////////////////

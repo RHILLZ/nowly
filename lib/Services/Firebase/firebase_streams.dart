@@ -26,13 +26,15 @@ class FirebaseStreams {
       .snapshots()
       .map((doc) => SessionModel.fromDocumentSnapshot(doc.data(), doc.id));
 
-  Stream<List<SessionModel>> streamUserAppointments(String uid) => _firestore
+  Stream<List<SessionReceiptModel>> streamUserReceipts(String uid) => _firestore
       .collection(USERSCOLLECTION)
       .doc(uid)
-      .collection(FUTURESESSIONCOLLECTION)
+      .collection(SESSIONRECEIPTS)
+      .orderBy('sessionTimestamp', descending: true)
       .snapshots()
       .map((query) => query.docs
-          .map((doc) => SessionModel.fromDocumentSnapshot(doc.data(), doc.id))
+          .map((doc) =>
+              SessionReceiptModel.fromDocumentSnapshot(doc.data(), doc.id))
           .toList());
 
   Stream<List> streamChat(String sessionId) => _firestore

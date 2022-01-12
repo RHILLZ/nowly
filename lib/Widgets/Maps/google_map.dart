@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
+import 'package:nowly/Widgets/Dialogs/dialogs.dart';
 
 class GoogleMapWidget extends GetView<MapController> {
   GoogleMapWidget({Key? key}) : super(key: key);
@@ -11,6 +13,7 @@ class GoogleMapWidget extends GetView<MapController> {
   @override
   Widget build(BuildContext context) {
     // Get.find<AppPermissionController>().requestPermission();
+
     return Obx(
       () => GoogleMap(
         onLongPress: (pos) {

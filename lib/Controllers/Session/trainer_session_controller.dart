@@ -90,10 +90,4 @@ class TrainerInPersonSessionController extends GetxController {
           destination: location, tsController: this);
     }
   }
-
-  @override
-  void onClose() {
-    super.onClose();
-    _timer!.cancel();
-  }
 }

@@ -24,7 +24,7 @@ class AgoraController extends GetxController {
   late RtcEngine _engine;
   final _channel = ''.obs;
   final Rx<UserModel> _user = UserModel().obs;
-  final Rx<SessionModel> _currentSession = SessionModel().obs;
+  final Rx<SessionModel> _currentVirtualSession = SessionModel().obs;
   final RxBool _isJoined = false.obs;
   final _sessionTimer = 0.obs;
   Duration _sessionDuration = const Duration(minutes: 30);
@@ -45,7 +45,7 @@ class AgoraController extends GetxController {
   get isSearching => _isSearching.value;
   get isJoined => _isJoined.value;
   get sessionTimer => _sessionTimer.value;
-  get currentSession => _currentSession.value;
+  get currentVirtualSession => _currentVirtualSession.value;
   get user => _user.value;
   get trainer => trainer.value;
   get remoteUid => _remoteUid;
@@ -56,7 +56,7 @@ class AgoraController extends GetxController {
 
   set token(value) => _token = value;
   set user(value) => _user.value = value;
-  set currentSession(value) => _currentSession.value = value;
+  set currentVirtualSession(value) => _currentVirtualSession.value = value;
   set sessionDuration(value) => _sessionDuration = value;
   set sessionAmount(value) => _sessionAmount = value;
   set sessionDescription(value) => _sessionDescription = value;
@@ -65,6 +65,7 @@ class AgoraController extends GetxController {
   set sessionController(value) => _sessionController.value = value;
   set isMuted(value) => _isMuted.value = value;
   set cameraOff(value) => _cameraOff.value = value;
+  set context(value) => _context = value;
 
   toggleInfoWindow() {
     _infoWindowHidden.toggle();
@@ -76,14 +77,14 @@ class AgoraController extends GetxController {
     AppLogger.i('WE Live');
     ever(_sessionTimer, (callback) => checkSessionTimer());
     _sessionController.value = Get.find<SessionController>();
-    ever(_currentSession, (callback) => isAccepted(_context));
+    ever(_currentVirtualSession, (callback) => isAccepted(_context));
   }
 
 //STREAM SESSION AND LISTEN FFOR CHANGES///////////////////////////////////////
   updateSession() async {
     AppLogger.i('UPDATING SESSION');
-    _currentSession.bindStream(
-        FirebaseStreams().streamSession(_currentSession.value.sessionID!));
+    _currentVirtualSession.bindStream(FirebaseStreams()
+        .streamSession(_currentVirtualSession.value.sessionID!));
   }
 
 //INIT THE AGORA CLIENT////////////////////////////////////////////////////////
@@ -115,7 +116,8 @@ class AgoraController extends GetxController {
         leaveChannel: (stats) => kill(),
       ),
     );
-    _token = await AgoraService().generateAgoraToken(currentSession.sessionID!);
+    _token = await AgoraService()
+        .generateAgoraToken(currentVirtualSession.sessionID!);
     await _engine.joinChannel(_token, _channel.value, null, 0);
   }
 
@@ -126,9 +128,6 @@ class AgoraController extends GetxController {
       BuildContext context, SessionModel session, AgoraController agora) async {
     _context = context;
     _isSearching.toggle();
-    // String _agoraToken =
-    //     await AgoraService().generateAgoraToken(session.sessionID!);
-    // _token = _agoraToken;
     _channel.value = session.sessionID!;
     // ignore: unused_local_variable
     final sess = SessionModel().toMap(session);
@@ -141,17 +140,18 @@ class AgoraController extends GetxController {
   //////////////////////////////////////////////////////////////////////////
 //LISTENING FOR SESSION TO BE ACCEPTED///////////////////////////////////////
   isAccepted(_context) async {
-    if (_currentSession.value.isAccepted) {
+    if (_currentVirtualSession.value.isAccepted &&
+        _currentVirtualSession.value.sessionStatus == 'created') {
       // await initAgora();
       _isSearching.toggle();
       Get.to(() => VideoCallView(
             agoraController: this,
           ));
     }
-    if (_currentSession.value.sessionStatus == 'unanswered') {
+    if (_currentVirtualSession.value.sessionStatus == 'unanswered') {
       _isSearching.toggle();
-      final result = Dialogs().noTrainersUnavailable(_context);
-      AppLogger.i(result);
+      Dialogs().noTrainersUnavailable(_context);
+      _currentVirtualSession.close();
     }
   }
 
@@ -181,7 +181,7 @@ class AgoraController extends GetxController {
     Future.delayed(
         const Duration(seconds: 1),
         () => Get.off(() => SessionCompleteScreen(
-              session: _currentSession.value,
+              session: _currentVirtualSession.value,
               sessionController: _sessionController.value,
             )));
   }
@@ -189,10 +189,13 @@ class AgoraController extends GetxController {
 //CANCEL A SESSION
   cancel(context) async {
     final cancelled =
-        await FirebaseFutures().cancelSession(_currentSession.value);
-    _isSearching.toggle();
-    await Dialogs().sessionCancelled(context);
-    Get.off(() => const Root());
+        await FirebaseFutures().cancelSession(_currentVirtualSession.value);
+    if (cancelled) {
+      _isSearching.toggle();
+      await Dialogs().sessionCancelled(context);
+      _currentVirtualSession.close();
+      Get.off(() => const Root());
+    }
   }
 
   void userJoin() {

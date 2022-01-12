@@ -91,7 +91,8 @@ class UserInfoScreen extends StatelessWidget {
                         title: const Text('CONTACT US'),
                         trailing: const Icon(Icons.keyboard_arrow_right),
                         onTap: () {
-                          Dialogs().contactInfo(context);
+                          Dialogs().contactInfo(
+                              context, Get.find<UserController>().emailNowly);
                         },
                       ),
                       // ListTile(

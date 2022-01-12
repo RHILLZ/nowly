@@ -30,12 +30,15 @@ class SessionConfirmationScreen extends StatelessWidget {
     final _bookingFee =
         (_sessionFee * _controller.sessionDurationAndCost.bookingFee);
     final sb = _sessionFee + _bookingFee;
-    final st = SessionDurationAndCostModel.salesTaxByLoc['New York'] ?? 0.0;
+    final st = SessionDurationAndCostModel.salesTaxByLoc[_city] ?? 0.0;
     final _salesTax = sb * st;
     final _totalCost = _sessionFee + _bookingFee + _salesTax;
     final _totalCharge = (_totalCost * 100).toString().split('.')[0];
 
     AppLogger.i(_salesTax);
+    _agoraVideoCallController.context = context;
+    _controller.context = context;
+    AppLogger.i('STRIPE: ${_stripeController.activePaymentMethod.last4}');
 
     return Scaffold(
         appBar: AppBar(
@@ -87,7 +90,7 @@ class SessionConfirmationScreen extends StatelessWidget {
                         final amount = int.parse(_totalCharge);
                         final desc =
                             '${_controller.sessionDurationAndCost.duration} Minute ${_controller.sessionWorkOutType.type} Session';
-                        _agoraVideoCallController.currentSession = _session;
+                        _agoraVideoCallController.currentVirtualSession = _session;
                         _controller.currentSession = _session;
                         _agoraVideoCallController.user = _controller.user;
                         _agoraVideoCallController.sessionDescription = desc;
@@ -95,7 +98,7 @@ class SessionConfirmationScreen extends StatelessWidget {
                         _agoraVideoCallController.sessionTimer =
                             int.parse(durTimer) * 60;
 
-                        if (_stripeController.activePaymentMethod == null) {
+                        if (_stripeController.activePaymentMethod.last4 == '') {
                           Dialogs().addPayMethod(context);
                           return;
                         }
@@ -247,39 +250,46 @@ class SessionConfirmationScreen extends StatelessWidget {
                                     //   Get.toNamed(PaymentMethodsScreen.routeName);
                                     // }
                                   },
-                                  child: Row(
-                                    children: [
-                                      _stripeController.activePaymentMethod
-                                              .last4.isNotEmpty
-                                          ? Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                  FittedBox(
-                                                      fit: BoxFit.contain,
-                                                      child: _stripeController
-                                                                  .activePaymentMethod
-                                                                  .brand ==
-                                                              'visa'
-                                                          ? VISAIMAGE
-                                                          : MASTERCARDIMAGE),
-                                                  SizedBox(
-                                                    width: 2.w,
-                                                  ),
-                                                  Text(_stripeController
-                                                      .activePaymentMethod
-                                                      .last4)
-                                                ])
-                                          : const Text(
-                                              'ADD PAYMENT METHOD',
-                                              style: kRegularTS,
-                                              overflow: TextOverflow.fade,
-                                            ),
-                                      const Icon(Icons.navigate_next),
-                                    ],
+                                  child: FittedBox(
+                                    fit: BoxFit.fitWidth,
+                                    child: Row(
+                                      children: [
+                                        _stripeController.activePaymentMethod
+                                                .last4.isNotEmpty
+                                            ? Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                    FittedBox(
+                                                        fit: BoxFit.contain,
+                                                        child: _stripeController
+                                                                    .activePaymentMethod
+                                                                    .brand ==
+                                                                'visa'
+                                                            ? VISAIMAGE
+                                                            : MASTERCARDIMAGE),
+                                                    SizedBox(
+                                                      width: 2.w,
+                                                    ),
+                                                    Text(_stripeController
+                                                        .activePaymentMethod
+                                                        .last4)
+                                                  ])
+                                            : const FittedBox(
+                                                fit: BoxFit.scaleDown,
+                                                child: Text(
+                                                  'ADD PAYMENT METHOD',
+                                                  style: kRegularTS,
+                                                  overflow: TextOverflow.fade,
+                                                ),
+                                              ),
+                                        const Icon(Icons.navigate_next),
+                                      ],
+                                    ),
                                   ),
                                 )
                               ],

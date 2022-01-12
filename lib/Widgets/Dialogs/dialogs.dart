@@ -75,7 +75,7 @@ class Dialogs {
       loopAnimation: false,
       width: 80.w);
 
-  contactInfo(context) => CoolAlert.show(
+  contactInfo(context, launchEmail) => CoolAlert.show(
       context: context,
       type: CoolAlertType.info,
       backgroundColor: kPrimaryColor,
@@ -84,10 +84,29 @@ class Dialogs {
       barrierDismissible: true,
       // widget: Logo.mark(5.h),
       lottieAsset: 'assets/alert.json',
-      confirmBtnText: 'Ok',
+      confirmBtnText: 'contact',
+      onConfirmBtnTap: () => launchEmail(),
       confirmBtnColor: kPrimaryColor,
       loopAnimation: false,
       width: 90.w);
+
+  mapInfo(context, showAgain, dontShowAgain) => CoolAlert.show(
+      context: context,
+      type: CoolAlertType.confirm,
+      backgroundColor: kPrimaryColor,
+      title: 'In Person Sessions',
+      text:
+          'Trainers who are available for in person sessions will appear on the map, with this symbol',
+      barrierDismissible: false,
+      widget: Logo.mark(5.h),
+      lottieAsset: 'assets/alert.json',
+      confirmBtnText: 'Got it',
+      cancelBtnText: 'Show again',
+      onConfirmBtnTap: () => dontShowAgain(),
+      onCancelBtnTap: () => showAgain(),
+      confirmBtnColor: kPrimaryColor,
+      loopAnimation: false,
+      width: 95.w);
 
   noTrainersUnavailable(context) => CoolAlert.show(
       context: context,

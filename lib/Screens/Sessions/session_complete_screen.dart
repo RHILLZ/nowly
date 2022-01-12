@@ -120,7 +120,7 @@ class SessionCompleteScreen extends StatelessWidget {
                                       children: [
                                         ProfileImage(
                                           imageURL:
-                                              _session.trainerProfilePicURL!,
+                                              _session.trainerProfilePicURL,
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.symmetric(

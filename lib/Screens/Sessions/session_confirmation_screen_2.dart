@@ -41,10 +41,12 @@ class SessionConfirmationScreen2 extends StatelessWidget {
     final _bookingFee =
         (_sessionFee * _controller.sessionDurationAndCost.bookingFee);
     final sb = _sessionFee + _bookingFee;
-    final st = SessionDurationAndCostModel.salesTaxByLoc['New York'] ?? 0.0;
+    final st = SessionDurationAndCostModel.salesTaxByLoc[_city] ?? 0.0;
     final _salesTax = sb * st;
     final _totalCost = _sessionFee + _bookingFee + _salesTax;
     final _totalCharge = (_totalCost * 100).toString().split('.')[0];
+
+    _controller.context = context;
 
     return Scaffold(
         appBar: AppBar(
@@ -61,9 +63,7 @@ class SessionConfirmationScreen2 extends StatelessWidget {
                   ? Padding(
                       padding: UIParameters.screenPadding,
                       child: MainButton(
-                          title: _controller.isProcessing
-                              ? 'CANCEL'
-                              : 'I’M SO PUMPED',
+                          title: 'I’M SO PUMPED, LETS GO',
                           onTap: () {
                             // ;
                             final userName =
@@ -107,7 +107,8 @@ class SessionConfirmationScreen2 extends StatelessWidget {
                             _controller.sessionTime = int.parse(durTimer) * 60;
 
                             final tokenId = _sessionDetails.trainer.tokenId;
-                            if (_stripeController.activePaymentMethod == null) {
+                            if (_stripeController.activePaymentMethod.last4 ==
+                                '') {
                               Dialogs().addPayMethod(context);
                               return;
                             }

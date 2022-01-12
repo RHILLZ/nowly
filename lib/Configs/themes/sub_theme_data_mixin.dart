@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../configs.dart';
 
 mixin SubThemeData {
@@ -6,8 +7,7 @@ mixin SubThemeData {
     return const AppBarTheme(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        titleTextStyle: TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 20));
+        titleTextStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 20));
   }
 
   BottomAppBarTheme getBottomAppBarTheme() {
@@ -15,9 +15,12 @@ mixin SubThemeData {
   }
 
   TextTheme getTextThemes() {
-    return const TextTheme(
+    // return const TextTheme(
+    //     bodyText1: TextStyle(fontWeight: FontWeight.bold),
+    //     bodyText2: TextStyle(fontWeight: FontWeight.bold));
+    return GoogleFonts.latoTextTheme(const TextTheme(
         bodyText1: TextStyle(fontWeight: FontWeight.bold),
-        bodyText2: TextStyle(fontWeight: FontWeight.bold));
+        bodyText2: TextStyle(fontWeight: FontWeight.bold)));
   }
 
   InputDecorationTheme getInputDecoration() {

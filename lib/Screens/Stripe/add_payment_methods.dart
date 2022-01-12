@@ -17,6 +17,10 @@ class AddPaymentMethodsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
     final activePM = _stripeController.activePaymentMethod;
+    if (activePM.last4 != '') {
+      _stripeController.getAccountDetails();
+      _stripeController.getPaymentMethods();
+    }
     AppLogger.i(activePM);
     return Scaffold(
       appBar: AppBar(

@@ -30,7 +30,7 @@ class ProfileImage extends StatelessWidget {
           child: _imageURL != null
               ? null
               : Icon(Icons.person,
-                  size: 40.sp,
+                  size: 30.sp,
                   color: Get.isDarkMode ? null : const Color(0xFF15202E)),
           maxRadius: _rad!.h,
         ),

@@ -42,9 +42,14 @@ class UserAddCardScreen extends StatelessWidget {
                   _controller.cardAddressState = _state.text;
 
                   if (_formKey.currentState!.validate()) {
-                    await _controller.initStripeCustomerFlow();
-                    await _controller.addNewPaymentMethod();
-                    Get.back();
+                    if (_controller.activePaymentMethod.last4 == '') {
+                      await _controller.initStripeCustomerFlow();
+                      await _controller.addNewPaymentMethod();
+                      Get.back();
+                    } else {
+                      await _controller.addNewPaymentMethod();
+                      Get.back();
+                    }
                   }
 
                   // _controller.getAccountDetails();

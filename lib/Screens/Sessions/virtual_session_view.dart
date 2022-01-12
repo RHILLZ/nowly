@@ -110,7 +110,8 @@ class _VideoCallViewState extends State<VideoCallView> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text('Trainer Name: '),
-                  Text('${widget._agoraController.currentSession.trainerName}')
+                  Text(
+                      '${widget._agoraController.currentVirtualSession.trainerName}')
                 ],
               ),
               SizedBox(
@@ -121,7 +122,7 @@ class _VideoCallViewState extends State<VideoCallView> {
                 children: [
                   const Text('Workout Type:  '),
                   Text(
-                      '${widget._agoraController.currentSession.sessionWorkoutType}')
+                      '${widget._agoraController.currentVirtualSession.sessionWorkoutType}')
                 ],
               ),
               Align(

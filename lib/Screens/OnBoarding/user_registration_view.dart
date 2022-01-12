@@ -58,10 +58,14 @@ class UserRegistrationView extends GetView<RegistrationController> {
                           Obx(
                             () => Transform.translate(
                               offset: const Offset(0, 0),
-                              child: Text(
-                                _controller.selectedQuestionnaire.value.header,
-                                style: k16BoldTS,
-                                textAlign: TextAlign.center,
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text(
+                                  _controller
+                                      .selectedQuestionnaire.value.header,
+                                  style: k16BoldTS,
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                             ),
                           ),

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Models/models_exporter.dart';
@@ -11,6 +12,7 @@ import 'package:nowly/Services/Firebase/firebase_futures.dart';
 import 'package:nowly/Services/Firebase/firebase_streams.dart';
 import 'package:nowly/Services/service_exporter.dart';
 import 'package:nowly/Utils/logger.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'controller_exporter.dart';
 
 class UserController extends GetxController {
@@ -45,7 +47,8 @@ class UserController extends GetxController {
     _user.bindStream(FirebaseStreams().streamUser(uid));
     _getAllFitnessGoals();
     Future.delayed(const Duration(seconds: 2), () => checkTokenId());
-    sessionReceipts.value = await FirebaseFutures().getSessionReceipts(uid);
+    // sessionReceipts.value = await FirebaseFutures().getSessionReceipts(uid);
+    sessionReceipts.bindStream(FirebaseStreams().streamUserReceipts(uid));
     _fcm.onTokenRefresh.listen((token) => checkTokenId());
   }
 
@@ -167,5 +170,22 @@ class UserController extends GetxController {
       _isSubmitting.toggle();
       _submitted.value = true;
     }
+  }
+
+  Future emailNowly() async {
+    final url =
+        'mailto:support@nowly.io?subject=${Uri.encodeFull('General Request')}&body=${Uri.encodeFull('')}';
+    if (await canLaunch(url)) {
+      await launch(url);
+    }
+  }
+
+  showMapDialogAgain() {
+    Get.back();
+  }
+
+  dontShowMapDialogAgain() {
+    GetStorage().write('showMapDialog', false);
+    Get.back();
   }
 }
