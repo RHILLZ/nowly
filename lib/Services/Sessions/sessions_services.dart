@@ -6,16 +6,16 @@ class SessionServices extends GetConnect {
   Future<bool> findVirtualTrainer(
       String uid, String agoraToken, Map<String, dynamic> sessionData) async {
     bool _is200 = false;
-    //TODO: SET CORRECT URL WHEN SERVER IS CONFIGURED
-    String url = "http://192.168.1.29:5888/xdiVirtualMatch/$uid";
-    final req = await httpClient
+    String url = "http://18.118.101.152/xdiVirtualMatch/$uid";
+    await httpClient
         .post(url,
             body: jsonEncode(
                 {'uid': uid, 'agoraToken': agoraToken, 'session': sessionData}))
         .then((value) => AppLogger.i(value.body));
 
     final response = await httpClient.get(url);
-    AppLogger.i(response.statusCode);
+    AppLogger.i('STATUS: ${response.statusCode}');
+
     if (response.statusCode == 200) {
       _is200 = true;
     }

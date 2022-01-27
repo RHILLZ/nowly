@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
-import 'package:nowly/Controllers/Agora/agora_controller.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 import 'package:sizer/sizer.dart';
 
 class VirtualSessionInitSearch extends StatelessWidget {
-  VirtualSessionInitSearch({Key? key}) : super(key: key);
+  const VirtualSessionInitSearch({Key? key}) : super(key: key);
 
-  final AgoraController _agoraController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -48,7 +45,7 @@ class VirtualSessionInitSearch extends StatelessWidget {
               Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextButton.icon(
-                      onPressed: () => null,
+                      onPressed: () => {},
                       icon: const Icon(Icons.close),
                       label: const Text('cancel')))
             ]));

@@ -1,6 +1,3 @@
-
-
-
 import 'dart:convert';
 
 import 'package:get/get.dart';
@@ -8,79 +5,8 @@ import 'package:nowly/Models/models_exporter.dart';
 import 'package:stripe_payment/stripe_payment.dart';
 
 class StripeServices extends GetConnect {
-  // Future getStripeConnectLink() async {
-  //   String url = "http://192.168.1.29:5888/stripeConnectLink";
-
-  //   var response = await httpClient.get(url);
-  //   final data = response.body as Map<String, dynamic>;
-
-  //   print('FROM PYTHON $data');
-
-  //   return data;
-  // }
-
-  // Future getStripeUpdateConnectLink(String connectId) async {
-  //   String url = "http://192.168.1.29:5888/stripeUpdateConnectLink/$connectId";
-
-  //   var response = await httpClient.get(url);
-  //   final data = response.body as Map<String, dynamic>;
-
-  //   return data['link'];
-  // }
-
-  // Future getStripeAccountInfo(String accountId) async {
-  //   String url = "http://192.168.1.29:5888/stripeAccountInfo/$accountId";
-
-  //   final response = await httpClient.get(url);
-  //   final accountInfo = response.body as Map<String, dynamic>;
-
-  //   return accountInfo;
-  // }
-
-  // Future getStripeBalance(String accountId) async {
-  //   String url =
-  //       "http://192.168.1.29:5888/getConnectedAccountBalance/$accountId";
-
-  //   final response = await httpClient.get(url);
-  //   final balance = response.body as Map<String, dynamic>;
-
-  //   return balance['Balance'];
-  // }
-
-  // Future getStripeBankToken(BankAccount account) async {
-  //   String url = "http://192.168.1.29:5888/stripeBankToken/";
-
-  //   await httpClient.post(url,
-  //       body: jsonEncode({
-  //         'accNum': account.accountNumber,
-  //         'routeNum': account.routingNumber,
-  //         'bankName': account.bankName
-  //       }));
-
-  //   final response = await httpClient.get(url);
-  //   final token = response.body as Map<String, dynamic>;
-
-  //   print(token['token']);
-  //   return token['token'];
-  // }
-
-  // Future createExternalStripeAccount(String accountId, String token) async {
-  //   String url = "http://192.168.1.29:5888/stripeCreateExternalAccount/";
-
-  //   await httpClient.post(url,
-  //       body: jsonEncode({
-  //         'accountId': accountId,
-  //         'token': token,
-  //       }));
-
-  //   final response = await httpClient.get(url);
-  //   final data = response.body as Map<String, dynamic>;
-
-  //   print(data);
-  // }
-
   Future createStripeCustomer(UserModel user) async {
-    String url = "http://192.168.1.29:5888/createStripeCustomerAccount/";
+    String url = "http://18.118.101.152/createStripeCustomerAccount/";
     final fullName = '${user.firstName} ${user.lastName}';
 
     await httpClient.post(url,
@@ -93,7 +19,7 @@ class StripeServices extends GetConnect {
   }
 
   Future createStripePaymentMethod(CreditCard card) async {
-    String url = "http://192.168.1.29:5888/createStripePaymentMethod/";
+    String url = "http://18.118.101.152/createStripePaymentMethod/";
 
     await httpClient.post(url,
         body: jsonEncode({
@@ -115,7 +41,7 @@ class StripeServices extends GetConnect {
 
   Future linkStripePaymentMethodToUser(
       String customerID, String paymentMethodID) async {
-    String url = "http://192.168.1.29:5888/linkStripePaymentMethodToCustomer/";
+    String url = "http://18.118.101.152/linkStripePaymentMethodToCustomer/";
     await httpClient.post(url,
         body: jsonEncode(
             {'customer': customerID, 'paymentMethod': paymentMethodID}));
@@ -127,7 +53,7 @@ class StripeServices extends GetConnect {
   }
 
   Future unlinkStripePaymentMethodFromUser(String pmID) async {
-    String url = "http://192.168.1.29:5888/unlinkPaymentMethod/$pmID";
+    String url = "http://18.118.101.152/unlinkPaymentMethod/$pmID";
     final response = await httpClient.get(url);
     final result = response.body as Map<String, dynamic>;
     return result;
@@ -135,7 +61,7 @@ class StripeServices extends GetConnect {
 
   Future getStripeCustomerPaymentMethod(String customerID) async {
     String url =
-        "http://192.168.1.29:5888/getStripeCustomerPaymentMethod/$customerID";
+        "http://18.118.101.152/getStripeCustomerPaymentMethod/$customerID";
 
     final response = await httpClient.get(url);
     final account = response.body as Map<String, dynamic>;
@@ -145,7 +71,7 @@ class StripeServices extends GetConnect {
 
   Future createPaymentIntent(String customerID, int amount,
       String paymentMethodID, String description, String connectID) async {
-    String url = "http://192.168.1.29:5888/createPaymentIntent";
+    String url = "http://18.118.101.152/createPaymentIntent";
 
     await httpClient.post(url,
         body: jsonEncode({
@@ -180,7 +106,7 @@ class StripeServices extends GetConnect {
   // }
 
   Future getPaymentMethods(String customerID) async {
-    String url = "http://192.168.1.29:5888/getPaymentMethods/$customerID";
+    String url = "http://18.118.101.152/getPaymentMethods/$customerID";
 
     final response = await httpClient.get(url);
     final paymentMethods = response.body as Map<String, dynamic>;
@@ -191,7 +117,7 @@ class StripeServices extends GetConnect {
   Future deleteBankAccountFromConnect(
       String connectID, String bankAccountId) async {
     String url =
-        "http://192.168.1.29:5888/deleteBankAccountFromConnectAccount/$connectID/$bankAccountId";
+        "http://18.118.101.152/deleteBankAccountFromConnectAccount/$connectID/$bankAccountId";
 
     final response = await httpClient.get(url);
     final result = response.body as Map<String, dynamic>;

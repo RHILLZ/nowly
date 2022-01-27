@@ -70,12 +70,12 @@ class OnBoardingView extends StatelessWidget {
                     SizedBox(
                       height: 5.h,
                     ),
-                    Text(
-                        'By creating an account, you agree to our \nTerms and Conditions',
-                        style: kRegularTS.copyWith(
-                          color: Get.isDarkMode ? null : kSecondaryColor,
-                        ),
-                        textAlign: TextAlign.center),
+                    // Text(
+                    //     'By creating an account, you agree to our \nTerms and Conditions',
+                    //     style: kRegularTS.copyWith(
+                    //       color: Get.isDarkMode ? null : kSecondaryColor,
+                    //     ),
+                    //     textAlign: TextAlign.center),
                   ],
                 ),
                 Expanded(child: SizedBox(height: 2.h)),
@@ -110,6 +110,13 @@ class OnBoardingView extends StatelessWidget {
                 //     ),
                 //   ),
                 // )
+                Padding(
+                  padding: EdgeInsets.fromLTRB(2.w, 1.h, 2.w, 0),
+                  child: const Text(
+                      '© 2021-2022 Xone Digital Incorporated. All Rights Reserved.',
+                      style: k10RegularTS,
+                      textAlign: TextAlign.center),
+                )
               ],
             ),
           ),

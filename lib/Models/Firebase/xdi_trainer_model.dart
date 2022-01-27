@@ -24,7 +24,7 @@ class TrainerModel {
   bool showOnMap;
   Timestamp? createdAt;
   Timestamp? updatedAt;
-  late bool validCertification;
+  String certificationType;
   late bool validInsurance;
   late int virtualSessionsCompleted;
   late int inPersonSessionsCompleted;
@@ -51,7 +51,7 @@ class TrainerModel {
       this.showOnMap = false,
       this.createdAt,
       this.updatedAt,
-      this.validCertification = false,
+      this.certificationType = '',
       this.validInsurance = false,
       this.virtualSessionsCompleted = 0,
       this.inPersonSessionsCompleted = 0,
@@ -85,9 +85,9 @@ class TrainerModel {
       availability: doc['availability'],
       lastLocation: doc['lastLoction'],
       showOnMap: doc['showOnMap'],
-      validCertification: doc['validCertification'],
       validInsurance: doc['validInsurance'],
       virtualSessionsCompleted: doc['virtualSessionsCompleted'],
+      certificationType: doc['certificationType'],
       inPersonSessionsCompleted: doc['inPersonSessionsCompleted'],
       totalSessionsCompleted: doc['totalSessionsCompleted'],
       declinedSessions: doc['declinedSessions'],
@@ -119,7 +119,7 @@ class TrainerModel {
     data['availability'] = trainer.availability;
     data['lastLocation'] = trainer.lastLocation;
     data['showOnMap'] = trainer.showOnMap;
-    data['validCertification'] = trainer.validCertification;
+    data['certificationType'] = trainer.certificationType;
     data['validInsurance'] = trainer.validInsurance;
     data['virtualSessionsCompleted'] = trainer.virtualSessionsCompleted;
     data['inPersonSessionsCompleted'] = trainer.inPersonSessionsCompleted;

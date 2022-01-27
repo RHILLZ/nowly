@@ -89,8 +89,8 @@ class StartScreenView extends GetView<AuthController> {
                       );
                     }).toList(),
                   ),
-                  const SizedBox(
-                    height: 10,
+                  SizedBox(
+                    height: 1.h,
                   ),
                   SizedBox(
                     width: 100.w,
@@ -101,7 +101,7 @@ class StartScreenView extends GetView<AuthController> {
                           Get.to(() => const OnBoardingView());
                         },
                         child: Padding(
-                          padding: const EdgeInsets.all(10),
+                          padding: EdgeInsets.symmetric(vertical: 1.h),
                           child: Text('GET STARTED',
                               style: k16BoldTS.copyWith(color: Colors.white)),
                         )),
@@ -109,6 +109,13 @@ class StartScreenView extends GetView<AuthController> {
                 ],
               ),
             ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(2.w, 0, 2.w, 2.h),
+            child: const Text(
+                '© 2021-2022 Xone Digital Incorporated. All Rights Reserved.',
+                style: k10RegularTS,
+                textAlign: TextAlign.center),
           )
         ],
       ),

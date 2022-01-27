@@ -4,7 +4,6 @@ import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:shimmer/shimmer.dart';
 
-
 class UserNavigatorIndicatorBanner extends GetView<MapNavigatorController> {
   const UserNavigatorIndicatorBanner({Key? key}) : super(key: key);
 
@@ -16,7 +15,7 @@ class UserNavigatorIndicatorBanner extends GetView<MapNavigatorController> {
           : DefaultTextStyle(
               style: k16RegularTS,
               child: GestureDetector(
-                onTap: (){
+                onTap: () {
                   controller.navigateToCurrentSessionDetailsScreen();
                 },
                 child: Stack(
@@ -34,26 +33,31 @@ class UserNavigatorIndicatorBanner extends GetView<MapNavigatorController> {
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         children: [
-                          const Icon(Icons.navigation_rounded, color: Colors.white,),
+                          const Icon(
+                            Icons.navigation_rounded,
+                            color: Colors.white,
+                          ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10),
-                              child: RichText(text: TextSpan(
-                                children: [
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: RichText(
+                                text: TextSpan(children: [
                                   const TextSpan(
-                                    text: 'You are on the way to '
-                                  ),
+                                      text: 'You are on the way to '),
                                   TextSpan(
-                                    text: controller.curruntSessionController.value!.trainerSession.trainer.firstName,
-                                    style: const TextStyle(fontWeight: FontWeight.bold)
-                                  ),
+                                      text: controller
+                                          .curruntSessionController
+                                          .value!
+                                          .trainerSession
+                                          .trainer
+                                          .firstName,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold)),
                                   // const TextSpan(
                                   //   text: " 's session"
                                   // ),
-                                ]
-                              ),
-                                
-                                
+                                ]),
                               ),
                             ),
                           ),

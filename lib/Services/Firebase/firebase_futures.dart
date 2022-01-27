@@ -233,7 +233,6 @@ class FirebaseFutures {
   Future<bool> cancelSession(SessionModel session) async {
     bool isSuccessful = false;
     try {
-      var data = SessionModel().toMap(session);
       await _firestore
           .collection(SESSIONCOLLECTION)
           .doc(session.sessionID)

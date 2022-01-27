@@ -5,7 +5,6 @@ import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Services/Firebase/firebase_futures.dart';
 import 'package:nowly/Services/service_exporter.dart';
 import 'package:nowly/Widgets/Dialogs/dialogs.dart';
-import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stripe_payment/stripe_payment.dart';
 

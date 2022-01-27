@@ -10,9 +10,7 @@ import 'package:nowly/Bindings/initial_binding.dart';
 import 'package:nowly/Controllers/Theme/theme_controller.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Routes/pages.dart';
-import 'package:nowly/Services/service_exporter.dart';
 import 'package:sizer/sizer.dart';
-
 import 'Configs/configs.dart';
 import 'Utils/logger.dart';
 

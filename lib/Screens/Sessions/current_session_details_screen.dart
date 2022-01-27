@@ -31,12 +31,11 @@ class CurrentSessionDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final SessionController _controller = Get.find();
-    // final _sessionDetails = _trainerSessionC.trainerSession;
-    // _controller.sessionDurAndCosts.value =
-    //     _trainerSessionC.trainerSession.sessionLengths;
-    // // _controller.sessionDurationAndCosts = _trainerSessionC.selectedLength;
-    // final MessagingController _mController = Get.put(MessagingController());
+    final SessionController _controller = Get.find();
+    _controller.sessionDurAndCosts.value =
+        _trainerSessionC.trainerSession.sessionLengths;
+    // _controller.sessionDurationAndCosts = _trainerSessionC.selectedLength;
+    final MessagingController _mController = Get.put(MessagingController());
 
     return Scaffold(
       appBar: AppBar(
@@ -81,45 +80,6 @@ class CurrentSessionDetailsScreen extends StatelessWidget {
               SizedBox(
                 height: 1.h,
               ),
-              // RectButton(
-              //   fillColor: Colors.blue,
-              //   child: Row(
-              //     children: const [
-              //       Icon(Icons.message),
-              //       SizedBox(
-              //         width: 10,
-              //       ),
-              //       Text('MESSAGE')
-              //     ],
-              //   ),
-              //   onPressed: () {
-              //     Get.to(() => MessagingScreen(
-              //           session: _session,
-              //         ));
-              //   },
-              // ),
-              // SizedBox(
-              //   height: 1.h,
-              // ),
-              // RectButton(
-              //   fillColor: kLightGray,
-              //   child: Row(
-              //     children: const [
-              //       Icon(Icons.close),
-              //       SizedBox(
-              //         width: 10,
-              //       ),
-              //       Text('CANCEL')
-              //     ],
-              //   ),
-              //   onPressed: () {
-              //     _mapNavController.endNavigations();
-              //     Get.back();
-              //   },
-              // ),
-              // SizedBox(
-              //   height: 1.h,
-              // ),
               MainButton(
                 cornerRadius: 5,
                 onTap: () {

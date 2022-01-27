@@ -69,6 +69,7 @@ dependencies:
   location: ^4.3.0
   logger: ^1.1.0
   map_launcher: ^2.1.1
+  mixpanel_flutter: ^1.4.3
   numberpicker: ^2.1.1
   package_info: ^2.0.2
   path: ^1.8.0

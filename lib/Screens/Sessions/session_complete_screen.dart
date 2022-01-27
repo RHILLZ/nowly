@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
-import 'package:nowly/Screens/Nav/base_screen.dart';
 import 'package:nowly/Screens/Sessions/feedback.dart';
 import 'package:nowly/Utils/logger.dart';
 import 'package:nowly/Widgets/Common/profile_image.dart';
@@ -44,6 +44,7 @@ class SessionCompleteScreen extends StatelessWidget {
             TextButton(
                 onPressed: () {
                   _controller.skip(_session, context);
+                  Phoenix.rebirth(context);
                 },
                 child: const Text('Skip'))
           ],
@@ -68,6 +69,7 @@ class SessionCompleteScreen extends StatelessWidget {
                         }
                         Get.to(() => const FeedbackView());
                       } else {
+                        Phoenix.rebirth(context);
                         Get.offAll(const Root());
                       }
                     },

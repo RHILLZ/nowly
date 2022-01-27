@@ -9,6 +9,7 @@ import 'package:nowly/Widgets/widget_exporter.dart';
 
 class MapScreen extends StatelessWidget {
   MapScreen({Key? key}) : super(key: key);
+  // ignore: unused_field
   final MapController _mapController = Get.put(MapController());
   @override
   Widget build(BuildContext context) {

@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
@@ -11,7 +13,6 @@ class UserHomeView extends StatelessWidget {
   UserHomeView({Key? key}) : super(key: key);
 
   final SessionController _sessionController = Get.put(SessionController());
-  // ignore: unused_field
   final UserController _userController = Get.put(UserController());
   final FilterController _filterController = Get.put(FilterController());
   final MapController _mapController = Get.put(MapController());
@@ -21,6 +22,7 @@ class UserHomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AppLogger.i('Home Screen');
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -147,6 +149,9 @@ class UserHomeView extends StatelessWidget {
                           // ignore: unused_local_variable
 
                           Get.to(() => SessionConfirmationScreen());
+                          Get.find<AuthController>()
+                              .mix
+                              .track('Going to Confirm Virtual');
                           // Get.to(() => SessionCompleteScreen(
                           //     session: SessionModel.dummySessionModel,
                           //     sessionController: _sessionController));

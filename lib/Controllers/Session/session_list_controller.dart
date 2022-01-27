@@ -29,8 +29,8 @@ class SessionListController extends GetxController {
     final loadedTrainers = onlineTrainers;
     AppLogger.i('TRAINERS: $onlineTrainers');
     final controllers = loadedTrainers.map((session) {
-      TrainerInPersonSessionController _controller =
-          Get.find(); //create new contoller for each session
+      TrainerInPersonSessionController _controller = Get.put(
+          TrainerInPersonSessionController()); //create new contoller for each session
       _controller.setTrainerDetails(session);
       return _controller;
     }).toList();

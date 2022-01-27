@@ -2,7 +2,6 @@
 
 import 'dart:async';
 import 'package:agora_rtc_engine/rtc_engine.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:get/get.dart';
@@ -162,6 +161,7 @@ class AgoraController extends GetxController {
     final sessionData = SessionModel().toMap(session);
     final result = await SessionServices()
         .findVirtualTrainer(uid, agoraToken, sessionData);
+    AppLogger.i('RESULT: $result');
 
     return result;
   }
@@ -195,12 +195,13 @@ class AgoraController extends GetxController {
       await Dialogs().sessionCancelled(context);
       _currentVirtualSession.close();
       Get.off(() => const Root());
+      Phoenix.rebirth(context);
     }
   }
 
   void userJoin() {
     AppLogger.i('USER JOINED!!!');
-    Get.bottomSheet(VirtualSessionInitSearch(),
+    Get.bottomSheet(const VirtualSessionInitSearch(),
         isDismissible: false,
         enableDrag: false,
         backgroundColor: Colors.transparent);

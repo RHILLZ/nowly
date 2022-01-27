@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
@@ -341,8 +340,8 @@ class SessionController extends GetxController {
     );
     await FirebaseFutures().incrementSessionCount(session.userID!);
     await FirebaseFutures().createSessionReceipt(receipt);
-    Get.to(() => const Root());
     Phoenix.rebirth(context);
+    Get.offAll(() => const Root());
   }
 
   @override
@@ -361,7 +360,8 @@ class SessionController extends GetxController {
   }
 
 //ENGAGE A TRAINER FOR IN PERSON SESSION////////////////////////////////////////
-  engageTrainer(SessionModel sess, String tokenId, BuildContext context) async {
+  engageTrainer(SessionModel sess, String tokenId, BuildContext context,
+      TrainerInPersonSessionController controller) async {
     _isProcessing.toggle();
     _context = context;
     final session = SessionModel().toMap(sess);
@@ -371,7 +371,7 @@ class SessionController extends GetxController {
       _currentSession
           .bindStream(FirebaseStreams().streamSession(sess.sessionID!));
       await Future.delayed(const Duration(seconds: 2), () => null);
-      ever(_currentSession, (callback) => checkSessionStatus());
+      ever(_currentSession, (callback) => checkSessionStatus(controller));
       //SEND SIGNAL HEREfire
       AppLogger.i(session);
       FCM().sendInPersonSessionSignal(session, tokenId);
@@ -387,7 +387,7 @@ class SessionController extends GetxController {
 
 //CHECK IF SESSION IS ACCEPTED AFTER ITS CREATED////////////////////////////////
 
-  checkSessionStatus() async {
+  checkSessionStatus(TrainerInPersonSessionController controller) async {
     if (_currentSession.value.sessionStatus == 'cancelled') {
       _currentSession.close();
       Get.off(() => const Root());
@@ -401,7 +401,7 @@ class SessionController extends GetxController {
       Get.to(() => CurrentSessionDetailsScreen(
             session: _currentSession.value,
             mapNavController: Get.find<MapNavigatorController>(),
-            trainerSessionC: Get.find<TrainerInPersonSessionController>(),
+            trainerSessionC: controller,
             sessionController: this,
           ));
       return;
@@ -436,13 +436,15 @@ class SessionController extends GetxController {
 
 //CANCEL SESSION///////////////////////////////////////////////////////////////
   cancel(context) async {
-    await FirebaseFutures().cancelSession(_currentSession.value);
+    final cancelled =
+        await FirebaseFutures().cancelSession(_currentSession.value);
     _timer!.isActive ? _timer!.cancel() : null;
-    // if (cancelled) {
-    //   _currentSession.close();
-    //   Get.to(() => const Root());
-    //   Dialogs().sessionCancelledByOther(context);
-    // }
+    if (cancelled) {
+      _currentSession.close();
+      await Dialogs().sessionCancelledByOther(context);
+      Phoenix.rebirth(context);
+      Get.offAll(() => const Root());
+    }
   }
 
 //END SESSION//////////////////////////////////////////////////////////////////

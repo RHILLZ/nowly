@@ -1,7 +1,8 @@
+// ignore_for_file: library_prefixes
+
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/Logo/logos.dart';
 import 'package:nowly/Configs/configs.dart';
@@ -21,7 +22,6 @@ class VideoCallView extends StatefulWidget {
 class _VideoCallViewState extends State<VideoCallView> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     widget._agoraController.initAgora();
   }

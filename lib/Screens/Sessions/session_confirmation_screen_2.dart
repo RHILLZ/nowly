@@ -6,7 +6,6 @@ import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Screens/Stripe/add_payment_methods.dart';
-import 'package:nowly/Utils/logger.dart';
 import 'package:nowly/Widgets/Common/profile_image.dart';
 import 'package:nowly/Widgets/Dialogs/dialogs.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
@@ -57,69 +56,86 @@ class SessionConfirmationScreen2 extends StatelessWidget {
         bottomNavigationBar: BottomAppBar(
           child: GetBuilder<MapNavigatorController>(
               id: 'navigationIndicatorId',
-              builder: (_) => _mapNavigatorController.hasThisOnGoingNavigation(
-                          _trainerInPersonSessionController) ==
-                      NavigationStatus.notAvailable
-                  ? Padding(
-                      padding: UIParameters.screenPadding,
-                      child: MainButton(
-                          title: 'I’M SO PUMPED, LETS GO',
-                          onTap: () {
-                            // ;
-                            final userName =
-                                '${_userController.user.firstName} ${_userController.user.lastName}';
-                            final trainerName =
-                                '${_sessionDetails.trainer.firstName} ${_sessionDetails.trainer.lastName}';
-                            final _session = SessionModel(
-                                sessionID:
-                                    'NWLY${DateTime.now().millisecondsSinceEpoch}',
-                                sessionMode: 'IN PERSON',
-                                sessionWorkoutType:
-                                    _trainerInPersonSessionController
-                                        .selectedWorkoutType.value.type,
-                                sessionWorkoutTypeImagePath:
-                                    _trainerInPersonSessionController
-                                        .selectedWorkoutType.value.imagePath,
-                                sessionDuration:
-                                    _controller.sessionDurationAndCost.duration,
-                                sessionChargedAmount: int.parse(_totalCharge),
-                                salesTaxApplied: _salesTax > 0.0,
-                                sessionSalesTax: _salesTax,
-                                userID: _userController.user.id,
-                                userName: userName,
-                                userPaymentMethodID:
-                                    _userController.user.activePaymentMethodId,
-                                userProfilePicURL:
-                                    _userController.user.profilePicURL,
-                                userStripeID:
-                                    _userController.user.stripeCustomerId,
-                                trainerID: _sessionDetails.trainer.id,
-                                trainerName: trainerName,
-                                trainerProfilePicURL:
-                                    _sessionDetails.trainer.profilePicURL,
-                                trainerStripeID:
-                                    _sessionDetails.trainer.stripeAccountId,
-                                eta: _trainerInPersonSessionController
-                                    .durationText.value);
-                            final durTimer = _controller
-                                .sessionDurationAndCost.duration
-                                .substring(0, 2);
-                            _controller.sessionTime = int.parse(durTimer) * 60;
+              builder:
+                  (_) =>
+                      _mapNavigatorController.hasThisOnGoingNavigation(
+                                  _trainerInPersonSessionController) ==
+                              NavigationStatus.notAvailable
+                          ? Padding(
+                              padding: UIParameters.screenPadding,
+                              child: Obx(() => MainButton(
+                                  title: _controller.isProcessing
+                                      ? 'CANCEL'
+                                      : 'I’M SO PUMPED, LETS GO',
+                                  onTap: _controller.isProcessing
+                                      ? () => _controller.cancel(context)
+                                      : () {
+                                          // ;
+                                          final userName =
+                                              '${_userController.user.firstName} ${_userController.user.lastName}';
+                                          final trainerName =
+                                              '${_sessionDetails.trainer.firstName} ${_sessionDetails.trainer.lastName}';
+                                          final _session = SessionModel(
+                                              sessionID:
+                                                  'NWLY${DateTime.now().millisecondsSinceEpoch}',
+                                              sessionMode: 'IN PERSON',
+                                              sessionWorkoutType:
+                                                  _trainerInPersonSessionController
+                                                      .selectedWorkoutType
+                                                      .value
+                                                      .type,
+                                              sessionWorkoutTypeImagePath:
+                                                  _trainerInPersonSessionController
+                                                      .selectedWorkoutType
+                                                      .value
+                                                      .imagePath,
+                                              sessionDuration: _controller
+                                                  .sessionDurationAndCost
+                                                  .duration,
+                                              sessionChargedAmount:
+                                                  int.parse(_totalCharge),
+                                              salesTaxApplied: _salesTax > 0.0,
+                                              sessionSalesTax: _salesTax,
+                                              userID: _userController.user.id,
+                                              userName: userName,
+                                              userPaymentMethodID:
+                                                  _userController.user
+                                                      .activePaymentMethodId,
+                                              userProfilePicURL: _userController
+                                                  .user.profilePicURL,
+                                              userStripeID: _userController
+                                                  .user.stripeCustomerId,
+                                              trainerID: _sessionDetails.trainer.id,
+                                              trainerName: trainerName,
+                                              trainerProfilePicURL: _sessionDetails.trainer.profilePicURL,
+                                              trainerStripeID: _sessionDetails.trainer.stripeAccountId,
+                                              eta: _trainerInPersonSessionController.durationText.value);
+                                          final durTimer = _controller
+                                              .sessionDurationAndCost.duration
+                                              .substring(0, 2);
+                                          _controller.sessionTime =
+                                              int.parse(durTimer) * 60;
 
-                            final tokenId = _sessionDetails.trainer.tokenId;
-                            if (_stripeController.activePaymentMethod.last4 ==
-                                '') {
-                              Dialogs().addPayMethod(context);
-                              return;
-                            }
-                            _controller.engageTrainer(
-                                _session, tokenId!, context);
-                          }))
-                  : Padding(
-                      padding: UIParameters.screenPadding,
-                      child: UserNavigatorIndicatorDetailedBanner(
-                          sessionController: _trainerInPersonSessionController),
-                    )),
+                                          final tokenId =
+                                              _sessionDetails.trainer.tokenId;
+                                          if (_stripeController
+                                                  .activePaymentMethod.last4 ==
+                                              '') {
+                                            Dialogs().addPayMethod(context);
+                                            return;
+                                          }
+                                          _controller.engageTrainer(
+                                              _session,
+                                              tokenId!,
+                                              context,
+                                              _trainerInPersonSessionController);
+                                        })))
+                          : Padding(
+                              padding: UIParameters.screenPadding,
+                              child: UserNavigatorIndicatorDetailedBanner(
+                                  sessionController:
+                                      _trainerInPersonSessionController),
+                            )),
         ),
         body: Obx(
           () => _controller.isProcessing
@@ -216,23 +232,23 @@ class SessionConfirmationScreen2 extends StatelessWidget {
                         //       // },
                         //       );
                         // }
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10, bottom: 5),
-                          child: TextButton(
-                              onPressed: () {
-                                _trainerInPersonSessionController.showTimes
-                                    .toggle();
-                              },
-                              style: TextButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)),
-                                  backgroundColor: Theme.of(context).cardColor),
-                              child: const Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 5),
-                                child: Text('Change Time', style: k16BoldTS),
-                              )),
-                        ), // loading shimmer
+                        // Padding(
+                        //   padding: const EdgeInsets.only(top: 10, bottom: 5),
+                        //   child: TextButton(
+                        //       onPressed: () {
+                        //         _trainerInPersonSessionController.showTimes
+                        //             .toggle();
+                        //       },
+                        //       style: TextButton.styleFrom(
+                        //           shape: RoundedRectangleBorder(
+                        //               borderRadius: BorderRadius.circular(20)),
+                        //           backgroundColor: Theme.of(context).cardColor),
+                        //       child: const Padding(
+                        //         padding: EdgeInsets.symmetric(
+                        //             horizontal: 15, vertical: 5),
+                        //         child: Text('Change Time', style: k16BoldTS),
+                        //       )),
+                        // ), // loading shimmer
 
                         Row(
                           children: [

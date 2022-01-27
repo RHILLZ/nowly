@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Widgets/Common/profile_image.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
-import 'package:sizer/sizer.dart';
 
 // ignore: must_be_immutable
 class ReceiptDetailsScreen extends GetView {

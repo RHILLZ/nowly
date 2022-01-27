@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:get/get.dart';
@@ -10,7 +8,6 @@ import 'package:nowly/Screens/Map/session_details.dart';
 import '../controller_exporter.dart';
 
 class TrainerInPersonSessionController extends GetxController {
-  Timer? _timer;
   final RxInt _sessionTime = 900.obs;
   final _isProcessing = false.obs;
   final _currentSession = SessionModel().obs;

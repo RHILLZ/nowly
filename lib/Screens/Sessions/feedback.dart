@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:nowly/Configs/Logo/logos.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
-import 'package:nowly/Screens/Nav/base_screen.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:nowly/root.dart';
 import 'package:progress_indicators/progress_indicators.dart';
@@ -19,11 +18,10 @@ class FeedbackView extends StatelessWidget {
     return Scaffold(
         bottomSheet: MainButton(
             onTap: () async {
-              await _controller.feedBack.isEmpty
-                  ? Get.off(() => const Root())
-                  : _controller.submitFeedback();
-              // _controller.submitted = false;
               Phoenix.rebirth(context);
+              await _controller.feedBack.isEmpty
+                  ? Get.offAll(() => const Root())
+                  : _controller.submitFeedback();
             },
             title: _controller.feedBack.isEmpty ? 'Close' : 'Submit'),
         body: Obx(

@@ -49,7 +49,7 @@ class ProfileDetailsScreen extends GetView<UserController> {
                       ),
                     ),
                     ListTile(
-                      title: Text('PRIMARY GOAL', style: k16BoldTS),
+                      title: const Text('PRIMARY GOAL', style: k16BoldTS),
                       trailing: Text(user.primaryGoal!, style: k16RegularTS),
                     ),
                     const Divider(height: 0),

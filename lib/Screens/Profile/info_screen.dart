@@ -11,6 +11,7 @@ class UserInfoScreen extends StatelessWidget {
   UserInfoScreen({Key? key}) : super(key: key);
 
   static const routeName = '/info';
+  // ignore: unused_field
   final ThemeController _themeController = Get.find();
 
   @override

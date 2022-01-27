@@ -8,11 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Screens/Nav/legals_view.dart';
 import 'package:nowly/Screens/OnBoarding/user_registration_view.dart';
 import 'package:nowly/Services/service_exporter.dart';
 import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/keys.dart';
 import 'package:nowly/root.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -20,6 +22,7 @@ import 'package:sizer/sizer.dart';
 
 class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  late Mixpanel mixpanel;
   final Rxn<User> _firebaseUser = Rxn<User>();
   final RxString _email = RxString('');
   final RxString _password = RxString('');
@@ -30,12 +33,14 @@ class AuthController extends GetxController {
   get firebaseUser => _firebaseUser.value;
   get auth => _auth;
   get agreedToTerms => _agreedToTerms.value;
+  get mix => mixpanel;
 
   set agreedToTerms(value) => _agreedToTerms.value = value;
 
   @override
   void onInit() {
     _firebaseUser.bindStream(_auth.authStateChanges());
+    initMixpanel();
     super.onInit();
   }
 
@@ -323,4 +328,9 @@ class AuthController extends GetxController {
   }
 
   void _openPDF(File file) => Get.to(() => LegalView(file: file));
+
+  Future<void> initMixpanel() async {
+    mixpanel =
+        await Mixpanel.init(MIXPANEL_TOKEN, optOutTrackingDefault: false);
+  }
 }

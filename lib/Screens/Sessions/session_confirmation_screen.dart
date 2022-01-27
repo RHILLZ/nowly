@@ -20,6 +20,7 @@ class SessionConfirmationScreen extends StatelessWidget {
   final StripeController _stripeController = Get.put(StripeController());
   final AgoraController _agoraVideoCallController = Get.put(AgoraController());
   final FilterController _filterController = Get.find();
+  // ignore: unused_field
   final UserController _userController = Get.find();
 
   @override
@@ -90,7 +91,8 @@ class SessionConfirmationScreen extends StatelessWidget {
                         final amount = int.parse(_totalCharge);
                         final desc =
                             '${_controller.sessionDurationAndCost.duration} Minute ${_controller.sessionWorkOutType.type} Session';
-                        _agoraVideoCallController.currentVirtualSession = _session;
+                        _agoraVideoCallController.currentVirtualSession =
+                            _session;
                         _controller.currentSession = _session;
                         _agoraVideoCallController.user = _controller.user;
                         _agoraVideoCallController.sessionDescription = desc;
@@ -105,6 +107,11 @@ class SessionConfirmationScreen extends StatelessWidget {
 
                         _agoraVideoCallController.startSession(
                             context, _session, _agoraVideoCallController);
+
+                        //TRACK SESSION CALL WITH MIXPANEL
+                        Get.find<AuthController>()
+                            .mix
+                            .track('Virtual Session Call');
                       }),
               ),
             )),
