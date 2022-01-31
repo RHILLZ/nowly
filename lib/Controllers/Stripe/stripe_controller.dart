@@ -4,6 +4,7 @@ import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Services/Firebase/firebase_futures.dart';
 import 'package:nowly/Services/service_exporter.dart';
+import 'package:nowly/Utils/logger.dart';
 import 'package:nowly/Widgets/Dialogs/dialogs.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stripe_payment/stripe_payment.dart';
@@ -196,22 +197,23 @@ class StripeController extends GetxController {
   getAccountDetails() async {
     _isGettingAccount.toggle();
     _loadMessage.value = 'Getting account details...';
-    final paymentMethodID = _user.activePaymentMethodId;
+    final paymentMethodID =
+        _user.activePaymentMethodId ?? _paymentMethodID.value;
+    AppLogger.i('PMID: $paymentMethodID');
     final paymentMethod =
         await StripeServices().getStripeCustomerPaymentMethod(paymentMethodID);
 
     if (paymentMethod != null) {
-      _last4.value = paymentMethod['paymentMethod']['card']['last4'];
-      _cardBrand.value = paymentMethod['paymentMethod']['card']['brand'];
-      _expY.value = paymentMethod['paymentMethod']['card']['exp_year'];
-      _expM.value = paymentMethod['paymentMethod']['card']['exp_month'];
+      _last4.value = paymentMethod['card']['last4'];
+      _cardBrand.value = paymentMethod['card']['brand'];
+      _expY.value = paymentMethod['card']['exp_year'];
+      _expM.value = paymentMethod['card']['exp_month'];
       var _exp = '${_expM.value}/${_expY.value}';
       activePaymentMethod = UserPaymentMethodModel(
           id: paymentMethodID,
           last4: _last4.value,
           exp: _exp,
           brand: _cardBrand.value);
-
       _isGettingAccount.toggle();
       _loadMessage.value = '';
       return;
@@ -241,7 +243,9 @@ class StripeController extends GetxController {
 
 //CHECK IF THE USER SHOULD FETCH THE STRIPE ACCOUNT//////////////////////////////
   shouldGetStripeAccount() {
-    if (_user.stripeCustomerId != null && _user.stripeCustomerId.isNotEmpty) {
+    if (_user.stripeCustomerId != null &&
+        _user.stripeCustomerId.isNotEmpty &&
+        _activePaymentMethod.value.last4 != '') {
       getAccountDetails();
       getPaymentMethods();
     }

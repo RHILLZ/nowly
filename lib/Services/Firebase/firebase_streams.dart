@@ -53,6 +53,7 @@ class FirebaseStreams {
       _firestore
           .collection(TRAINERSCOLLECTION)
           .where('showOnMap', isEqualTo: true)
+          .where('inActiveSession', isEqualTo: false)
           .snapshots()
           .map((query) => query.docs
               .map((doc) => TrainerInPersonSessionModel(

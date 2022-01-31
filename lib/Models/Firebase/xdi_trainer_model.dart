@@ -30,6 +30,7 @@ class TrainerModel {
   late int inPersonSessionsCompleted;
   int? totalSessionsCompleted;
   late int declinedSessions;
+  bool inActiveSession;
 
   TrainerModel(
       {this.id,
@@ -60,42 +61,43 @@ class TrainerModel {
       this.ranking = 0,
       this.rankIndex,
       this.prevRankIndex,
-      this.rating = 4.9});
+      this.rating = 4.9,
+      this.inActiveSession = false});
 
   factory TrainerModel.fromDocumentSnapshot(
       Map<String, dynamic>? document, String id) {
     final doc = document!;
     return TrainerModel(
-      id: id,
-      firstName: doc['firstName'],
-      lastName: doc['lastName'],
-      email: doc['email'],
-      pScore: doc['pScore'],
-      bio: doc['bio'],
-      birthYear: doc['birthYear'],
-      sex: doc['sex'],
-      profilePicURL: doc['profilePicURL'],
-      tokenId: doc['tokenId'],
-      stripeAccountId: doc['stripeAccountId'],
-      createdAt: doc['createdAt'],
-      updatedAt: doc['updatedAt'],
-      agreedToTerms: doc['agreedToTerms'],
-      activeMode: doc['activeMode'],
-      skillSet: doc['skillSet'],
-      availability: doc['availability'],
-      lastLocation: doc['lastLoction'],
-      showOnMap: doc['showOnMap'],
-      validInsurance: doc['validInsurance'],
-      virtualSessionsCompleted: doc['virtualSessionsCompleted'],
-      certificationType: doc['certificationType'],
-      inPersonSessionsCompleted: doc['inPersonSessionsCompleted'],
-      totalSessionsCompleted: doc['totalSessionsCompleted'],
-      declinedSessions: doc['declinedSessions'],
-      ranking: doc['ranking'],
-      rankIndex: doc['rankIndex'],
-      prevRankIndex: doc['prevRankIndex'],
-      rating: doc['rating'],
-    );
+        id: id,
+        firstName: doc['firstName'],
+        lastName: doc['lastName'],
+        email: doc['email'],
+        pScore: doc['pScore'],
+        bio: doc['bio'],
+        birthYear: doc['birthYear'],
+        sex: doc['sex'],
+        profilePicURL: doc['profilePicURL'],
+        tokenId: doc['tokenId'],
+        stripeAccountId: doc['stripeAccountId'],
+        createdAt: doc['createdAt'],
+        updatedAt: doc['updatedAt'],
+        agreedToTerms: doc['agreedToTerms'],
+        activeMode: doc['activeMode'],
+        skillSet: doc['skillSet'],
+        availability: doc['availability'],
+        lastLocation: doc['lastLoction'],
+        showOnMap: doc['showOnMap'],
+        validInsurance: doc['validInsurance'],
+        virtualSessionsCompleted: doc['virtualSessionsCompleted'],
+        certificationType: doc['certificationType'],
+        inPersonSessionsCompleted: doc['inPersonSessionsCompleted'],
+        totalSessionsCompleted: doc['totalSessionsCompleted'],
+        declinedSessions: doc['declinedSessions'],
+        ranking: doc['ranking'],
+        rankIndex: doc['rankIndex'],
+        prevRankIndex: doc['prevRankIndex'],
+        rating: doc['rating'],
+        inActiveSession: doc['inActiveSession']);
   }
 
   Map<String, dynamic> toMap(TrainerModel trainer) {
@@ -129,6 +131,7 @@ class TrainerModel {
     data['rankIndex'] = trainer.rankIndex;
     data['prevRankIndex'] = trainer.prevRankIndex;
     data['rating'] = trainer.rating;
+    data['inActiveSession'] = trainer.inActiveSession;
     return data;
   }
 }

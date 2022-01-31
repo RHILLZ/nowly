@@ -2,26 +2,25 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:nowly/Models/models_exporter.dart';
+import 'package:nowly/Utils/logger.dart';
 import 'package:stripe_payment/stripe_payment.dart';
 
 class StripeServices extends GetConnect {
   Future createStripeCustomer(UserModel user) async {
-    String url = "http://18.118.101.152/createStripeCustomerAccount/";
+    String url = "http://18.118.101.152/createStripeCustomerAccount";
     final fullName = '${user.firstName} ${user.lastName}';
 
-    await httpClient.post(url,
+    final req = await httpClient.post(url,
         body: jsonEncode({'name': fullName, 'email': user.email}));
-
-    final response = await httpClient.get(url);
-    final account = response.body as Map<String, dynamic>;
-
-    return account['accountID'];
+    AppLogger.i(req.body);
+    final account = req.body as Map<String, dynamic>;
+    return account['accountId'];
   }
 
   Future createStripePaymentMethod(CreditCard card) async {
-    String url = "http://18.118.101.152/createStripePaymentMethod/";
+    String url = "http://18.118.101.152/createStripePaymentMethod";
 
-    await httpClient.post(url,
+    final req = await httpClient.post(url,
         body: jsonEncode({
           'number': card.number,
           'exp_month': card.expMonth,
@@ -33,21 +32,20 @@ class StripeServices extends GetConnect {
           'postal_code': card.addressZip,
           'state': card.addressState
         }));
-    final response = await httpClient.get(url);
-    final paymentMethod = response.body as Map<String, dynamic>;
 
-    return paymentMethod['pmID'];
+    final paymentMethod = req.body as Map<String, dynamic>;
+
+    return paymentMethod['paymentId'];
   }
 
   Future linkStripePaymentMethodToUser(
       String customerID, String paymentMethodID) async {
-    String url = "http://18.118.101.152/linkStripePaymentMethodToCustomer/";
-    await httpClient.post(url,
+    String url = "http://18.118.101.152/linkStripePaymentMethodToCustomer";
+    final req = await httpClient.post(url,
         body: jsonEncode(
             {'customer': customerID, 'paymentMethod': paymentMethodID}));
 
-    final response = await httpClient.get(url);
-    final data = response.body as Map<String, dynamic>;
+    final data = req.body as Map<String, dynamic>;
 
     return data;
   }
@@ -59,21 +57,21 @@ class StripeServices extends GetConnect {
     return result;
   }
 
-  Future getStripeCustomerPaymentMethod(String customerID) async {
+  Future getStripeCustomerPaymentMethod(String paymentID) async {
     String url =
-        "http://18.118.101.152/getStripeCustomerPaymentMethod/$customerID";
+        "http://18.118.101.152/getStripeCustomerPaymentMethod/$paymentID";
 
     final response = await httpClient.get(url);
     final account = response.body as Map<String, dynamic>;
-
-    return account;
+    AppLogger.i('FROM SEVICE: ${account['paymentMethod']}');
+    return account['paymentMethod'];
   }
 
   Future createPaymentIntent(String customerID, int amount,
       String paymentMethodID, String description, String connectID) async {
     String url = "http://18.118.101.152/createPaymentIntent";
 
-    await httpClient.post(url,
+    final req = await httpClient.post(url,
         body: jsonEncode({
           'customerId': customerID,
           'amount': amount,
@@ -82,9 +80,7 @@ class StripeServices extends GetConnect {
           'connectId': connectID
         }));
 
-    final response = await httpClient.get(url);
-    final paymentIntent = response.body as Map<String, dynamic>;
-
+    final paymentIntent = req.body as Map<String, dynamic>;
     return paymentIntent['paymentIntent'];
   }
 
