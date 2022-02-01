@@ -1,1 +1,0 @@
--keep class com.xdi.nowly.BuildConfig { *; }

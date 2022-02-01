@@ -79,6 +79,7 @@ dependencies:
   progress_indicators: ^1.0.0
   qr_code_scanner: ^0.5.2
   qr_flutter: ^4.0.0
+  rename: ^2.0.1
   shimmer: ^2.0.0
   sign_in_with_apple: ^3.2.0
   sizer: ^2.0.15

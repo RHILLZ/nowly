@@ -1,4 +1,4 @@
-package com.example.nowly
+package com.xdi.nowly
 
 import io.flutter.embedding.android.FlutterActivity
 
