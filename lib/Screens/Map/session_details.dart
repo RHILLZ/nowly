@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
@@ -178,43 +177,36 @@ class SessionDetails extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.symmetric(
                             vertical: 2.h, horizontal: 5.w),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: SeperatedRow(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: List.generate(
-                                _sessionDetails.sessionLengths.length, (index) {
-                              final sessionLength =
-                                  _sessionDetails.sessionLengths[index];
-                              return Obx(
-                                () => Visibility(
-                                  visible: sessionLength.duration != '15MIN',
-                                  child: SessionLengthCard(
-                                    isSelected:
-                                        _controller.selectedLength.value ==
-                                            sessionLength,
-                                    cost: '\$${sessionLength.cost / 100}'
-                                        .split('.')[0],
-                                    imagePath: _sessionDetails
-                                        .sessionLengths[index].imagepath!,
-                                    length: sessionLength.duration,
-                                    onTap: () {
-                                      final strDur = sessionLength.duration
-                                          .substring(0, 2);
-                                      final dur = int.parse(strDur);
-                                      _controller.selectedLength.value =
-                                          sessionLength;
-                                      _controller.sessionTime = dur * 60;
-                                    },
-                                  ),
-                                ),
-                              );
-                            }),
-                            separatorBuilder:
-                                (BuildContext context, int index) => SizedBox(
-                              width: 10.w,
-                            ),
+                        child: SeperatedRow(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: List.generate(
+                              _sessionDetails.sessionLengths.length, (index) {
+                            final sessionLength =
+                                _sessionDetails.sessionLengths[index];
+                            return Obx(
+                              () => SessionLengthCard(
+                                isSelected: _controller.selectedLength.value ==
+                                    sessionLength,
+                                cost: '\$${sessionLength.cost / 100}'
+                                    .split('.')[0],
+                                imagePath: _sessionDetails
+                                    .sessionLengths[index].imagepath!,
+                                length: sessionLength.duration,
+                                onTap: () {
+                                  final strDur =
+                                      sessionLength.duration.substring(0, 2);
+                                  final dur = int.parse(strDur);
+                                  _controller.selectedLength.value =
+                                      sessionLength;
+                                  _controller.sessionTime = dur * 60;
+                                },
+                              ),
+                            );
+                          }),
+                          separatorBuilder: (BuildContext context, int index) =>
+                              SizedBox(
+                            width: 5.w,
                           ),
                         ),
                       ),

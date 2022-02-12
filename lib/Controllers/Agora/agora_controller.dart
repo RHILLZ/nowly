@@ -12,7 +12,6 @@ import 'package:nowly/Screens/Sessions/virtual_session_view.dart';
 import 'package:nowly/Services/service_exporter.dart';
 import 'package:nowly/Utils/logger.dart';
 import 'package:nowly/Widgets/Dialogs/dialogs.dart';
-import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:nowly/keys.dart';
 import 'package:nowly/root.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -123,14 +122,13 @@ class AgoraController extends GetxController {
 ////////////////////////////////////////////////////////////////////////////
 
 //START A VIRTUAL SESSION/////////////////////////////////////////////////////
-  void startSession(
-      BuildContext context, SessionModel session, AgoraController agora) async {
+  void startSession(BuildContext context, SessionModel session) async {
     _context = context;
     _isSearching.toggle();
     _channel.value = session.sessionID!;
     // ignore: unused_local_variable
     final sess = SessionModel().toMap(session);
-    final sessionCreated = await initTrainerSearch('', session, context);
+    final sessionCreated = await initTrainerSearch(session, context);
     if (sessionCreated) {
       updateSession();
     }
@@ -155,14 +153,10 @@ class AgoraController extends GetxController {
   }
 
 ////////////////////////////////////////////////////////////////////////////
-  initTrainerSearch(
-      String agoraToken, SessionModel session, BuildContext context) async {
+  initTrainerSearch(SessionModel session, BuildContext context) async {
     final uid = session.userID!;
     final sessionData = SessionModel().toMap(session);
-    final result = await SessionServices()
-        .findVirtualTrainer(uid, agoraToken, sessionData);
-    AppLogger.i('RESULT: $result');
-
+    final result = await SessionServices().findVirtualTrainer(uid, sessionData);
     return result;
   }
 
@@ -197,14 +191,6 @@ class AgoraController extends GetxController {
       Get.off(() => const Root());
       Phoenix.rebirth(context);
     }
-  }
-
-  void userJoin() {
-    AppLogger.i('USER JOINED!!!');
-    Get.bottomSheet(const VirtualSessionInitSearch(),
-        isDismissible: false,
-        enableDrag: false,
-        backgroundColor: Colors.transparent);
   }
 
   void trainerJoin() async {

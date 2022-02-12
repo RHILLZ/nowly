@@ -12,8 +12,8 @@ class SessionListController extends GetxController {
     // ignore: todo
     super.onInit();
     ever(onlineTrainers, (callback) => _fetchAllTrainerSessions());
-    onlineTrainers.bindStream(FirebaseStreams()
-        .streamOnlineTrainers(SessionDurationAndCostModel.sessionOptions));
+    onlineTrainers.bindStream(FirebaseStreams().streamOnlineTrainers(
+        SessionDurationAndCostModel.inPersonSessionOptions));
   }
 
   @override

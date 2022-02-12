@@ -106,7 +106,7 @@ class SessionConfirmationScreen extends StatelessWidget {
                         }
 
                         _agoraVideoCallController.startSession(
-                            context, _session, _agoraVideoCallController);
+                            context, _session);
 
                         //TRACK SESSION CALL WITH MIXPANEL
                         Get.find<AuthController>()

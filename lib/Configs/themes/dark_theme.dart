@@ -21,7 +21,6 @@ class DarkTheme with SubThemeData {
           accentColor: kPrimaryColor,
           brightness: Brightness.dark,
         ).copyWith(primary: kPrimaryColor),
-        primaryColorBrightness: Brightness.dark,
         scaffoldBackgroundColor: scaffoldBackgroundColorDT,
         appBarTheme: getAppBarTheme().copyWith(
             backgroundColor: scaffoldBackgroundColorDT,

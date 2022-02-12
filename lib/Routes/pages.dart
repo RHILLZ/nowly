@@ -1,7 +1,5 @@
 import 'package:get/get.dart';
-import 'package:nowly/Bindings/BaseScreen/base_screen_binding.dart';
 import 'package:nowly/Bindings/binding_exporter.dart';
-import 'package:nowly/Bindings/initial_binding.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Screens/Auth/auth_view.dart';

@@ -8,7 +8,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
-import 'package:nowly/Services/service_exporter.dart';
 import 'dart:ui' as ui;
 
 const kLocationLoadRadius = 2500;
@@ -114,8 +113,6 @@ class MapController extends GetxController with WidgetsBindingObserver {
     if (_permissionGranted == PermissionStatus.denied) {
       _permissionGranted = await _location.requestPermission();
       if (_permissionGranted != PermissionStatus.granted) {
-        AppPermissionController _permission = Get.find();
-        await _permission.openLocationPermissionDialog();
         return;
       }
     }
@@ -216,47 +213,5 @@ class MapController extends GetxController with WidgetsBindingObserver {
     var first = coords.first;
     _city.value = first.locality!;
     _state.value = first.administrativeArea!;
-  }
-
-  final _nearbyParks = <ParkLocationModel>[].obs;
-  final _selectedPark =
-      ParkLocationModel(parkName: '', parkLocation: const LatLng(0, 0)).obs;
-  final _markers = <Marker>{}.obs;
-  final _circles = <Circle>{}.obs;
-
-  get nearbyParks => _nearbyParks;
-  get selectedPark => _selectedPark.value;
-  get markers => _markers;
-  get circles => _circles;
-
-  set selectedPark(value) => _selectedPark.value = value;
-
-  viewParkLocation() async {
-    await googleMapController.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(
-            target: _selectedPark.value.parkLocation, zoom: 17, tilt: 10.0)));
-    var marker = Marker(
-        markerId: const MarkerId(''),
-        position: _selectedPark.value.parkLocation);
-    _markers.clear();
-    _markers.add(marker);
-  }
-
-  getParkLocationsList(double radius) async {
-    _isLoading.toggle();
-    final myLoc = LatLng(_lat.value, _lng.value);
-    final parks = await MapsServices().getListOfNearbyParks(myLoc, radius);
-
-    List locations = parks
-        .map((park) => ParkLocationModel(
-            parkName: park['parkName'],
-            parkLocation: LatLng(
-                park['parkLocation']['lat'], park['parkLocation']['lng'])))
-        .toList();
-    for (var park in locations) {
-      _nearbyParks.add(park);
-    }
-    _isLoading.toggle();
-    // print(locations);
   }
 }

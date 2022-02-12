@@ -5,7 +5,6 @@ class InitialBinding implements Bindings {
   @override
   void dependencies() {
     Get.put(ThemeController());
-    Get.put(AppPermissionController());
     Get.put(AuthController());
   }
 }

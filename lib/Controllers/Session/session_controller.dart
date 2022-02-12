@@ -8,7 +8,6 @@ import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Screens/Sessions/current_session_details_screen.dart';
 import 'package:nowly/Screens/Sessions/session_complete_screen.dart';
 import 'package:nowly/Services/Firebase/fcm.dart';
-import 'package:nowly/Services/Firebase/firebase_futures.dart';
 import 'package:nowly/Services/service_exporter.dart';
 import 'package:nowly/Utils/logger.dart';
 import 'package:nowly/Widgets/Dialogs/dialogs.dart';
@@ -185,7 +184,8 @@ class SessionController extends GetxController {
   }
 
   void _fetchSessionDurationAndCosts() {
-    sessionDurAndCosts.addAll(SessionDurationAndCostModel.sessionOptions);
+    sessionDurAndCosts
+        .addAll(SessionDurationAndCostModel.virtualSessionOptions);
     _sessionDurationAndCost.value = sessionDurAndCosts[1];
     isSessionLengthsLoaded.value = true;
   }

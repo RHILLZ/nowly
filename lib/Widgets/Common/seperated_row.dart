@@ -27,6 +27,8 @@ class SeperatedRow extends StatelessWidget {
     }
 
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: childrenWithSeperators,
     );
   }

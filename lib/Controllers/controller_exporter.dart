@@ -13,7 +13,5 @@ export 'Session/session_controller.dart';
 export 'Session/trainer_session_controller.dart';
 export 'Session/filter_controller.dart';
 export 'Session/session_list_controller.dart';
-
 export 'Stripe/stripe_controller.dart';
 export 'Theme/theme_controller.dart';
-export 'QR/qr_controller.dart';

@@ -14,7 +14,7 @@ class TrainerInPersonSessionModel {
 
   static Future<List<TrainerInPersonSessionModel>> getTrainers() async {
     // ignore: unused_local_variable
-    final sessionOptions = SessionDurationAndCostModel.sessionOptions;
+    final sessionOptions = SessionDurationAndCostModel.inPersonSessionOptions;
     AppLogger.i('GETTING TRAINERS FROM DB');
     List<TrainerInPersonSessionModel> trainers =
         await FirebaseFutures().getOnlineTrainers(sessionOptions);
