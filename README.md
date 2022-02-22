@@ -57,6 +57,7 @@ Nowly uses **agora_rtc_engine** to control all virtual sessions. Specifically ut
 - `toggleAudio()`: mutes audio.
 
 - `toggleVideo()`: mutes video.
+
 </details>
 
 ### _- Auth controller_
@@ -81,6 +82,7 @@ Nowly utilized _Firebase Auth_ for all authentication services.
 - `emailOption()`: _BottomSheet_ that allows user to sign up or log in using their email address and password.
 
 - `openPDF()`: opens Terms of Service and Privacy Policy.
+
 </details>
 
 #### _- Maps_
@@ -90,7 +92,7 @@ Nowly utilized _Firebase Auth_ for all authentication services.
 Nowly utilized the _GoogleMaps API_
 
 - Map Naviagator Controller
-  <details> 
+  <details>
   <summary> Core Map Navigator functions </summary>
 
       - `openNavigator()`: opens device navigation to route user to session location
@@ -122,7 +124,7 @@ Nowly utilized the _GoogleMaps API_
 
 <details>
 <summary>
-Core Messaging Functions 
+Core Messaging Functions
 </summary>
 
     - `fetchChat()` : chats loaded when messaging is active.
@@ -131,14 +133,13 @@ Core Messaging Functions
 
 </details>
 
-#### _- OnBoarding_
+#### _- Registration/OnBoarding_
 
 `../lib/Controllers/Agora/agora_controller.dart`
 
-#### _- QR_
+<details>
 
-`../lib/Controllers/Agora/agora_controller.dart`
-
+</details>
 #### _- Session_
 
 `../lib/Controllers/Agora/agora_controller.dart`

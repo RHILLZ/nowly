@@ -109,14 +109,4 @@ class StripeServices extends GetConnect {
 
     return paymentMethods['list']['data'];
   }
-
-  Future deleteBankAccountFromConnect(
-      String connectID, String bankAccountId) async {
-    String url =
-        "http://18.118.101.152/deleteBankAccountFromConnectAccount/$connectID/$bankAccountId";
-
-    final response = await httpClient.get(url);
-    final result = response.body as Map<String, dynamic>;
-    return result;
-  }
 }

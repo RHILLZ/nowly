@@ -52,5 +52,4 @@ export 'Stripe/custom_button.dart';
 export 'TextCards/availability.dart';
 export 'TextCards/session_length.dart';
 export 'TextCards/session_mode.dart';
-export 'TextCards/sort_type.dart';
 export 'TextCards/trainer_preference.dart';

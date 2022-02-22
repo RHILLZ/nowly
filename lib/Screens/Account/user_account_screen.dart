@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Screens/Nav/session_history_view.dart';
-import 'package:nowly/Screens/Profile/info_screen.dart';
-import 'package:nowly/Screens/Profile/profile_pic.dart';
+import 'package:nowly/Screens/Account/info_screen.dart';
+import 'package:nowly/Screens/Account/profile_pic.dart';
 import 'package:nowly/Screens/Stripe/add_payment_methods.dart';
 import 'package:nowly/Widgets/Common/profile_image.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
@@ -13,8 +13,8 @@ import 'package:sizer/sizer.dart';
 import 'my_goal_screen.dart';
 import 'profile_details_screen.dart';
 
-class UserProfileScreen extends GetView<UserController> {
-  const UserProfileScreen({Key? key}) : super(key: key);
+class UserAccountScreen extends GetView<UserController> {
+  const UserAccountScreen({Key? key}) : super(key: key);
 
   // ignore: avoid_field_initializers_in_const_classes
   final bool notifications = true;
@@ -120,7 +120,7 @@ class UserProfileScreen extends GetView<UserController> {
             ),
             ListTile(
               onTap: () {
-                Get.to(() => SessionHistoryAndUpcomingView());
+                Get.to(() => SessionHistoryView());
               },
               leading: SvgPicture.asset(
                 'assets/images/profile/appoinments.svg',
@@ -143,7 +143,7 @@ class UserProfileScreen extends GetView<UserController> {
             ),
             ListTile(
               onTap: () {
-                Get.to(() => MyGoalScreen());
+                Get.to(() => UserGoalScreen());
               },
               leading: SvgPicture.asset(
                 'assets/images/profile/goal.svg',

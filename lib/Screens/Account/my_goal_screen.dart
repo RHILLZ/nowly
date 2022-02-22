@@ -8,8 +8,8 @@ import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:sizer/sizer.dart';
 
-class MyGoalScreen extends GetView<UserController> {
-  MyGoalScreen({Key? key}) : super(key: key);
+class UserGoalScreen extends GetView<UserController> {
+  UserGoalScreen({Key? key}) : super(key: key);
   static const routeName = '/myGoal';
 
   final UserController _controller = Get.find();

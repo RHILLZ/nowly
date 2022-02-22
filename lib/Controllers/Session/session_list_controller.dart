@@ -11,20 +11,20 @@ class SessionListController extends GetxController {
   void onInit() {
     // ignore: todo
     super.onInit();
-    ever(onlineTrainers, (callback) => _fetchAllTrainerSessions());
+    ever(onlineTrainers, (callback) => _fetchAllOnlineTrainers());
     onlineTrainers.bindStream(FirebaseStreams().streamOnlineTrainers(
         SessionDurationAndCostModel.inPersonSessionOptions));
   }
 
   @override
   void onReady() {
-    _fetchAllTrainerSessions();
+    _fetchAllOnlineTrainers();
     super.onReady();
   }
 
   var trainersSessionControllers = <TrainerInPersonSessionController>[].obs;
 
-  Future<void> _fetchAllTrainerSessions() async {
+  Future<void> _fetchAllOnlineTrainers() async {
     AppLogger.i('Fetching trainers');
     final loadedTrainers = onlineTrainers;
     AppLogger.i('TRAINERS: $onlineTrainers');

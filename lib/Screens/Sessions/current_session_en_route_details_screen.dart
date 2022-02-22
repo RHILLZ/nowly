@@ -10,8 +10,8 @@ import 'package:nowly/Widgets/Sessions/active_session_banner.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:sizer/sizer.dart';
 
-class CurrentSessionDetailsScreen extends StatelessWidget {
-  const CurrentSessionDetailsScreen(
+class CurrentSessionEnRouteDetailsScreen extends StatelessWidget {
+  const CurrentSessionEnRouteDetailsScreen(
       {Key? key,
       required SessionModel session,
       required MapNavigatorController mapNavController,
@@ -43,7 +43,7 @@ class CurrentSessionDetailsScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 1.w),
           child: Logo.mark(3.h),
         ),
-        title: Text('CURRENT SESSION DETAILS',
+        title: Text('CURRENT SESSION EN ROUTE',
             style: k16BoldTS.copyWith(fontSize: 14)),
         centerTitle: true,
       ),

@@ -1,7 +1,6 @@
 class SessionDurationAndCostModel {
   final String duration;
   final int cost;
-  final double bookingFee;
   final double? salesTax;
   final String? imagepath;
   String? motivationText;
@@ -9,7 +8,6 @@ class SessionDurationAndCostModel {
   SessionDurationAndCostModel(
       {required this.duration,
       required this.cost,
-      required this.bookingFee,
       this.salesTax,
       this.imagepath,
       this.motivationText = ''});
@@ -21,20 +19,17 @@ class SessionDurationAndCostModel {
   static final List<SessionDurationAndCostModel> virtualSessionOptions = [
     SessionDurationAndCostModel(
         duration: '15MIN',
-        cost: 3000,
-        bookingFee: .019,
+        cost: 3500,
         motivationText: 'QUICK AND NOT SO EASY',
         imagepath: 'assets/images/map/15min.svg'),
     SessionDurationAndCostModel(
         duration: '30MIN',
-        cost: 5000,
-        bookingFee: 0.019,
+        cost: 5500,
         motivationText: 'I MEAN, IF THAT IS ALL YOU GOT',
         imagepath: 'assets/images/map/30min.svg'),
     SessionDurationAndCostModel(
         duration: '60MIN',
-        cost: 10000,
-        bookingFee: .019,
+        cost: 11000,
         motivationText: 'OK SUPERSTAR WE SALUTE YOU!',
         imagepath: 'assets/images/map/60min.svg')
   ];
@@ -42,14 +37,12 @@ class SessionDurationAndCostModel {
   static final List<SessionDurationAndCostModel> inPersonSessionOptions = [
     SessionDurationAndCostModel(
         duration: '30MIN',
-        cost: 6000,
-        bookingFee: 0.019,
+        cost: 7000,
         motivationText: 'I MEAN, IF THAT IS ALL YOU GOT',
         imagepath: 'assets/images/map/30min.svg'),
     SessionDurationAndCostModel(
         duration: '60MIN',
-        cost: 12000,
-        bookingFee: .019,
+        cost: 13000,
         motivationText: 'OK SUPERSTAR WE SALUTE YOU!',
         imagepath: 'assets/images/map/60min.svg')
   ];

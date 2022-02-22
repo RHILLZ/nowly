@@ -3,7 +3,7 @@ import 'package:nowly/Bindings/binding_exporter.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Screens/Auth/auth_view.dart';
-import 'package:nowly/Screens/Auth/onboarding_view.dart';
+import 'package:nowly/Screens/Auth/welcome_view.dart';
 import 'package:nowly/Screens/Auth/start_screen_view.dart';
 import 'package:nowly/Screens/Map/map_screen.dart';
 import 'package:nowly/Screens/Messaging/messaging_screen.dart';
@@ -11,11 +11,11 @@ import 'package:nowly/Screens/Nav/base_screen.dart';
 import 'package:nowly/Screens/Nav/home_view.dart';
 import 'package:nowly/Screens/Nav/session_history_view.dart';
 import 'package:nowly/Screens/OnBoarding/user_registration_view.dart';
-import 'package:nowly/Screens/Profile/info_screen.dart';
-import 'package:nowly/Screens/Profile/my_goal_screen.dart';
-import 'package:nowly/Screens/Profile/profile_details_screen.dart';
-import 'package:nowly/Screens/Profile/user_profile_screen.dart';
-import 'package:nowly/Screens/Sessions/current_session_details_screen.dart';
+import 'package:nowly/Screens/Account/info_screen.dart';
+import 'package:nowly/Screens/Account/my_goal_screen.dart';
+import 'package:nowly/Screens/Account/profile_details_screen.dart';
+import 'package:nowly/Screens/Account/user_account_screen.dart';
+import 'package:nowly/Screens/Sessions/current_session_en_route_details_screen.dart';
 import 'package:nowly/Screens/Sessions/feedback.dart';
 import 'package:nowly/Screens/Sessions/live_session_screen.dart';
 import 'package:nowly/Screens/Sessions/session_complete_screen.dart';
@@ -60,10 +60,8 @@ class Pages {
         name: _Paths.MAP,
         page: () => MapScreen(),
         binding: BaseScreenBinding()),
-    GetPage(
-        name: _Paths.SESSION_HISTORY,
-        page: () => SessionHistoryAndUpcomingView()),
-    GetPage(name: _Paths.PROFILE, page: () => const UserProfileScreen()),
+    GetPage(name: _Paths.SESSION_HISTORY, page: () => SessionHistoryView()),
+    GetPage(name: _Paths.PROFILE, page: () => const UserAccountScreen()),
     GetPage(
         binding: BaseScreenBinding(),
         name: _Paths.SESSION_CONFIRMATION,
@@ -82,7 +80,7 @@ class Pages {
             session: SessionModel(), sessionController: SessionController())),
     GetPage(
         name: _Paths.SESSION_IN_PROGRESS,
-        page: () => CurrentSessionDetailsScreen(
+        page: () => CurrentSessionEnRouteDetailsScreen(
             session: SessionModel(),
             mapNavController: Get.find<MapNavigatorController>(),
             trainerSessionC: Get.find<TrainerInPersonSessionController>(),
@@ -116,7 +114,7 @@ class Pages {
 
     GetPage(
         name: _Paths.GOALS_SCREEN,
-        page: () => MyGoalScreen(),
+        page: () => UserGoalScreen(),
         binding: BaseScreenBinding()),
     GetPage(name: _Paths.INFORMATION, page: () => UserInfoScreen()),
     GetPage(

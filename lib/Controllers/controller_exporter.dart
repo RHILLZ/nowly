@@ -1,5 +1,4 @@
 export 'Agora/agora_controller.dart';
-export 'app_permission_controller.dart';
 export 'user_controller.dart';
 export 'Auth/auth_controller.dart';
 export 'Maps/map_navigator_controller.dart';

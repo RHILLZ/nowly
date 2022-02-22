@@ -18,7 +18,6 @@ class FilterController extends GetxController {
   // var selectedSessionLength =
   //     SessionDurationAndCostModel(duration: '', amount: 0).obs;
   var selectedAvailability = AvailabilityModel(label: '', id: '').obs;
-  var selectedSortType = SessionSortModel(label: '').obs;
   final _genderPref = TrainerPreferenceModel(type: '').obs;
   final _radius = 1.0.obs;
 
@@ -33,7 +32,6 @@ class FilterController extends GetxController {
   var sessionLengths = <SessionDurationAndCostModel>[].obs;
   var sessionModes = <SessionModeModel>[].obs;
   var avalability = <AvailabilityModel>[].obs;
-  var sortTypes = <SessionSortModel>[].obs;
   var trainerTypes = <TrainerPreferenceModel>[].obs;
 
   // void _fethSessionLengths() {
@@ -52,8 +50,6 @@ class FilterController extends GetxController {
     AppLogger.i('Fetching filter details');
     trainerTypes.addAll(TrainerPreferenceModel.trainerTypes);
     _genderPref.value = trainerTypes[0];
-    sortTypes.addAll(SessionSortModel.sessionSorts);
-    selectedSortType.value = sortTypes[0];
     avalability.addAll(AvailabilityModel.availabilities);
     selectedAvailability.value = avalability[0];
   }

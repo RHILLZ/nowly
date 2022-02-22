@@ -1,4 +1,3 @@
-export 'Auth/agreements.dart';
 export 'Firebase/xdi_review_model.dart';
 export 'Firebase/xdi_session_model.dart';
 export 'Firebase/xdi_session_receipt_model.dart';
@@ -11,14 +10,10 @@ export 'OnBoarding/medical_history_model.dart';
 export 'OnBoarding/name_and_info_model.dart';
 export 'OnBoarding/pscore_model.dart';
 export 'OnBoarding/questionnaire_model.dart';
-export 'Session/park_location_model.dart';
 export 'Session/session_duration_cost_model.dart';
 export 'Session/session_gender_preference_model.dart';
 export 'Session/session_mode_model.dart';
-export 'Session/session_schedule_model.dart';
-export 'Session/in_person_session_model.dart';
-export 'Session/session_sort_model.dart';
-export 'Session/trainer_session_model.dart';
+
 export 'Session/workout_type_model.dart';
 export 'Session/avalibility_model.dart';
 export 'Session/trainer_inperson_session_model.dart';
@@ -28,6 +23,5 @@ export 'Maps/direction_model.dart';
 export 'Maps/location_details_model.dart';
 export 'Maps/place_auto_complete_res.dart';
 export 'Maps/place_model.dart';
-export 'Messeging/chat_user_model.dart';
 export 'Messeging/messege_model.dart';
 export 'Messeging/quick_response.dart';

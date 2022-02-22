@@ -8,6 +8,5 @@ export 'Net/end_points.dart';
 export 'Net/error_handler.dart';
 export 'Net/headers.dart';
 export 'Net/net.dart';
-export 'Maps/maps_services.dart';
 export 'Sessions/sessions_services.dart';
 export 'Stripe/stripe_services.dart';

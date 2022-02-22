@@ -8,7 +8,7 @@ import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:sizer/sizer.dart';
 
-import 'onboarding_view.dart';
+import 'welcome_view.dart';
 
 class StartScreenView extends GetView<AuthController> {
   StartScreenView({Key? key}) : super(key: key);

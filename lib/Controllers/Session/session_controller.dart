@@ -5,7 +5,7 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Models/models_exporter.dart';
-import 'package:nowly/Screens/Sessions/current_session_details_screen.dart';
+import 'package:nowly/Screens/Sessions/current_session_en_route_details_screen.dart';
 import 'package:nowly/Screens/Sessions/session_complete_screen.dart';
 import 'package:nowly/Services/Firebase/fcm.dart';
 import 'package:nowly/Services/service_exporter.dart';
@@ -27,7 +27,7 @@ class SessionController extends GetxController {
   //SESSION PARMAS
   final _sessionMode = SessionModeModel(id: '', mode: '').obs;
   final _sessionDurationAndCost =
-      SessionDurationAndCostModel(duration: '', cost: 0, bookingFee: 0).obs;
+      SessionDurationAndCostModel(duration: '', cost: 0,).obs;
   final _sessionWorkOutType =
       WorkoutType(imagePath: '', type: '', headerData: []).obs;
   final _genderPref = ''.obs;
@@ -398,7 +398,7 @@ class SessionController extends GetxController {
     if (_currentSession.value.isAccepted == true &&
         !_currentSession.value.isScanned) {
       _isProcessing.toggle();
-      Get.to(() => CurrentSessionDetailsScreen(
+      Get.to(() => CurrentSessionEnRouteDetailsScreen(
             session: _currentSession.value,
             mapNavController: Get.find<MapNavigatorController>(),
             trainerSessionC: controller,

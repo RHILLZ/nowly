@@ -6,8 +6,8 @@ import 'package:nowly/Screens/Sessions/receipt_details_screen.dart';
 import 'package:nowly/Widgets/Sessions/receipt_tile.dart';
 import 'package:sizer/sizer.dart';
 
-class SessionHistoryAndUpcomingView extends StatelessWidget {
-  SessionHistoryAndUpcomingView({Key? key}) : super(key: key);
+class SessionHistoryView extends StatelessWidget {
+  SessionHistoryView({Key? key}) : super(key: key);
   final UserController _controller = Get.put(UserController());
   @override
   Widget build(BuildContext context) {

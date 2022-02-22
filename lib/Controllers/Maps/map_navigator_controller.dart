@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:location/location.dart';
 import 'package:map_launcher/map_launcher.dart';
 import 'package:nowly/Configs/configs.dart';
-import 'package:nowly/Screens/Sessions/current_session_details_screen.dart';
+import 'package:nowly/Screens/Sessions/current_session_en_route_details_screen.dart';
 import 'package:nowly/Screens/Sessions/session_confirmation_screen_2.dart';
 
 import '../controller_exporter.dart';
@@ -93,7 +93,7 @@ class MapNavigatorController extends GetxController {
 
   void navigateToCurrentSessionDetailsScreen() {
     if (curruntSessionController.value == null) return;
-    Get.toNamed(CurrentSessionDetailsScreen.routeName,
+    Get.toNamed(CurrentSessionEnRouteDetailsScreen.routeName,
         arguments: curruntSessionController.value!);
   }
 

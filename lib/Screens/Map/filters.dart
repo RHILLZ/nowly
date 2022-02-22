@@ -65,26 +65,12 @@ class Filters extends StatelessWidget {
                         padding: EdgeInsets.only(top: 10, bottom: 5),
                         child: Text('SORT AND FILTER', style: k16BoldTS),
                       ),
-                      const SortTypes(),
-                      // SessionLength(),
                       const TrainerPreference(),
                       // SessionMode(),
                       // const Avalability(),
                       const SizedBox(
                         height: 20.0,
                       ),
-                      // RectButton(
-                      //   onPressed: () {
-                      //     final SessionScheduleController controller =
-                      //         Get.find();
-                      //     controller.changeDate(
-                      //         date: controller.selectedDay.value);
-                      //     _controller.applyFilters();
-                      //     Get.back();
-                      //   },
-                      //   title: 'APPLY',
-                      //   isSelected: true,
-                      // ),
                     ],
                   ),
                 ),

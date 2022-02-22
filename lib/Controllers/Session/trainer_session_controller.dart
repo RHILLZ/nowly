@@ -17,8 +17,7 @@ class TrainerInPersonSessionController extends GetxController {
   get isProcessing => _isProcessing.value;
   get currentSession => _currentSession.value;
 
-  final selectedLength =
-      SessionDurationAndCostModel(duration: '', cost: 0, bookingFee: 0).obs;
+  final selectedLength = SessionDurationAndCostModel(duration: '', cost: 0).obs;
   late TrainerInPersonSessionModel trainerSession;
   final showTimes = false.obs;
 
