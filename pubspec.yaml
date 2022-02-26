@@ -49,6 +49,7 @@ dependencies:
   firebase_storage: ^10.0.6
   flutter:
     sdk: flutter
+  flutter_dotenv: ^5.0.2
   flutter_masked_text2: ^0.9.1
   flutter_pdfview: ^1.2.1
   flutter_phoenix: ^1.0.0

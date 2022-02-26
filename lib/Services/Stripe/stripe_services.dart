@@ -2,12 +2,14 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:nowly/Models/models_exporter.dart';
+import 'package:nowly/Utils/env.dart';
 import 'package:nowly/Utils/logger.dart';
 import 'package:stripe_payment/stripe_payment.dart';
 
 class StripeServices extends GetConnect {
+  final String baseURL = Env.apiBaseUrl!;
   Future createStripeCustomer(UserModel user) async {
-    String url = "http://18.118.101.152/createStripeCustomerAccount";
+    String url = "$baseURL/createStripeCustomerAccount";
     final fullName = '${user.firstName} ${user.lastName}';
 
     final req = await httpClient.post(url,
@@ -40,7 +42,7 @@ class StripeServices extends GetConnect {
 
   Future linkStripePaymentMethodToUser(
       String customerID, String paymentMethodID) async {
-    String url = "http://18.118.101.152/linkStripePaymentMethodToCustomer";
+    String url = "$baseURL/linkStripePaymentMethodToCustomer";
     final req = await httpClient.post(url,
         body: jsonEncode(
             {'customer': customerID, 'paymentMethod': paymentMethodID}));
@@ -51,15 +53,14 @@ class StripeServices extends GetConnect {
   }
 
   Future unlinkStripePaymentMethodFromUser(String pmID) async {
-    String url = "http://18.118.101.152/unlinkPaymentMethod/$pmID";
+    String url = "$baseURL/unlinkPaymentMethod/$pmID";
     final response = await httpClient.get(url);
     final result = response.body as Map<String, dynamic>;
     return result;
   }
 
   Future getStripeCustomerPaymentMethod(String paymentID) async {
-    String url =
-        "http://18.118.101.152/getStripeCustomerPaymentMethod/$paymentID";
+    String url = "$baseURL/getStripeCustomerPaymentMethod/$paymentID";
 
     final response = await httpClient.get(url);
     final account = response.body as Map<String, dynamic>;
@@ -69,7 +70,7 @@ class StripeServices extends GetConnect {
 
   Future createPaymentIntent(String customerID, int amount,
       String paymentMethodID, String description, String connectID) async {
-    String url = "http://18.118.101.152/createPaymentIntent";
+    String url = "$baseURL/createPaymentIntent";
 
     final req = await httpClient.post(url,
         body: jsonEncode({
@@ -102,7 +103,7 @@ class StripeServices extends GetConnect {
   // }
 
   Future getPaymentMethods(String customerID) async {
-    String url = "http://18.118.101.152/getPaymentMethods/$customerID";
+    String url = "$baseURL/getPaymentMethods/$customerID";
 
     final response = await httpClient.get(url);
     final paymentMethods = response.body as Map<String, dynamic>;

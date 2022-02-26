@@ -28,12 +28,9 @@ class SessionConfirmationScreen extends StatelessWidget {
     _controller.user = Get.find<UserController>().user;
     final _city = Get.find<MapController>().city;
     final _sessionFee = (_controller.sessionDurationAndCost.cost / 100);
-    final _bookingFee =
-        (_sessionFee * _controller.sessionDurationAndCost.bookingFee);
-    final sb = _sessionFee + _bookingFee;
     final st = SessionDurationAndCostModel.salesTaxByLoc[_city] ?? 0.0;
-    final _salesTax = sb * st;
-    final _totalCost = _sessionFee + _bookingFee + _salesTax;
+    final _salesTax = _sessionFee * st;
+    final _totalCost = _sessionFee + _salesTax;
     final _totalCharge = (_totalCost * 100).toString().split('.')[0];
 
     AppLogger.i(_salesTax);
@@ -203,7 +200,6 @@ class SessionConfirmationScreen extends StatelessWidget {
                               ),
                             ),
                             _controller.buildSessionFee(),
-                            _controller.buildBookingFee(),
                             Visibility(
                                 visible: _controller.applySalesTax(),
                                 child: _controller.buildSalesTax()),
@@ -263,33 +259,38 @@ class SessionConfirmationScreen extends StatelessWidget {
                                       children: [
                                         _stripeController.activePaymentMethod
                                                 .last4.isNotEmpty
-                                            ? Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                    FittedBox(
-                                                        fit: BoxFit.contain,
-                                                        child: _stripeController
-                                                                    .activePaymentMethod
-                                                                    .brand ==
-                                                                'visa'
-                                                            ? VISAIMAGE
-                                                            : MASTERCARDIMAGE),
-                                                    SizedBox(
-                                                      width: 2.w,
-                                                    ),
-                                                    Text(_stripeController
-                                                        .activePaymentMethod
-                                                        .last4)
-                                                  ])
+                                            ? FittedBox(
+                                                fit: BoxFit.contain,
+                                                child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      FittedBox(
+                                                          fit: BoxFit.contain,
+                                                          child: _stripeController
+                                                                      .activePaymentMethod
+                                                                      .brand ==
+                                                                  'visa'
+                                                              ? VISAIMAGE
+                                                              : MASTERCARDIMAGE),
+                                                      SizedBox(
+                                                        width: 2.w,
+                                                      ),
+                                                      Text(_stripeController
+                                                          .activePaymentMethod
+                                                          .last4)
+                                                    ]),
+                                              )
                                             : const FittedBox(
                                                 fit: BoxFit.scaleDown,
                                                 child: Text(
-                                                  'ADD PAYMENT METHOD',
+                                                  'ADD PAY METHOD',
                                                   style: kRegularTS,
                                                   overflow: TextOverflow.fade,
                                                 ),
