@@ -32,8 +32,7 @@
 /build/
 android/app/build/
 lib/keys.dart
-assets/env/.env_prod
-assets/env/.env_dev
+
 
 # Web related
 lib/generated_plugin_registrant.dart
@@ -49,4 +48,5 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-.env
+.env.dev
+.env.production
