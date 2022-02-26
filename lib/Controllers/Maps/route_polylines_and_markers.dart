@@ -8,8 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Services/Net/net.dart';
+import 'package:nowly/Utils/env.dart';
 import 'package:nowly/Utils/logger.dart';
-import 'package:nowly/keys.dart';
 import 'package:sizer/sizer.dart';
 
 extension RoutePolyLinesAndMarkers on MapController {
@@ -106,7 +106,7 @@ extension RoutePolyLinesAndMarkers on MapController {
         queryParameters: {
           'origin': '${origin.latitude},${origin.longitude}',
           'destination': '${destination.latitude},${destination.longitude}',
-          'key': GetPlatform.isIOS ? IOS_MAPS_KEY : ANDROID_MAPS_KEY,
+          'key': GetPlatform.isIOS ? Env.iosMapsKey : Env.androidMapsKey,
           'mode': describeEnum(selectedTravelMode)
         });
 

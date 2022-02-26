@@ -13,8 +13,8 @@ import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Screens/Nav/legals_view.dart';
 import 'package:nowly/Screens/OnBoarding/user_registration_view.dart';
 import 'package:nowly/Services/service_exporter.dart';
+import 'package:nowly/Utils/env.dart';
 import 'package:nowly/Utils/logger.dart';
-import 'package:nowly/keys.dart';
 import 'package:nowly/root.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -330,7 +330,7 @@ class AuthController extends GetxController {
   void _openPDF(File file) => Get.to(() => LegalView(file: file));
 
   Future<void> initMixpanel() async {
-    mixpanel =
-        await Mixpanel.init(MIXPANEL_TOKEN, optOutTrackingDefault: false);
+    mixpanel = await Mixpanel.init(Env.mixPanelToken ?? '',
+        optOutTrackingDefault: false);
   }
 }
