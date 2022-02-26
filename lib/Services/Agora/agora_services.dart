@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:get/get_connect.dart';
 
+import '../../Utils/env.dart';
+
 class AgoraService extends GetConnect {
   generateAgoraToken(String channelName) async {
-    var authority = "http://18.118.101.152"; //Authority
+    var authority = Env.apiBaseUrl!; //Authority
     var path = '/xdiAgoraTokenGenerator/$channelName'; //PATH TO SERVICE
     var response = await httpClient.post(authority + path,
         body: json.encode({

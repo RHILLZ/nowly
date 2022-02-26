@@ -10,10 +10,12 @@ import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Routes/pages.dart';
 import 'package:sizer/sizer.dart';
 import 'Configs/configs.dart';
+import 'Utils/env.dart';
 import 'Utils/logger.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Env.init();
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_fcmBackgroundHandler);
   await GetStorage.init();
