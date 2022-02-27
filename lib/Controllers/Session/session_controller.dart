@@ -26,8 +26,10 @@ class SessionController extends GetxController {
 
   //SESSION PARMAS
   final _sessionMode = SessionModeModel(id: '', mode: '').obs;
-  final _sessionDurationAndCost =
-      SessionDurationAndCostModel(duration: '', cost: 0,).obs;
+  final _sessionDurationAndCost = SessionDurationAndCostModel(
+    duration: '',
+    cost: 0,
+  ).obs;
   final _sessionWorkOutType =
       WorkoutType(imagePath: '', type: '', headerData: []).obs;
   final _genderPref = ''.obs;
@@ -54,23 +56,11 @@ class SessionController extends GetxController {
       // Text('\$$_sessionFee'.split('.')[0]),
       );
 
-  buildBookingFee() {
-    final num _sessionFee = (sessionDurationAndCost.cost / 100);
-    final num _bookingFee = (_sessionFee * sessionDurationAndCost.bookingFee);
-    return ListTile(
-      contentPadding: const EdgeInsets.all(0),
-      title: const Text('Booking Fee:'),
-      trailing: Text('\$' + _bookingFee.toStringAsFixed(2)),
-    );
-  }
-
   buildSalesTax() {
     final num _sessionFee = (sessionDurationAndCost.cost / 100);
-    final num _bookingFee = (_sessionFee * sessionDurationAndCost.bookingFee);
-    final sb = _sessionFee + _bookingFee;
     final _city = Get.find<MapController>().city;
     final st = SessionDurationAndCostModel.salesTaxByLoc[_city] ?? 0.0;
-    final _salesTax = sb * st;
+    final _salesTax = _sessionFee * st;
     return ListTile(
       contentPadding: const EdgeInsets.all(0),
       title: const Text('Sales Tax :'),
@@ -80,12 +70,10 @@ class SessionController extends GetxController {
 
   buildTotalCost() {
     final num _sessionFee = (sessionDurationAndCost.cost / 100);
-    final num _bookingFee = (_sessionFee * sessionDurationAndCost.bookingFee);
-    final sb = _sessionFee + _bookingFee;
     final _city = Get.find<MapController>().city;
     final st = SessionDurationAndCostModel.salesTaxByLoc[_city] ?? 0.0;
-    final _salesTax = sb * st;
-    final _totalCost = _sessionFee + _bookingFee + _salesTax;
+    final _salesTax = _sessionFee * st;
+    final _totalCost = _sessionFee + _salesTax;
     return ListTile(
       contentPadding: const EdgeInsets.all(0),
       title: const Text(
@@ -101,11 +89,9 @@ class SessionController extends GetxController {
 
   bool applySalesTax() {
     final num _sessionFee = (sessionDurationAndCost.cost / 100);
-    final num _bookingFee = (_sessionFee * sessionDurationAndCost.bookingFee);
-    final sb = _sessionFee + _bookingFee;
     final _city = Get.find<MapController>().city;
     final st = SessionDurationAndCostModel.salesTaxByLoc[_city] ?? 0.0;
-    final _salesTax = sb * st;
+    final _salesTax = _sessionFee * st;
     return _salesTax != 0.0;
   }
 
@@ -275,12 +261,10 @@ class SessionController extends GetxController {
   createSessionReceipt(SessionModel session) async {
     final status = session.reportedIssue! ? 'Complete With ISSUE' : 'Completed';
     final num _sessionFee = (sessionDurationAndCost.cost / 100);
-    final num _bookingFee = (_sessionFee * sessionDurationAndCost.bookingFee);
-    final sb = _sessionFee + _bookingFee;
     final _city = Get.find<MapController>().city;
     final st = SessionDurationAndCostModel.salesTaxByLoc[_city] ?? 0.0;
-    final _salesTax = sb * st;
-    final _totalCost = _sessionFee + _bookingFee + _salesTax;
+    final _salesTax = _sessionFee * st;
+    final _totalCost = _sessionFee + _salesTax;
     final receipt = SessionReceiptModel(
       sessionID: session.sessionID,
       userID: session.userID,
@@ -292,7 +276,6 @@ class SessionController extends GetxController {
       paymentMethod: session.userPaymentMethodID,
       paidTo: session.trainerStripeID,
       sessionTimestamp: Timestamp.now(),
-      sessionBookingFee: '\$' + _bookingFee.toStringAsFixed(2),
       sessionSalesTax: '\$' + _salesTax.toStringAsFixed(2),
       sessionCharged: '\$' + _totalCost.toStringAsFixed(2),
       sessionMode: session.sessionMode,
@@ -313,12 +296,10 @@ class SessionController extends GetxController {
   skip(SessionModel session, context) async {
     final status = session.reportedIssue! ? 'Complete With ISSUE' : 'Completed';
     final num _sessionFee = (sessionDurationAndCost.cost / 100);
-    final num _bookingFee = (_sessionFee * sessionDurationAndCost.bookingFee);
-    final sb = _sessionFee + _bookingFee;
     final _city = Get.find<MapController>().city;
     final st = SessionDurationAndCostModel.salesTaxByLoc[_city] ?? 0.0;
-    final _salesTax = sb * st;
-    final _totalCost = _sessionFee + _bookingFee + _salesTax;
+    final _salesTax = _sessionFee * st;
+    final _totalCost = _sessionFee + _salesTax;
     final receipt = SessionReceiptModel(
       sessionID: session.sessionID,
       userID: session.userID,
@@ -330,7 +311,6 @@ class SessionController extends GetxController {
       paymentMethod: session.userPaymentMethodID,
       paidTo: session.trainerStripeID,
       sessionTimestamp: Timestamp.now(),
-      sessionBookingFee: '\$' + _bookingFee.toStringAsFixed(2),
       sessionSalesTax: '\$' + _salesTax.toStringAsFixed(2),
       sessionCharged: '\$' + _totalCost.toStringAsFixed(2),
       sessionMode: session.sessionMode,

@@ -37,12 +37,9 @@ class SessionConfirmationScreen2 extends StatelessWidget {
         _trainerInPersonSessionController.selectedLength.value;
     final _city = Get.find<MapController>().city;
     final _sessionFee = (_controller.sessionDurationAndCost.cost / 100);
-    final _bookingFee =
-        (_sessionFee * _controller.sessionDurationAndCost.bookingFee);
-    final sb = _sessionFee + _bookingFee;
     final st = SessionDurationAndCostModel.salesTaxByLoc[_city] ?? 0.0;
-    final _salesTax = sb * st;
-    final _totalCost = _sessionFee + _bookingFee + _salesTax;
+    final _salesTax = _sessionFee * st;
+    final _totalCost = _sessionFee + _salesTax;
     final _totalCharge = (_totalCost * 100).toString().split('.')[0];
 
     _controller.context = context;
@@ -214,7 +211,7 @@ class SessionConfirmationScreen2 extends StatelessWidget {
                           ),
                         ),
                         _controller.buildSessionFee(),
-                        _controller.buildBookingFee(),
+
                         Visibility(
                             visible: _controller.applySalesTax(),
                             child: _controller.buildSalesTax()),
