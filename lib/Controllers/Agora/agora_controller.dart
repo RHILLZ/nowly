@@ -10,9 +10,9 @@ import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Screens/Sessions/session_complete_screen.dart';
 import 'package:nowly/Screens/Sessions/virtual_session_view.dart';
 import 'package:nowly/Services/service_exporter.dart';
+import 'package:nowly/Utils/env.dart';
 import 'package:nowly/Utils/logger.dart';
 import 'package:nowly/Widgets/Dialogs/dialogs.dart';
-import 'package:nowly/keys.dart';
 import 'package:nowly/root.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sizer/sizer.dart';
@@ -90,7 +90,7 @@ class AgoraController extends GetxController {
     // retrieve permissions
     await [Permission.microphone, Permission.camera].request();
     //create the engine
-    _engine = await RtcEngine.create(AGORA_ID);
+    _engine = await RtcEngine.create(Env.agoraId!);
     await _engine.enableVideo();
     AppLogger.i('CREATED ENGINE');
     _engine.setEventHandler(

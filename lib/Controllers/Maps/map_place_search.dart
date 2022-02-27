@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Services/Net/net.dart';
+import 'package:nowly/Utils/env.dart';
 import 'package:nowly/Utils/logger.dart';
 import 'package:nowly/keys.dart';
 import '../controller_exporter.dart';
@@ -23,7 +24,7 @@ extension SearchPlaces on MapController {
         queryParameters: {
           'input': query,
           'types': '(cities)',
-          'key': GetPlatform.isIOS ? IOS_MAPS_KEY : ANDROID_MAPS_KEY
+          'key': GetPlatform.isIOS ? Env.iosMapsKey : Env.androidMapsKey
         });
     final net = Net.init('', uri: uri);
     net.onComplete = (http.Response response) {
@@ -52,7 +53,7 @@ extension SearchPlaces on MapController {
         path: '/maps/api/place/details/json',
         queryParameters: {
           'place_id': place.placeId,
-          'key': GetPlatform.isIOS ? IOS_MAPS_KEY : ANDROID_MAPS_KEY
+          'key': GetPlatform.isIOS ? Env.iosMapsKey : Env.androidMapsKey
         });
     final net = Net.init('', uri: uri);
     net.onComplete = (http.Response response) {
