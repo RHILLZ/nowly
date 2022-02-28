@@ -6,7 +6,6 @@ import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Services/Net/net.dart';
 import 'package:nowly/Utils/env.dart';
 import 'package:nowly/Utils/logger.dart';
-import 'package:nowly/keys.dart';
 import '../controller_exporter.dart';
 
 extension SearchPlaces on MapController {
