@@ -5,7 +5,7 @@ class Env {
     await dotenv.load(fileName: '.env');
     assert(dotenv.env.containsKey("ENV"));
     final envName = dotenv.env['ENV'];
-    await dotenv.load(fileName: 'assets/env/.env.$envName');
+    await dotenv.load(fileName: '.env.$envName');
 
     assert(dotenv.env.containsKey("ENVIRONMENT_NAME"));
     assert(dotenv.env.containsKey("API_BASE_URL"));

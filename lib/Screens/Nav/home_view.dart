@@ -21,7 +21,7 @@ class UserHomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AppLogger.i('Home Screen');
+    AppLogger.i('USER: ${_userController.user.email}');
 
     return Scaffold(
       body: SafeArea(
