@@ -13,6 +13,10 @@ class Env {
 
   static String? get environmentName => dotenv.env['ENVIRONMENT_NAME'];
   static String? get apiBaseUrl => dotenv.env['API_BASE_URL'];
+  static String? get agoraId => dotenv.env['AGORA_ID'];
+  static String? get androidMapsKey => dotenv.env['ANDROID_MAPS_KEY'];
+  static String? get iosMapsKey => dotenv.env['IOS_MAPS_KEY'];
+  static String? get mixPanelToken => dotenv.env['MIXPANEL_TOKEN'];
   static bool get isDebug => dotenv.env['DEBUG'] == 'true';
   static String? get agoraId => dotenv.env['AGORA_ID'];
   static String? get androidMapsKey => dotenv.env['ANDROID_MAPS_KEY'];
