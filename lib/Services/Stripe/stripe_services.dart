@@ -11,7 +11,7 @@ class StripeServices extends GetConnect {
   Future createStripeCustomer(UserModel user) async {
     String url = "$baseURL/createStripeCustomerAccount";
     final fullName = '${user.firstName} ${user.lastName}';
-
+    AppLogger.i("URL: $baseURL");
     final req = await httpClient.post(url,
         body: jsonEncode({'name': fullName, 'email': user.email}));
     AppLogger.i(req.body);
@@ -20,7 +20,7 @@ class StripeServices extends GetConnect {
   }
 
   Future createStripePaymentMethod(CreditCard card) async {
-    String url = "http://18.118.101.152/createStripePaymentMethod";
+    String url = "$baseURL/createStripePaymentMethod";
 
     final req = await httpClient.post(url,
         body: jsonEncode({

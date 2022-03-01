@@ -54,7 +54,7 @@ class NowlyApp extends StatelessWidget {
         title: 'Nowly',
         theme: Get.find<ThemeController>().getLightheme(),
         darkTheme: Get.find<ThemeController>().getDarkTheme(),
-        debugShowCheckedModeBanner: false,
+        debugShowCheckedModeBanner: Env.isDebug,
         getPages: Pages.routes,
         initialRoute:
             _authController.firebaseUser != null ? Pages.ROOT : Pages.INITIAL,
