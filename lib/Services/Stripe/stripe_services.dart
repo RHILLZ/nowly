@@ -20,7 +20,7 @@ class StripeServices extends GetConnect {
   }
 
   Future createStripePaymentMethod(CreditCard card) async {
-    String url = "http://18.118.101.152/createStripePaymentMethod";
+    String url = "$baseURL/createStripePaymentMethod";
 
     final req = await httpClient.post(url,
         body: jsonEncode({
