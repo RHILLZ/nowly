@@ -62,6 +62,7 @@ class StartScreenView extends GetView<AuthController> {
                   ConstrainedBox(
                     constraints: BoxConstraints(maxWidth: 80.w),
                     child: CarouselSlider(
+                      carouselController: _controller,
                       items: _texts
                           .map((e) => Text(e,
                               textAlign: TextAlign.center, style: kRegularTS))

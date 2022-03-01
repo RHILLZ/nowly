@@ -11,7 +11,7 @@ class StripeServices extends GetConnect {
   Future createStripeCustomer(UserModel user) async {
     String url = "$baseURL/createStripeCustomerAccount";
     final fullName = '${user.firstName} ${user.lastName}';
-
+    AppLogger.i("URL: $baseURL");
     final req = await httpClient.post(url,
         body: jsonEncode({'name': fullName, 'email': user.email}));
     AppLogger.i(req.body);
