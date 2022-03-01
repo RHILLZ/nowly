@@ -72,7 +72,7 @@ class AuthView extends GetView<AuthController> {
                 child: AuthButton(
                   color: Get.isDarkMode ? Colors.white : kSecondaryColor,
                   onPressed: () {
-                    controller.agreedToTerms
+                    onboardSelection != "newAccount" || controller.agreedToTerms
                         ? GoogleAuth().signInWithGoogle()
                         : controller.termsWarningSnackbar();
                   },
@@ -85,7 +85,7 @@ class AuthView extends GetView<AuthController> {
                 child: AuthButton(
                   color: Get.isDarkMode ? Colors.white : kSecondaryColor,
                   onPressed: () {
-                    controller.agreedToTerms
+                    onboardSelection != "newAccount" || controller.agreedToTerms
                         ? AppleAuth().signInWithApple()
                         : controller.termsWarningSnackbar();
                   },
