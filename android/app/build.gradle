@@ -1,24 +1,24 @@
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader('UTF-8') { reader ->
-        localProperties.load(reader)
-    }
+  localPropertiesFile.withReader('UTF-8') { reader ->
+    localProperties.load(reader)
+  }
 }
 
 def flutterRoot = localProperties.getProperty('flutter.sdk')
 if (flutterRoot == null) {
-    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+  throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
 }
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
+  flutterVersionCode = '1'
 }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
+  flutterVersionName = '1.0'
 }
 
 apply plugin: 'com.android.application'
@@ -29,62 +29,110 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
 if (keystorePropertiesFile.exists()) {
-       keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+  keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
- 
+def debugKeystoreProperties = new Properties()
+def debugKeystorePropertiesFile = rootProject.file('debugkey.properties')
+if (debugKeystorePropertiesFile.exists()) {
+  debugKeystoreProperties.load(new FileInputStream(debugKeystorePropertiesFile))
+}
 
+def releaseKeystoreProperties = new Properties()
+def releaseKeystorePropertiesFile = rootProject.file('releasekey.properties')
+if (releaseKeystorePropertiesFile.exists()) {
+  releaseKeystoreProperties.load(new FileInputStream(releaseKeystorePropertiesFile))
+}
 
 android {
-    compileSdkVersion 31
+  compileSdkVersion 31
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  kotlinOptions {
+    jvmTarget = '1.8'
+  }
+
+  sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+  }
+
+  defaultConfig {
+    applicationId "com.xdi.nowly"
+    minSdkVersion 21
+    targetSdkVersion 30
+    versionCode flutterVersionCode.toInteger()
+    versionName flutterVersionName
+    multiDexEnabled true
+  }
+
+  signingConfigs {
+    if (releaseKeystorePropertiesFile.exists()) {
+      release {
+        keyAlias releaseKeystoreProperties['keyAlias']
+        keyPassword releaseKeystoreProperties['keyPassword']
+        storeFile file(releaseKeystoreProperties['storeFile'])
+        storePassword releaseKeystoreProperties['storePassword']
+      }
     }
-
-    kotlinOptions {
-        jvmTarget = '1.8'
+    
+    debug {
+      keyAlias debugKeystoreProperties['keyAlias']
+      keyPassword debugKeystoreProperties['keyPassword']
+      storeFile file(debugKeystoreProperties['storeFile'])
+      storePassword debugKeystoreProperties['storePassword']
     }
+  }
 
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
+  buildTypes {
+    buildTypes {  
+      if (releaseKeystorePropertiesFile.exists()) {
+        release {
+          signingConfig signingConfigs.release
+        }
+      }
+
+      profile {
+        signingConfig signingConfigs.debug
+      }
+      
+      debug {
+        signingConfig signingConfigs.debug
+      }
     }
+  }
 
-    defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.xdi.nowly"
-        minSdkVersion 21
-        targetSdkVersion 30
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
-        multiDexEnabled true
+  flavorDimensions "app"
+  
+  productFlavors {
+    dev {
+      flavorDimensions "app"
+      resValue "string", "app_name", "Dev Nowly"
+      applicationIdSuffix '.dev'
     }
-
-   signingConfigs {
-       release {
-           keyAlias keystoreProperties['keyAlias']
-           keyPassword keystoreProperties['keyPassword']
-           storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
-           storePassword keystoreProperties['storePassword']
-       }
-   }
-   buildTypes {
-       release {
-           signingConfig signingConfigs.release
-       }
-   }
-
+    qa {
+      flavorDimensions "app"
+      resValue "string", "app_name", "Test Nowly"
+      applicationIdSuffix '.test'
+    }
+    prod {
+      flavorDimensions "app"
+      resValue "string", "app_name", "Nowly"
+    }
+  }
 }
 
 flutter {
-    source '../..'
+  source '../..'
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation platform('com.google.firebase:firebase-bom:29.0.0')
-    implementation 'com.google.firebase:firebase-analytics-ktx'
-    implementation 'com.android.support:multidex:2.0.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+  implementation platform('com.google.firebase:firebase-bom:29.0.0')
+  implementation 'com.google.firebase:firebase-analytics-ktx'
+  implementation 'com.android.support:multidex:2.0.1'
+  implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
 }
