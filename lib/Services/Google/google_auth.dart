@@ -1,5 +1,3 @@
-// ignore_for_file: omit_local_variable_types
-
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,9 +16,9 @@ class GoogleAuth {
   /// logs in the user by Google Signin service
   Future<void> signInWithGoogle() async {
     try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final googleUser = await GoogleSignIn().signIn();
 
-      final GoogleSignInAuthentication googleAuth =
+      final googleAuth =
           await googleUser!.authentication;
 
       final credential = GoogleAuthProvider.credential(

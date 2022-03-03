@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'dart:async';
 import 'dart:io';
 
@@ -70,7 +68,9 @@ class AuthController extends GetxController {
       final id = (_firebaseUser.value?.uid)??'';
         
       if(id.isNotEmpty) {
-        final _user = await FirebaseFutures().getUserInFirestoreInstance(id);
+        final _user = 
+          await FirebaseFutures().getUserInFirestoreInstance(id);
+
         if(!_user.exists){
           unawaited(Get.off(() {
               return UserRegistrationView();
@@ -85,7 +85,7 @@ class AuthController extends GetxController {
       }
     } on FirebaseAuthException catch (e) {
       Get.snackbar('Problem signing in user', e.message!,
-          snackPosition: SnackPosition.BOTTOM);
+          snackPosition: SnackPosition.BOTTOM,);
     } catch (exception) {
       print(exception.toString());
     }
