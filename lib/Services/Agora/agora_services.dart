@@ -6,7 +6,7 @@ import '../../Utils/env.dart';
 
 class AgoraService extends GetConnect {
   generateAgoraToken(String channelName) async {
-    var authority = Env.apiBaseUrl!; //Authority
+    var authority = Env.apiBaseUrl; //Authority
     var path = '/xdiAgoraTokenGenerator/$channelName'; //PATH TO SERVICE
     var response = await httpClient.post(authority + path,
         body: json.encode({
