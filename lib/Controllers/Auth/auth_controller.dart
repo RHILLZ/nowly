@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +64,17 @@ class AuthController extends GetxController {
   void login(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-      Get.to(() => const Root());
+      
+      final String id = (_firebaseUser.value?.uid)??"";
+        
+      if(id.isNotEmpty) {
+        DocumentSnapshot _user = await FirebaseFutures().getUserInFirestoreInstance(id);
+        if(!_user.exists){
+          Get.offAll(() => UserRegistrationView());
+        }
+      } else {
+        Get.to(() => const Root());
+      }
     } on FirebaseAuthException catch (e) {
       Get.snackbar('Problem signing in user', e.message!,
           snackPosition: SnackPosition.BOTTOM);
