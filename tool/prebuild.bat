@@ -6,7 +6,3 @@ del android\app\build
 
 flutter clean
 flutter pub get
-
-cd ios
-pod update
-cd..

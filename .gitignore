@@ -50,6 +50,8 @@ app.*.map.json
 /android/app/release
 
 .env.dev
+.env.test
+.env.prod
 .env.production
 
 # Firebase Related

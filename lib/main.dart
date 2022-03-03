@@ -9,6 +9,7 @@ import 'package:nowly/Bindings/binding_exporter.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Routes/pages.dart';
 import 'package:sizer/sizer.dart';
+
 import 'Configs/configs.dart';
 import 'Utils/env.dart';
 import 'Utils/logger.dart';
@@ -54,7 +55,6 @@ class NowlyApp extends StatelessWidget {
         title: 'Nowly',
         theme: Get.find<ThemeController>().getLightheme(),
         darkTheme: Get.find<ThemeController>().getDarkTheme(),
-        debugShowCheckedModeBanner: Env.isDebug,
         getPages: Pages.routes,
         initialRoute:
             _authController.firebaseUser != null ? Pages.ROOT : Pages.INITIAL,
