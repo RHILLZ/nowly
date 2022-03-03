@@ -4,7 +4,7 @@ import 'package:nowly/Utils/env.dart';
 import 'package:nowly/Utils/logger.dart';
 
 class SessionServices extends GetConnect {
-  final String baseURL = Env.apiBaseUrl!;
+  final String baseURL = Env.apiBaseUrl;
   Future<bool> findVirtualTrainer(
       String uid, Map<String, dynamic> sessionData) async {
     bool _is200 = false;

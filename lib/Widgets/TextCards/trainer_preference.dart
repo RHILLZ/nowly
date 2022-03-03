@@ -19,9 +19,7 @@ class TrainerPreference extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: Padding(
             padding: EdgeInsets.only(top: 25, bottom: 10),
-            child: Text(
-              'TRAINER PREFERENCE',
-            ),
+            child: Text('TRAINER PREFERENCE'),
           ),
         ),
         FixedWidthContainer(

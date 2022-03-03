@@ -90,7 +90,7 @@ class AgoraController extends GetxController {
     // retrieve permissions
     await [Permission.microphone, Permission.camera].request();
     //create the engine
-    _engine = await RtcEngine.create(Env.agoraId!);
+    _engine = await RtcEngine.create(Env.agoraId);
     await _engine.enableVideo();
     AppLogger.i('CREATED ENGINE');
     _engine.setEventHandler(
