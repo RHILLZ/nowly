@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "955459393616",
+    "project_id": "nowly-test",
+    "storage_bucket": "nowly-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:955459393616:android:c91c0046d4c20ac693d955",
+        "android_client_info": {
+          "package_name": "com.xdi.nowly.test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "955459393616-vvv6coa8stg7u27mpqbhub12rvb9osaf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.xdi.nowly.test",
+            "certificate_hash": "e6ba0c71c64a219aa398950c35c2b3d1ae85cd30"
+          }
+        },
+        {
+          "client_id": "955459393616-639i1kifnrg04e42mmctjf4moom0c492.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkbjKyhB5a4lIgYwIPj5U-5ajphomZCI8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "955459393616-639i1kifnrg04e42mmctjf4moom0c492.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

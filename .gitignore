@@ -8,6 +8,7 @@
 .buildlog/
 .history
 .svn/
+.vscode/
 
 # IntelliJ related
 *.iml
@@ -49,4 +50,10 @@ app.*.map.json
 /android/app/release
 
 .env.dev
+.env.test
+.env.prod
 .env.production
+
+# Firebase Related
+**/android/app/src/prod/google-services.json
+**/ios/config/prod/GoogleService-Info.plist

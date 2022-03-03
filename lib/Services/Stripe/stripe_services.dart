@@ -7,7 +7,7 @@ import 'package:nowly/Utils/logger.dart';
 import 'package:stripe_payment/stripe_payment.dart';
 
 class StripeServices extends GetConnect {
-  final String baseURL = Env.apiBaseUrl!;
+  final String baseURL = Env.apiBaseUrl;
   Future createStripeCustomer(UserModel user) async {
     String url = "$baseURL/createStripeCustomerAccount";
     final fullName = '${user.firstName} ${user.lastName}';

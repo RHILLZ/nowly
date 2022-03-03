@@ -1,21 +1,84 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-class Env {
-  static init() async {
-    await dotenv.load(fileName: '.env');
-    assert(dotenv.env.containsKey("ENV"));
-    final envName = dotenv.env['ENV'];
-    await dotenv.load(fileName: '.env.$envName');
+/// The available flavors for the application.
+enum Flavor {
+  /// The identifier for the development flavor.
+  dev,
 
-    assert(dotenv.env.containsKey("ENVIRONMENT_NAME"));
-    assert(dotenv.env.containsKey("API_BASE_URL"));
+  /// The identifier for the test flavor.
+  test,
+
+  /// The identifier for the production flavor.
+  prod,
+}
+
+/// The available build modes for the application.
+enum BuildMode {
+  /// The identifier for the debug build.
+  debug,
+
+  /// The identifier for the profile build.
+  profile,
+
+  /// The identifier for the release build.
+  release,
+}
+
+/// {@template Env}
+/// A class for accessing environment variables.
+/// {@endtemplate}
+class Env {
+  /// {@macro Env}
+  const Env._();
+
+  /// Loads the appropriate environment variables based on the current app
+  /// flavor.
+  static init() async {
+    const envName = String.fromEnvironment('ENV');
+    await dotenv.load(fileName: 'env/.env.$envName');
   }
 
-  static String? get environmentName => dotenv.env['ENVIRONMENT_NAME'];
-  static String? get apiBaseUrl => dotenv.env['API_BASE_URL'];
-  static String? get agoraId => dotenv.env['AGORA_ID'];
-  static String? get androidMapsKey => dotenv.env['ANDROID_MAPS_KEY'];
-  static String? get iosMapsKey => dotenv.env['IOS_MAPS_KEY'];
+  /// Returns the flavor used to run the app.
+  static Flavor get flavor {
+    const flavorStr = String.fromEnvironment('ENV');
+
+    switch (flavorStr) {
+      case 'dev':
+        return Flavor.dev;
+      case 'test':
+        return Flavor.test;
+      case 'prod':
+        return Flavor.prod;
+    }
+
+    throw UnsupportedError('The flavor $flavorStr is not supported');
+  }
+
+  /// Returns the build mode used to run the app.
+  static BuildMode get buildMode => kDebugMode
+      ? BuildMode.debug
+      : kProfileMode
+          ? BuildMode.profile
+          : BuildMode.release;
+
+  static String get apiBaseUrl => _nonNullEnvironment('API_BASE_URL');
+  static String get agoraId => _nonNullEnvironment('AGORA_ID');
+  static String get androidMapsKey => _nonNullEnvironment('ANDROID_MAPS_KEY');
+  static String get iosMapsKey => _nonNullEnvironment('IOS_MAPS_KEY');
+
   static String? get mixPanelToken => dotenv.env['MIXPANEL_TOKEN'];
-  static bool get isDebug => dotenv.env['DEBUG'] == 'true';
+
+  /// Ensures that an environment variable returns value. Otherwise, a
+  /// [UnimplementedError] will be thrown.
+  static String _nonNullEnvironment(String key) {
+    final value = dotenv.env[key];
+
+    if (value == null) {
+      throw UnimplementedError(
+          'Environment variable $key does not have a value');
+    }
+
+    return value;
+  }
 }
