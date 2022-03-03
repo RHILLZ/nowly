@@ -93,6 +93,11 @@ class FirebaseFutures {
       .get()
       .then((doc) => UserModel.fromDocumentSnapshot(doc.data(), doc.id));
 
+  Future<DocumentSnapshot> getUserInFirestoreInstance(String uid) async => await _firestore
+      .collection(USERSCOLLECTION)
+      .doc(uid)
+      .get();
+
   Future<bool> setUserTokenId(String uid, String tokenId) async {
     bool _isSuccessful = false;
     try {
