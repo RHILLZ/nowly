@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Screens/OnBoarding/user_registration_view.dart';
-import 'package:nowly/Utils/logger.dart';
 import 'package:nowly/root.dart';
 
 class GoogleAuth {
@@ -21,8 +20,6 @@ class GoogleAuth {
       );
       UserCredential authUser =
           await authController.auth.signInWithCredential(credential);
-
-      AppLogger.i('user in root: ${authController.firebaseUser.uid}');
 
       authUser.additionalUserInfo!.isNewUser
           ? Get.off(UserRegistrationView())

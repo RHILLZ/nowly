@@ -70,7 +70,7 @@ class AuthController extends GetxController {
       if(id.isNotEmpty) {
         DocumentSnapshot _user = await FirebaseFutures().getUserInFirestoreInstance(id);
         if(!_user.exists){
-          Get.offAll(() => UserRegistrationView());
+          Get.off(() => UserRegistrationView());
         }
       } else {
         Get.to(() => const Root());
