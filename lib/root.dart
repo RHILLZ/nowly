@@ -11,6 +11,6 @@ class Root extends GetWidget<AuthController> {
   @override
   Widget build(BuildContext context) {
     final _user = Get.find<AuthController>().firebaseUser;
-    return _user != null ? BaseScreen() : const OnBoardingView();
+    return _user != null ? BaseScreen() : OnBoardingView();
   }
 }

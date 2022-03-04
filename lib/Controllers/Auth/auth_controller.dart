@@ -10,6 +10,9 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 import 'package:nowly/Configs/configs.dart';
+import 'package:nowly/Controllers/OnBoarding/preferences_controller.dart';
+import 'package:nowly/Controllers/OnBoarding/prefs_controller.dart';
+import 'package:nowly/Screens/Auth/welcome_view.dart';
 import 'package:nowly/Screens/Nav/legals_view.dart';
 import 'package:nowly/Screens/OnBoarding/user_registration_view.dart';
 import 'package:nowly/Services/service_exporter.dart';
@@ -18,30 +21,48 @@ import 'package:nowly/Utils/logger.dart';
 import 'package:nowly/root.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 class AuthController extends GetxController {
+  final PreferencesController _prefs = Get.put(PreferencesController());
+  // final SharedPreferences _prefs = Get.find<SharedPreferences>();
+  // final PreferencesController _prefs = Get.put(PreferencesController());
+  // final PrefsController _prefsController = Get.put(PrefsController());
+  // late SharedPreferences _prefs;
+  // final PreferencesController _prefs = Get.put(PreferencesController());
   final FirebaseAuth _auth = FirebaseAuth.instance;
   late Mixpanel mixpanel;
   final Rxn<User> _firebaseUser = Rxn<User>();
   final RxString _email = RxString('');
   final RxString _password = RxString('');
   final RxString _confirmed = RxString('');
-  final RxBool _agreedToTerms =
-      RxBool(GetStorage().read('agreeToTerms') ?? false);
+  late RxBool? _agreedToTerms;
+    // =  RxBool(GetStorage().read('agreeToTerms'));
 
   get firebaseUser => _firebaseUser.value;
   get auth => _auth;
-  get agreedToTerms => _agreedToTerms.value;
+  get agreedToTerms => _agreedToTerms?.value;
   get mix => mixpanel;
 
-  set agreedToTerms(value) => _agreedToTerms.value = value;
+  /// 
+  set agreedToTerms(value) {
+    _agreedToTerms?.value = value;
+    _prefs.setBoolPref('agreeToTerms', value);
+  }
 
   @override
   void onInit() {
+    init();
     _firebaseUser.bindStream(_auth.authStateChanges());
+    // _prefs = _prefsController.prefs;
     initMixpanel();
     super.onInit();
+  }
+
+  /// Populate variables that is stored in memory
+  void init() {
+    _agreedToTerms = RxBool(_prefs.getBoolPref('agreeToTerms') ?? false);
   }
 
   void createAccount(String email, String password) async {
@@ -136,7 +157,8 @@ class AuthController extends GetxController {
   }
 
   emailOption(context) {
-    final onboardSelection = GetStorage().read('onboardSelection');
+    final onboardSelection = _prefs.getStringPref('onboardSelection');
+    // final onboardSelection = GetStorage().read('onboardSelection');
     Get.bottomSheet(
         Stack(
             clipBehavior: Clip.none,
@@ -255,11 +277,11 @@ class AuthController extends GetxController {
                                               ..onTap =
                                                   () => loadDoc('nowlyPA.pdf'))
                                       ])),
-                              value: _agreedToTerms.value,
-                              selected: _agreedToTerms.value,
-                              onChanged: (v) {
-                                _agreedToTerms.toggle();
-                                GetStorage().write('agreeToTerms', v);
+                              value: _agreedToTerms?.value,
+                              selected: _agreedToTerms?.value ?? false,
+                              onChanged: (bool? v) async {
+                                _agreedToTerms?.toggle();
+                                await _prefs.setBoolPref('agreeToTerms', v??false);
                               }))),
                       SizedBox(
                         height: 2.h,
@@ -281,7 +303,7 @@ class AuthController extends GetxController {
                           onPressed: () => {
                             GetUtils.isEmail(_email.value)
                                 ? onboardSelection == 'newAccount'
-                                    ? _agreedToTerms.value
+                                    ? _agreedToTerms?.value ?? false
                                         ? createAccount(_email.value.trim(),
                                             _password.value.trim())
                                         : termsWarningSnackbar()

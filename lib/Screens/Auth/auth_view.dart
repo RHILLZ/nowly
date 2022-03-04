@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:nowly/Configs/Logo/logos.dart';
 import 'package:nowly/Configs/configs.dart';
+import 'package:nowly/Controllers/OnBoarding/preferences_controller.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Services/Apple/apple_auth.dart';
 import 'package:nowly/Services/Google/google_auth.dart';
@@ -13,10 +14,12 @@ import 'package:sizer/sizer.dart';
 class AuthView extends GetView<AuthController> {
   AuthView({Key? key}) : super(key: key);
   final AuthController authController = Get.find<AuthController>();
-  final onboardSelection = GetStorage().read('onboardSelection');
+  final PreferencesController _preferencesController = Get.find<PreferencesController>();
+  // final onboardSelection = GetStorage().read('onboardSelection');
 
   @override
   Widget build(BuildContext context) {
+    final onboardSelection = _preferencesController.getStringPref('onboardSelection')??"newAccount";
     return Scaffold(
       body: DefaultTextStyle(
         style: const TextStyle(color: Colors.white),

@@ -6,8 +6,10 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:nowly/Bindings/binding_exporter.dart';
+import 'package:nowly/Controllers/OnBoarding/preferences_controller.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Routes/pages.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 import 'Configs/configs.dart';
