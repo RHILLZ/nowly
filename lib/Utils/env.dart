@@ -34,7 +34,7 @@ class Env {
 
   /// Loads the appropriate environment variables based on the current app
   /// flavor.
-  static init() async {
+  static Future<void> init() async {
     const envName = String.fromEnvironment('ENV');
     await dotenv.load(fileName: 'env/.env.$envName');
   }
