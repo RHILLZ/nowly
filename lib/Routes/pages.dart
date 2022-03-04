@@ -49,7 +49,7 @@ class Pages {
         name: _Paths.ROOT, page: () => const Root(), binding: InitialBinding()),
     GetPage(
         name: _Paths.ONBOARDING_SCREEN,
-        page: () => const OnBoardingView(),
+        page: () => OnBoardingView(),
         binding: InitialBinding()),
     GetPage(
         name: _Paths.BASE,

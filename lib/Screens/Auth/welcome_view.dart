@@ -4,15 +4,23 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:nowly/Configs/Logo/logos.dart';
 import 'package:nowly/Configs/configs.dart';
+import 'package:nowly/Controllers/Auth/preferences_controller.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'auth_view.dart';
 
-class OnBoardingView extends StatelessWidget {
-  const OnBoardingView({Key? key}) : super(key: key);
+class OnBoardingView extends StatelessWidget{
+  OnBoardingView({Key? key}) : super(key: key);
+  // final _controller = Get.find<PreferencesController>();
+  final PreferencesController _preferences = Get.put(PreferencesController());
+  // SharedPreferences _prefs = Get.find<SharedPreferences>();
 
   @override
   Widget build(BuildContext context) {
+    // _prefs.value = _preferences.prefs;
+    // SharedPreferences _prefs = _controller.prefs;
+    SharedPreferences? _prefs = _preferences.prefs;
     return Scaffold(
       body: DefaultTextStyle(
         style: const TextStyle(color: Colors.white),
@@ -83,7 +91,8 @@ class OnBoardingView extends StatelessWidget {
                   showOutline: true,
                   title: 'Create Account',
                   onPressed: () {
-                    GetStorage().write('onboardSelection', 'newAccount');
+                    _prefs?.setString('onboardSelection', 'newAccount');
+                    // GetStorage().write('onboardSelection', 'newAccount');
                     Get.to(() => AuthView());
                   },
                   textStyle: const TextStyle(color: Colors.black),
@@ -92,9 +101,10 @@ class OnBoardingView extends StatelessWidget {
                 const SizedBox(height: 10),
                 RectButton(
                   fillColor: Get.isDarkMode ? null : kSecondaryColor,
-                  onPressed: () {
+                  onPressed: () async{
                     // Get.toNamed(SignUpScreen.routeName);
-                    GetStorage().write('onboardSelection', 'signin');
+                    _prefs?.setString('onboardSelection', 'signin');
+                    // GetStorage().write('onboardSelection', 'signin');
                     Get.to(() => AuthView());
                   },
                   title: '                 Sign In                 ',
