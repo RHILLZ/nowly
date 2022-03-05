@@ -7,7 +7,7 @@ class InitialBinding implements Bindings {
   @override
   void dependencies() {
     Get.put(ThemeController());
-    Get.put(AuthController());
     Get.put(PreferencesController());
+    Get.put(AuthController());
   }
 }

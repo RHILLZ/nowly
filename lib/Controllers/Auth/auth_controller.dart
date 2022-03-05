@@ -79,19 +79,19 @@ class AuthController extends GetxController {
       
       final id = (_firebaseUser.value?.uid)??'';
         
-      if(id.isNotEmpty) {
-        final _user = 
-          await FirebaseFutures().getUserInFirestoreInstance(id);
+      final _user = 
+        await FirebaseFutures().getUserInFirestoreInstance(id);
 
-        if(!_user.exists){
-          unawaited(Get.off(() {
-              return UserRegistrationView();
-            }),
-          );
-        }
+      if(!_user.exists){
+        await _preferences.prefs?.setBool('register', false);
+        unawaited(Get.off(() {
+            return UserRegistrationView();
+          }),
+        );
       } else {
+        await _preferences.prefs?.setBool('register', true);
         unawaited(Get.to(() {
-            return const Root();
+          return const Root();
           }),
         );
       }
@@ -151,7 +151,8 @@ class AuthController extends GetxController {
     // final onboardSelection = GetStorage().read('onboardSelection');
     // final onboardSelection = _pref.getBool('onboardSelection');
     // final onboardSelection = _preferences.prefs.getBool('onboardSelection');
-    final onboardSelection = _prefs.value?.getBool('onboardSelection') ?? false;
+    _prefs.value = _preferences.prefs;
+    final onboardSelection = _prefs.value?.getString('onboardSelection');
     Get.bottomSheet(
         Stack(
             clipBehavior: Clip.none,

@@ -8,7 +8,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:nowly/Bindings/binding_exporter.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Routes/pages.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 import 'Configs/configs.dart';
@@ -21,8 +20,8 @@ void main() async {
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_fcmBackgroundHandler);
   await GetStorage.init();
-  final _pref = await SharedPreferences.getInstance();
-  Get.put(_pref);
+  // final _pref = await SharedPreferences.getInstance();
+  // Get.put(_pref);
   InitialBinding().dependencies();
   AwesomeNotifications()
       .initialize('resource://drawable/res_notification_app_icon.png', [
