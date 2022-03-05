@@ -6,7 +6,6 @@ class PreferencesController extends GetxController {
 
   @override
   Future<void> onInit() async {
-    // TODO: implement onInit
     _prefs.value = await SharedPreferences.getInstance();
     super.onInit();
   }

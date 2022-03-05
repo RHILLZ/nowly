@@ -10,7 +10,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 import 'package:nowly/Configs/configs.dart';
-import 'package:nowly/Controllers/Auth/preferences_controller.dart';
+import 'package:nowly/Controllers/shared_preferences/preferences_controller.dart';
 import 'package:nowly/Screens/Nav/legals_view.dart';
 import 'package:nowly/Screens/OnBoarding/user_registration_view.dart';
 import 'package:nowly/Services/service_exporter.dart';
@@ -24,8 +24,6 @@ import 'package:sizer/sizer.dart';
 
 class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  // final SharedPreferences _pref = Get.find<SharedPreferences>();
-  // final PreferencesController _preferences = Get.find<PreferencesController>();
   final PreferencesController _preferences = Get.put(PreferencesController());
   final _prefs = Rxn<SharedPreferences>();
 
@@ -36,7 +34,6 @@ class AuthController extends GetxController {
   final RxString _password = RxString('');
   final RxString _confirmed = RxString('');
   late RxBool _agreedToTerms;
-      // RxBool(GetStorage().read('agreeToTerms') ?? false);
 
   get firebaseUser => _firebaseUser.value;
   get auth => _auth;
@@ -48,8 +45,6 @@ class AuthController extends GetxController {
   @override
   void onInit() {
     _prefs.value = _preferences.prefs;
-    // _agreedToTerms = RxBool(_pref.getBool('agreeToTerms') ?? false);
-    // _agreedToTerms = RxBool(_preferences.prefs.getBool('agreeToTerms') ?? false);
     _agreedToTerms = RxBool(_prefs.value?.getBool('agreeToTerms') ?? false);
     _firebaseUser.bindStream(_auth.authStateChanges());
     initMixpanel();
@@ -61,7 +56,7 @@ class AuthController extends GetxController {
       await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
 
-      Get.to(UserRegistrationView());
+      unawaited(Get.to(UserRegistrationView()));
 
       //CHECK ACCOUNT TYPE THEN NAVIGATE TO APPROPIATE SCREEN
     } on FirebaseAuthException catch (e) {
@@ -148,9 +143,7 @@ class AuthController extends GetxController {
   }
 
   emailOption(context) {
-    // final onboardSelection = GetStorage().read('onboardSelection');
-    // final onboardSelection = _pref.getBool('onboardSelection');
-    // final onboardSelection = _preferences.prefs.getBool('onboardSelection');
+    // re-initialise _prefs, prevent it having null value
     _prefs.value = _preferences.prefs;
     final onboardSelection = _prefs.value?.getString('onboardSelection');
     Get.bottomSheet(
@@ -274,11 +267,10 @@ class AuthController extends GetxController {
                               value: _agreedToTerms.value,
                               selected: _agreedToTerms.value,
                               onChanged: (v) async {
-                                // await _pref.setBool('agreeToTerms', v ?? false);
-                                // await _preferences.prefs.setBool('agreeToTerms', v ?? false);
-                                await _prefs.value?.setBool('agreeToTerms', v ?? false);
+                                // Cache user reading the terms of agreement
+                                await _prefs
+                                  .value?.setBool('agreeToTerms', v ?? false);
                                 _agreedToTerms.toggle();
-                                // GetStorage().write('agreeToTerms', v);
                               }))),
                       SizedBox(
                         height: 2.h,

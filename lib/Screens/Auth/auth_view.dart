@@ -1,11 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:nowly/Configs/Logo/logos.dart';
 import 'package:nowly/Configs/configs.dart';
-import 'package:nowly/Controllers/Auth/preferences_controller.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
+import 'package:nowly/Controllers/shared_preferences/preferences_controller.dart';
 import 'package:nowly/Services/Apple/apple_auth.dart';
 import 'package:nowly/Services/Google/google_auth.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
@@ -19,13 +18,10 @@ class AuthView extends GetView<AuthController> {
   // PreferencesController _preferences = Get.find<PreferencesController>();
   final _preferences = Get.put(PreferencesController());
   final _prefs = Rxn<SharedPreferences>();
-  // final onboardSelection = GetStorage().read('onboardSelection');
 
   @override
   Widget build(BuildContext context) {
     _prefs.value = _preferences.prefs;
-    // final onboardSelection = _pref.getString('onboardSelection');
-    // final onboardSelection = _preferences.prefs.getString('onboardSelection');
     final onboardSelection = _prefs.value?.getString('onboardSelection');
     return Scaffold(
       body: DefaultTextStyle(
@@ -158,9 +154,9 @@ class AuthView extends GetView<AuthController> {
                       selected: controller.agreedToTerms,
                       onChanged: (v) async {
                         controller.agreedToTerms = v;
-                        // await _pref.setBool('agreeToTerms', controller.agreedToTerms);
-                        await _preferences.prefs?.setBool('agreeToTerms', controller.agreedToTerms);
-                        // GetStorage().write('agreeToTerms', v);
+                        await _preferences
+                          .prefs
+                          ?.setBool('agreeToTerms', controller.agreedToTerms);
                       }))),
             ],
           ),

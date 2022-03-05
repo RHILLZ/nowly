@@ -19,9 +19,7 @@ void main() async {
   await Env.init();
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_fcmBackgroundHandler);
-  await GetStorage.init();
-  // final _pref = await SharedPreferences.getInstance();
-  // Get.put(_pref);
+  // await GetStorage.init();
   InitialBinding().dependencies();
   AwesomeNotifications()
       .initialize('resource://drawable/res_notification_app_icon.png', [

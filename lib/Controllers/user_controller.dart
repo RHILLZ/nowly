@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nowly/Configs/configs.dart';
+import 'package:nowly/Controllers/shared_preferences/preferences_controller.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Services/service_exporter.dart';
 import 'package:nowly/Utils/logger.dart';
@@ -13,6 +14,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'controller_exporter.dart';
 
 class UserController extends GetxController {
+  final _preference = Get.put(PreferencesController());
   final _fcm = FirebaseMessaging.instance;
   final Rx<UserModel> _user = UserModel().obs;
   final _myWeight = ''.obs;
@@ -177,12 +179,15 @@ class UserController extends GetxController {
     }
   }
 
-  showMapDialogAgain() {
+  /// Pop-up Help Dialog everytime the user opens the map
+  Future<void>showMapDialogAgain() async {
+    await _preference.prefs?.setBool('showMapDialog', true);
     Get.back();
   }
 
-  dontShowMapDialogAgain() {
-    GetStorage().write('showMapDialog', false);
+  /// Disable Pop-up Help Dialog everytime the user opens the map
+  Future<void> dontShowMapDialogAgain() async {
+    await _preference.prefs?.setBool('showMapDialog', false);
     Get.back();
   }
 }
