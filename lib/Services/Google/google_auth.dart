@@ -18,8 +18,7 @@ class GoogleAuth {
     try {
       final googleUser = await GoogleSignIn().signIn();
 
-      final googleAuth =
-          await googleUser!.authentication;
+      final googleAuth = await googleUser!.authentication;
 
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
@@ -29,12 +28,12 @@ class GoogleAuth {
       final UserCredential authUser =
           await authController.auth.signInWithCredential(credential);
 
-      if(authUser.user != null) {
-        final id = (authUser.user?.uid)??'';
+      if (authUser.user != null) {
+        final id = (authUser.user?.uid) ?? '';
 
-        if(id.isNotEmpty) {
+        if (id.isNotEmpty) {
           final _user = await FirebaseFutures().getUserInFirestoreInstance(id);
-          if(!_user.exists){
+          if (!_user.exists) {
             unawaited(Get.off(UserRegistrationView()));
           } else {
             unawaited(Get.off(const Root()));

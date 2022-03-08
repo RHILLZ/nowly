@@ -1,29 +1,39 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:nowly/Bindings/binding_exporter.dart';
+import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Routes/pages.dart';
+import 'package:nowly/Utils/util_exporter.dart';
 import 'package:sizer/sizer.dart';
 
-import 'Configs/configs.dart';
-import 'Utils/env.dart';
-import 'Utils/logger.dart';
-
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Env.init();
   await Firebase.initializeApp();
-  FirebaseMessaging.onBackgroundMessage(_fcmBackgroundHandler);
   await GetStorage.init();
+
+  await _setupNotifications();
+  await _setupFirebaseCrashlytics();
+
   InitialBinding().dependencies();
-  AwesomeNotifications()
-      .initialize('resource://drawable/res_notification_app_icon.png', [
-    NotificationChannel(
+
+  runApp(Phoenix(child: const NowlyApp()));
+}
+
+/// Sets up the remote and local notifications channels and listeners.
+Future<void> _setupNotifications() async {
+  await AwesomeNotifications().initialize(
+    'resource://drawable/res_notification_app_icon.png',
+    [
+      NotificationChannel(
         channelKey: 'normal',
         channelName: 'normal',
         enableVibration: true,
@@ -31,24 +41,36 @@ void main() async {
         importance: NotificationImportance.Default,
         onlyAlertOnce: true,
         defaultColor: kPrimaryColor,
-        channelDescription: 'All Notifications'),
-  ]);
+        channelDescription: 'All Notifications',
+      ),
+    ],
+  );
 
-  runApp(Phoenix(child: const NowlyApp()));
+  FirebaseMessaging.onBackgroundMessage(_fcmBackgroundHandler);
 }
 
 Future<void> _fcmBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
+  await AwesomeNotifications().createNotificationFromJsonData(message.data);
   AppLogger.i(message.data);
-  AwesomeNotifications().createNotificationFromJsonData(message.data);
 }
 
+/// Configures Firebase Crashlytics to receive uncaught [Exception]s and
+/// [Error]s from the framework to Crashlytics.
+Future<void> _setupFirebaseCrashlytics() async {
+  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+}
+
+/// {@template NowlyApp}
+/// The app's root widget.
+/// {@endtemplate}
 class NowlyApp extends StatelessWidget {
+  /// {@macro NowlyApp}
   const NowlyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final AuthController _authController = Get.put(AuthController());
+    final _authController = Get.put(AuthController());
 
     return Sizer(
       builder: (ctx, _, deviceType) {
