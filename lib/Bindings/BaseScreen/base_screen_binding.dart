@@ -7,7 +7,7 @@ class BaseScreenBinding extends Bindings {
     Get.put(() => SessionController(), permanent: true);
     Get.put(() => StripeController());
 
-    //for map screen
+    // for map screen
     Get.put(() => SessionListController());
     Get.create(() => TrainerInPersonSessionController());
     Get.put(() => MapController());

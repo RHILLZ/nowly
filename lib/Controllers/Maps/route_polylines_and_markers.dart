@@ -9,7 +9,7 @@ import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Services/Net/net.dart';
 import 'package:nowly/Utils/env.dart';
-import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Utils/app_logger.dart';
 import 'package:sizer/sizer.dart';
 
 extension RoutePolyLinesAndMarkers on MapController {
@@ -97,8 +97,8 @@ extension RoutePolyLinesAndMarkers on MapController {
       {required LatLng origin,
       required LatLng destination,
       required Function(Direction? direction) onComplete}) async {
-    AppLogger.i(destination);
-    AppLogger.i(origin);
+    AppLogger.info(destination);
+    AppLogger.info(origin);
     final uri = Uri(
         scheme: 'https',
         host: 'maps.googleapis.com',
@@ -116,7 +116,7 @@ extension RoutePolyLinesAndMarkers on MapController {
       onComplete(direction);
     };
     net.onError = (Exception e) {
-      AppLogger.e(e);
+      AppLogger.error(e);
     };
     await net.execute();
   }

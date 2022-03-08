@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
-import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Utils/app_logger.dart';
+
 import 'end_points.dart';
 import 'error_handler.dart';
 import 'headers.dart';
@@ -65,7 +67,7 @@ class Net {
 
     try {
       _uri = _uri ?? _buildUri(url: _url, queryParams: _queryParams);
-      AppLogger.i("url - $_httpMethod - ${_uri.toString()}");
+      AppLogger.info("url - $_httpMethod - ${_uri.toString()}");
 
       _header ??= await ReqHeaders().getHeader(_contentType);
 
@@ -90,7 +92,7 @@ class Net {
 
       if (response.statusCode == 408) return;
 
-      //AppLogger.i('${response.body} ${response.statusCode}');
+      //AppLogger.info('${response.body} ${response.statusCode}');
 
       final errorMessage = NetworkErrorHandler().handleRequest(response);
       if (errorMessage != null) throw errorMessage;
@@ -102,7 +104,7 @@ class Net {
       }
     } on Exception catch (error) {
       _addMeToNetWorkRequestsStack();
-      AppLogger.e(error);
+      AppLogger.error(error);
       if (onError != null) {
         onError!(error);
       }
@@ -115,7 +117,7 @@ class Net {
 
     try {
       _uri = _uri ?? _buildUri(url: _url, queryParams: _queryParams);
-      AppLogger.i("url - $_httpMethod - ${_uri.toString()}");
+      AppLogger.info("url - $_httpMethod - ${_uri.toString()}");
 
       _header ??= await ReqHeaders().getHeader(_contentType);
 
@@ -139,7 +141,7 @@ class Net {
 
       if (response.statusCode == 408) return;
 
-      AppLogger.i(response.body);
+      AppLogger.info(response.body);
       final errorMessage = NetworkErrorHandler().handleRequest(response);
       if (errorMessage != null) throw errorMessage;
 
@@ -150,7 +152,7 @@ class Net {
       }
     } on Exception catch (error) {
       _addMeToNetWorkRequestsStack();
-      AppLogger.e(error);
+      AppLogger.error(error);
       if (onError != null) {
         onError!(error);
       }
@@ -163,13 +165,14 @@ class Net {
     if (_autoRetriedCount == _autoRetryCount) {
       _isAutoRetry = false;
     }
-    AppLogger.i("Auto retry count $_autoRetriedCount");
+    AppLogger.info("Auto retry count $_autoRetriedCount");
     execute();
   }
 
   void _addMeToNetWorkRequestsStack() {
     netWorkRequestsStack[_uri!.path] = this;
-    AppLogger.i("netWorkRequestsStack length ${netWorkRequestsStack.length}");
+    AppLogger.info(
+        "netWorkRequestsStack length ${netWorkRequestsStack.length}");
   }
 
   void _removeMeFromNetWorkRequestsStack() {

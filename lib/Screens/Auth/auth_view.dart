@@ -1,22 +1,28 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:nowly/Configs/Logo/logos.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
+import 'package:nowly/Controllers/shared_preferences/preferences_controller.dart';
 import 'package:nowly/Services/Apple/apple_auth.dart';
 import 'package:nowly/Services/Google/google_auth.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 class AuthView extends GetView<AuthController> {
   AuthView({Key? key}) : super(key: key);
   final AuthController authController = Get.find<AuthController>();
-  final onboardSelection = GetStorage().read('onboardSelection');
+  // SharedPreferences _pref = Get.find<SharedPreferences>();
+  // PreferencesController _preferences = Get.find<PreferencesController>();
+  final _preferences = Get.put(PreferencesController());
+  final _prefs = Rxn<SharedPreferences>();
 
   @override
   Widget build(BuildContext context) {
+    _prefs.value = _preferences.prefs;
+    final onboardSelection = _prefs.value?.getString('onboardSelection');
     return Scaffold(
       body: DefaultTextStyle(
         style: const TextStyle(color: Colors.white),
@@ -146,9 +152,11 @@ class AuthView extends GetView<AuthController> {
                               ])),
                       value: controller.agreedToTerms,
                       selected: controller.agreedToTerms,
-                      onChanged: (v) {
+                      onChanged: (v) async {
                         controller.agreedToTerms = v;
-                        GetStorage().write('agreeToTerms', v);
+                        await _preferences
+                          .prefs
+                          ?.setBool('agreeToTerms', controller.agreedToTerms);
                       }))),
             ],
           ),

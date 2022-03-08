@@ -11,7 +11,7 @@ import 'package:nowly/Screens/Sessions/session_complete_screen.dart';
 import 'package:nowly/Screens/Sessions/virtual_session_view.dart';
 import 'package:nowly/Services/service_exporter.dart';
 import 'package:nowly/Utils/env.dart';
-import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Utils/app_logger.dart';
 import 'package:nowly/Widgets/Dialogs/dialogs.dart';
 import 'package:nowly/root.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -72,7 +72,7 @@ class AgoraController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    AppLogger.i('WE Live');
+    AppLogger.info('WE Live');
     ever(_sessionTimer, (callback) => checkSessionTimer());
     _sessionController.value = Get.find<SessionController>();
     ever(_currentVirtualSession, (callback) => isAccepted(_context));
@@ -80,7 +80,7 @@ class AgoraController extends GetxController {
 
 //STREAM SESSION AND LISTEN FFOR CHANGES///////////////////////////////////////
   updateSession() async {
-    AppLogger.i('UPDATING SESSION');
+    AppLogger.info('UPDATING SESSION');
     _currentVirtualSession.bindStream(FirebaseStreams()
         .streamSession(_currentVirtualSession.value.sessionID!));
   }
@@ -92,20 +92,20 @@ class AgoraController extends GetxController {
     //create the engine
     _engine = await RtcEngine.create(Env.agoraId);
     await _engine.enableVideo();
-    AppLogger.i('CREATED ENGINE');
+    AppLogger.info('CREATED ENGINE');
     _engine.setEventHandler(
       RtcEngineEventHandler(
         joinChannelSuccess: (String channel, int uid, int elapsed) {
-          AppLogger.i("local user $uid joined");
+          AppLogger.info("local user $uid joined");
           _localUserJoined.value = true;
         },
         userJoined: (int uid, int elapsed) {
-          AppLogger.i("remote user $uid joined");
+          AppLogger.info("remote user $uid joined");
           _remoteUid = uid;
           trainerJoin();
         },
         userOffline: (int uid, UserOfflineReason reason) {
-          AppLogger.i("remote user $uid left channel");
+          AppLogger.info("remote user $uid left channel");
           _remoteUid = null;
         },
         remoteVideoStateChanged: (uid, state, reason, elapsed) {
@@ -167,7 +167,7 @@ class AgoraController extends GetxController {
   }
 
   void kill() async {
-    AppLogger.i('KILL INITIATED!!!');
+    AppLogger.info('KILL INITIATED!!!');
     _isJoined.toggle();
     _timer!.cancel();
     _engine.destroy();
@@ -194,7 +194,7 @@ class AgoraController extends GetxController {
   }
 
   void trainerJoin() async {
-    AppLogger.i('TRAINER JOINED!!!');
+    AppLogger.info('TRAINER JOINED!!!');
     startSessionTimer();
     updateSession();
     _isJoined.toggle();

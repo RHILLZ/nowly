@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:get/get_connect.dart';
 import 'package:nowly/Utils/env.dart';
-import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Utils/app_logger.dart';
 
 class SessionServices extends GetConnect {
   final String baseURL = Env.apiBaseUrl;
@@ -13,7 +13,7 @@ class SessionServices extends GetConnect {
         body: jsonEncode({'uid': uid, 'session': sessionData}));
 
     // final response = await httpClient.get(url);
-    AppLogger.i('STATUS: ${response.statusCode}');
+    AppLogger.info('STATUS: ${response.statusCode}');
 
     if (response.statusCode == 200) {
       _is200 = true;

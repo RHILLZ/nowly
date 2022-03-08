@@ -1,34 +1,36 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:mixpanel_flutter/mixpanel_flutter.dart';
 import 'package:nowly/Configs/configs.dart';
+import 'package:nowly/Controllers/shared_preferences/preferences_controller.dart';
 import 'package:nowly/Screens/Nav/legals_view.dart';
 import 'package:nowly/Screens/OnBoarding/user_registration_view.dart';
 import 'package:nowly/Services/service_exporter.dart';
 import 'package:nowly/Utils/env.dart';
-import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Utils/app_logger.dart';
 import 'package:nowly/root.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 class AuthController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final PreferencesController _preferences = Get.put(PreferencesController());
+  final _prefs = Rxn<SharedPreferences>();
+
   late Mixpanel mixpanel;
   final Rxn<User> _firebaseUser = Rxn<User>();
   final RxString _email = RxString('');
   final RxString _password = RxString('');
   final RxString _confirmed = RxString('');
-  final RxBool _agreedToTerms =
-      RxBool(GetStorage().read('agreeToTerms') ?? false);
+  late RxBool _agreedToTerms;
 
   get firebaseUser => _firebaseUser.value;
   get auth => _auth;
@@ -39,6 +41,8 @@ class AuthController extends GetxController {
 
   @override
   void onInit() {
+    _prefs.value = _preferences.prefs;
+    _agreedToTerms = RxBool(_prefs.value?.getBool('agreeToTerms') ?? false);
     _firebaseUser.bindStream(_auth.authStateChanges());
     initMixpanel();
     super.onInit();
@@ -49,7 +53,7 @@ class AuthController extends GetxController {
       await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
 
-      Get.to(UserRegistrationView());
+      unawaited(Get.to(UserRegistrationView()));
 
       //CHECK ACCOUNT TYPE THEN NAVIGATE TO APPROPIATE SCREEN
     } on FirebaseAuthException catch (e) {
@@ -64,28 +68,32 @@ class AuthController extends GetxController {
   Future<void> login(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-      
-      final id = (_firebaseUser.value?.uid)??'';
-        
-      if(id.isNotEmpty) {
-        final _user = 
-          await FirebaseFutures().getUserInFirestoreInstance(id);
 
-        if(!_user.exists){
-          unawaited(Get.off(() {
-              return UserRegistrationView();
-            }),
-          );
-        }
+      final id = (_firebaseUser.value?.uid) ?? '';
+
+      final _user = await FirebaseFutures().getUserInFirestoreInstance(id);
+
+      if (!_user.exists) {
+        await _preferences.prefs?.setBool('register', false);
+        unawaited(
+          Get.off(() {
+            return UserRegistrationView();
+          }),
+        );
       } else {
-        unawaited(Get.to(() {
+        await _preferences.prefs?.setBool('register', true);
+        unawaited(
+          Get.to(() {
             return const Root();
           }),
         );
       }
     } on FirebaseAuthException catch (e) {
-      Get.snackbar('Problem signing in user', e.message!,
-          snackPosition: SnackPosition.BOTTOM,);
+      Get.snackbar(
+        'Problem signing in user',
+        e.message!,
+        snackPosition: SnackPosition.BOTTOM,
+      );
     } catch (exception) {
       print(exception.toString());
     }
@@ -136,7 +144,9 @@ class AuthController extends GetxController {
   }
 
   emailOption(context) {
-    final onboardSelection = GetStorage().read('onboardSelection');
+    // re-initialise _prefs, prevent it having null value
+    _prefs.value = _preferences.prefs;
+    final onboardSelection = _prefs.value?.getString('onboardSelection');
     Get.bottomSheet(
         Stack(
             clipBehavior: Clip.none,
@@ -257,9 +267,11 @@ class AuthController extends GetxController {
                                       ])),
                               value: _agreedToTerms.value,
                               selected: _agreedToTerms.value,
-                              onChanged: (v) {
+                              onChanged: (v) async {
+                                // Cache user reading the terms of agreement
+                                await _prefs.value
+                                    ?.setBool('agreeToTerms', v ?? false);
                                 _agreedToTerms.toggle();
-                                GetStorage().write('agreeToTerms', v);
                               }))),
                       SizedBox(
                         height: 2.h,
@@ -339,7 +351,7 @@ class AuthController extends GetxController {
     Get.isBottomSheetOpen == true ? Get.back() : null;
     final bytes = await FirebaseStorage().getLegalDoc(filename);
     final file = await _storeDoc(filename, bytes);
-    AppLogger.i(file);
+    AppLogger.info(file);
     file != null
         ? _openPDF(file)
         : Get.snackbar('Something went wrong!',

@@ -5,7 +5,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:nowly/Bindings/binding_exporter.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
@@ -18,12 +17,11 @@ Future<void> main() async {
 
   await Env.init();
   await Firebase.initializeApp();
-  await GetStorage.init();
+
+  MainBinding().dependencies();
 
   await _setupNotifications();
   await _setupFirebaseCrashlytics();
-
-  InitialBinding().dependencies();
 
   runApp(Phoenix(child: const NowlyApp()));
 }
@@ -51,14 +49,16 @@ Future<void> _setupNotifications() async {
 
 Future<void> _fcmBackgroundHandler(RemoteMessage message) async {
   await AwesomeNotifications().createNotificationFromJsonData(message.data);
-  AppLogger.i(message.data);
+  AppLogger.info(message.data);
 }
 
 /// Configures Firebase Crashlytics to receive uncaught [Exception]s and
 /// [Error]s from the framework to Crashlytics.
 Future<void> _setupFirebaseCrashlytics() async {
-  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+  final firebaseCrashlytics = Get.find<FirebaseCrashlytics>();
+
+  await firebaseCrashlytics.setCrashlyticsCollectionEnabled(true);
+  FlutterError.onError = firebaseCrashlytics.recordFlutterError;
 }
 
 /// {@template NowlyApp}

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nowly/Controllers/shared_preferences/preferences_controller.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Services/service_exporter.dart';
@@ -34,6 +35,8 @@ class RegistrationController extends GetxController {
 
   createUser() async {
     _isProcessing.toggle();
+    // final _preferences = Get.put(PreferencesController());
+    final _preferences = Get.find<PreferencesController>();
     AuthController _auth = Get.find<AuthController>();
     final uid = _auth.firebaseUser.uid;
     final email = _auth.firebaseUser.email;
@@ -75,7 +78,10 @@ class RegistrationController extends GetxController {
     var result = await FirebaseFutures().createUserInFirestore(user);
     if (result == true) {
       _isProcessing.toggle();
+      await _preferences.prefs?.setBool('register', true);
       Get.to(() => const Root());
+      // change to Get.off
+      
     } else {
       _isProcessing.toggle();
       Get.snackbar('Something went wrong.',

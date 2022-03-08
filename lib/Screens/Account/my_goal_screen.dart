@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
-import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Utils/app_logger.dart';
 import 'package:nowly/Widgets/Common/profile_image.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:numberpicker/numberpicker.dart';
@@ -15,7 +15,7 @@ class UserGoalScreen extends GetView<UserController> {
   final UserController _controller = Get.find();
   @override
   Widget build(BuildContext context) {
-    AppLogger.i(_controller.selectedGoals);
+    AppLogger.info(_controller.selectedGoals);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -81,7 +81,7 @@ class UserGoalScreen extends GetView<UserController> {
                                                     .allFitnessGoals[index]
                                                     .goal),
                                             onTap: () {
-                                              AppLogger.i(
+                                              AppLogger.info(
                                                   _controller.selectedGoals);
                                               final item = _controller
                                                   .allFitnessGoals[index].goal;

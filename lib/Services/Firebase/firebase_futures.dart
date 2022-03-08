@@ -3,7 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:nowly/Configs/Constants/constants.dart';
 import 'package:nowly/Models/models_exporter.dart';
-import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Utils/app_logger.dart';
 import 'package:nowly/Utils/methods.dart';
 
 class FirebaseFutures {
@@ -429,11 +429,11 @@ class FirebaseFutures {
                 stars += doc['rating'];
               }));
       // .map((DocumentSnapshot doc) => stars + doc.get('rating')));
-      AppLogger.i('TOTAL STARS $stars');
-      AppLogger.i('TOTAL REVIEWS $totalReviews');
+      AppLogger.info('TOTAL STARS $stars');
+      AppLogger.info('TOTAL REVIEWS $totalReviews');
 
       var score = Methods.calculateRating(stars, totalReviews);
-      AppLogger.i(score);
+      AppLogger.info(score);
       await _firestore
           .collection(TRAINERSCOLLECTION)
           .doc(trainerId)

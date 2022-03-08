@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Screens/Sessions/session_confirmation_screen.dart';
-import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Utils/app_logger.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:sizer/sizer.dart';
 
@@ -21,7 +21,7 @@ class UserHomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AppLogger.i('USER: ${_userController.user.email}');
+    AppLogger.info('USER: ${_userController.user.email}');
 
     return Scaffold(
       body: SafeArea(
