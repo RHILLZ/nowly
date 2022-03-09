@@ -4,7 +4,7 @@ import 'package:nowly/Screens/Map/map_screen.dart';
 import 'package:nowly/Screens/Nav/home_view.dart';
 import 'package:nowly/Screens/Nav/session_history_view.dart';
 import 'package:nowly/Screens/Account/user_account_screen.dart';
-import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Utils/app_logger.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 
 class BaseScreen extends StatelessWidget {
@@ -31,7 +31,7 @@ class BaseScreen extends StatelessWidget {
       ),
       body: Obx(
         () {
-          AppLogger.i('Screen ${_selectedIndex.value}');
+          AppLogger.info('Screen ${_selectedIndex.value}');
           return screens[_selectedIndex.value];
         },
       ),

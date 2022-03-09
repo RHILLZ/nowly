@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:nowly/Configs/configs.dart';
-import 'package:nowly/Controllers/shared_preferences/preferences_controller.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
-import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Controllers/shared_preferences/preferences_controller.dart';
+import 'package:nowly/Utils/app_logger.dart';
 import 'package:nowly/Widgets/Dialogs/dialogs.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 
@@ -24,7 +23,7 @@ class MapScreen extends StatelessWidget {
       }
     });
 
-    AppLogger.i('Map Screen');
+    AppLogger.info('Map Screen');
     return Scaffold(
       body: Stack(
         children: [

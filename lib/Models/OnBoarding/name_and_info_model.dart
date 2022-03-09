@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:nowly/Models/models_exporter.dart';
-import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Utils/app_logger.dart';
 
 class NameAndInfoQModel extends QuestionnaireModel {
   NameAndInfoQModel()
@@ -39,6 +39,6 @@ class NameAndInfoQModel extends QuestionnaireModel {
     }
 
     filled.value = true;
-    AppLogger.i('Name & Info - $filled');
+    AppLogger.info('Name & Info - $filled');
   }
 }

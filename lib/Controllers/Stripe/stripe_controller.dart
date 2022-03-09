@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Services/service_exporter.dart';
-import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Utils/app_logger.dart';
 import 'package:nowly/Widgets/Dialogs/dialogs.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stripe_payment/stripe_payment.dart';
@@ -198,7 +198,7 @@ class StripeController extends GetxController {
     _loadMessage.value = 'Getting account details...';
     final paymentMethodID =
         _user.activePaymentMethodId ?? _paymentMethodID.value;
-    AppLogger.i('PMID: $paymentMethodID');
+    AppLogger.info('PMID: $paymentMethodID');
     final paymentMethod =
         await StripeServices().getStripeCustomerPaymentMethod(paymentMethodID);
 

@@ -39,18 +39,18 @@ class Pages {
     GetPage(
       name: _Paths.START_SCREEN,
       page: () => StartScreenView(),
-      binding: InitialBinding(),
+      binding: MainBinding(),
     ),
     GetPage(
         name: _Paths.AUTH_SCREEN,
         page: () => AuthView(),
-        binding: InitialBinding()),
+        binding: MainBinding()),
     GetPage(
-        name: _Paths.ROOT, page: () => const Root(), binding: InitialBinding()),
+        name: _Paths.ROOT, page: () => const Root(), binding: MainBinding()),
     GetPage(
         name: _Paths.ONBOARDING_SCREEN,
         page: () => OnBoardingView(),
-        binding: InitialBinding()),
+        binding: MainBinding()),
     GetPage(
         name: _Paths.BASE,
         page: () => BaseScreen(),
@@ -85,7 +85,7 @@ class Pages {
             mapNavController: Get.find<MapNavigatorController>(),
             trainerSessionC: Get.find<TrainerInPersonSessionController>(),
             sessionController: Get.find<SessionController>()),
-        binding: InitialBinding()),
+        binding: MainBinding()),
     GetPage(
         name: _Paths.LIVE_SESSION,
         page: () => LiveSessionView(

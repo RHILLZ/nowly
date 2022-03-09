@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Utils/env.dart';
-import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Utils/app_logger.dart';
 import 'package:stripe_payment/stripe_payment.dart';
 
 class StripeServices extends GetConnect {
@@ -11,10 +11,10 @@ class StripeServices extends GetConnect {
   Future createStripeCustomer(UserModel user) async {
     String url = "$baseURL/createStripeCustomerAccount";
     final fullName = '${user.firstName} ${user.lastName}';
-    AppLogger.i("URL: $baseURL");
+    AppLogger.info("URL: $baseURL");
     final req = await httpClient.post(url,
         body: jsonEncode({'name': fullName, 'email': user.email}));
-    AppLogger.i(req.body);
+    AppLogger.info(req.body);
     final account = req.body as Map<String, dynamic>;
     return account['accountId'];
   }
@@ -64,7 +64,7 @@ class StripeServices extends GetConnect {
 
     final response = await httpClient.get(url);
     final account = response.body as Map<String, dynamic>;
-    AppLogger.i('FROM SEVICE: ${account['paymentMethod']}');
+    AppLogger.info('FROM SEVICE: ${account['paymentMethod']}');
     return account['paymentMethod'];
   }
 

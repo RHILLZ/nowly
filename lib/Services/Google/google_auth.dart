@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:nowly/Controllers/shared_preferences/preferences_controller.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
+import 'package:nowly/Controllers/shared_preferences/preferences_controller.dart';
 import 'package:nowly/Screens/OnBoarding/user_registration_view.dart';
 import 'package:nowly/Services/Firebase/firebase_futures.dart';
 import 'package:nowly/root.dart';
@@ -13,6 +13,7 @@ import 'package:nowly/root.dart';
 class GoogleAuth {
   /// Get User's Authentication instance
   AuthController authController = Get.put(AuthController());
+
   /// Get User Preference instance
   PreferencesController _preferences = Get.put(PreferencesController());
 
@@ -21,8 +22,7 @@ class GoogleAuth {
     try {
       final googleUser = await GoogleSignIn().signIn();
 
-      final googleAuth =
-          await googleUser!.authentication;
+      final googleAuth = await googleUser!.authentication;
 
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
@@ -32,12 +32,12 @@ class GoogleAuth {
       final UserCredential authUser =
           await authController.auth.signInWithCredential(credential);
 
-      if(authUser.user != null) {
-        final id = (authUser.user?.uid)??'';
+      if (authUser.user != null) {
+        final id = (authUser.user?.uid) ?? '';
 
-        if(id.isNotEmpty) {
+        if (id.isNotEmpty) {
           final _user = await FirebaseFutures().getUserInFirestoreInstance(id);
-          if(!_user.exists){
+          if (!_user.exists) {
             await _preferences.prefs?.setBool('register', false);
             unawaited(Get.off(UserRegistrationView()));
           } else {

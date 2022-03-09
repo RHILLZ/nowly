@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart';
-import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Utils/app_logger.dart';
 
 
 class NetworkErrorHandler {
@@ -54,7 +54,7 @@ class NetworkErrorMessage extends IOException {
       errorId = decodeJson["error_id"];
       error = decodeJson["error"];
     } catch (e) {
-      AppLogger.e(e);
+      AppLogger.error(e);
     }
   }
 }

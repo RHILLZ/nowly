@@ -9,7 +9,7 @@ import 'package:nowly/Screens/Sessions/current_session_en_route_details_screen.d
 import 'package:nowly/Screens/Sessions/session_complete_screen.dart';
 import 'package:nowly/Services/Firebase/fcm.dart';
 import 'package:nowly/Services/service_exporter.dart';
-import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Utils/app_logger.dart';
 import 'package:nowly/Widgets/Dialogs/dialogs.dart';
 import 'package:nowly/root.dart';
 import 'package:sizer/sizer.dart';
@@ -353,7 +353,7 @@ class SessionController extends GetxController {
       await Future.delayed(const Duration(seconds: 2), () => null);
       ever(_currentSession, (callback) => checkSessionStatus(controller));
       //SEND SIGNAL HEREfire
-      AppLogger.i(session);
+      AppLogger.info(session);
       FCM().sendInPersonSessionSignal(session, tokenId);
     } else {
       _isProcessing.toggle();
@@ -407,7 +407,7 @@ class SessionController extends GetxController {
 //UPDATE ETA WHILE EN ROUTE/////////////////////////////////////////////////////
   updateEta() async {
     final eta = _sessionEta.value;
-    AppLogger.i('ETA: $eta');
+    AppLogger.info('ETA: $eta');
 
     if (_currentSession.value.sessionID != null) {
       await FirebaseFutures().updateETA(_currentSession.value, eta);

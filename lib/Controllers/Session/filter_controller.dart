@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:nowly/Models/models_exporter.dart';
-import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Utils/app_logger.dart';
 
 class FilterController extends GetxController {
   @override
@@ -47,7 +47,7 @@ class FilterController extends GetxController {
   }
 
   void _fecthFilterDetails() {
-    AppLogger.i('Fetching filter details');
+    AppLogger.info('Fetching filter details');
     trainerTypes.addAll(TrainerPreferenceModel.trainerTypes);
     _genderPref.value = trainerTypes[0];
     avalability.addAll(AvailabilityModel.availabilities);
