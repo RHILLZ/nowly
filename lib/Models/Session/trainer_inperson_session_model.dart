@@ -1,6 +1,6 @@
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Services/Firebase/firebase_futures.dart';
-import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Utils/app_logger.dart';
 
 class TrainerInPersonSessionModel {
   TrainerInPersonSessionModel(
@@ -15,10 +15,10 @@ class TrainerInPersonSessionModel {
   static Future<List<TrainerInPersonSessionModel>> getTrainers() async {
     // ignore: unused_local_variable
     final sessionOptions = SessionDurationAndCostModel.inPersonSessionOptions;
-    AppLogger.i('GETTING TRAINERS FROM DB');
+    AppLogger.info('GETTING TRAINERS FROM DB');
     List<TrainerInPersonSessionModel> trainers =
         await FirebaseFutures().getOnlineTrainers(sessionOptions);
-    AppLogger.i('TRAINERS: $trainers');
+    AppLogger.info('TRAINERS: $trainers');
     // <TrainerInPersonSessionModel>[
     //   TrainerInPersonSessionModel(
     //       trainer: TrainerModel(

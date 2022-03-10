@@ -6,7 +6,7 @@ import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Screens/Stripe/add_payment_methods.dart';
-import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Utils/app_logger.dart';
 import 'package:nowly/Widgets/Dialogs/dialogs.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:progress_indicators/progress_indicators.dart';
@@ -33,10 +33,10 @@ class SessionConfirmationScreen extends StatelessWidget {
     final _totalCost = _sessionFee + _salesTax;
     final _totalCharge = (_totalCost * 100).toString().split('.')[0];
 
-    AppLogger.i(_salesTax);
+    AppLogger.info(_salesTax);
     _agoraVideoCallController.context = context;
     _controller.context = context;
-    AppLogger.i('STRIPE: ${_stripeController.activePaymentMethod.last4}');
+    AppLogger.info('STRIPE: ${_stripeController.activePaymentMethod.last4}');
 
     return Scaffold(
         appBar: AppBar(

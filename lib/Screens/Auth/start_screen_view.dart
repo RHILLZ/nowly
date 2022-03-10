@@ -99,7 +99,7 @@ class StartScreenView extends GetView<AuthController> {
                         style: TextButton.styleFrom(
                             backgroundColor: getWidgetSelectedColor(context)),
                         onPressed: () {
-                          Get.to(() => const OnBoardingView());
+                          Get.to(() => OnBoardingView());
                         },
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 1.h),

@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Services/Firebase/firebase_streams.dart';
-import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Utils/app_logger.dart';
 
 class SessionListController extends GetxController {
   final onlineTrainers = <TrainerInPersonSessionModel>[].obs;
@@ -25,9 +25,9 @@ class SessionListController extends GetxController {
   var trainersSessionControllers = <TrainerInPersonSessionController>[].obs;
 
   Future<void> _fetchAllOnlineTrainers() async {
-    AppLogger.i('Fetching trainers');
+    AppLogger.info('Fetching trainers');
     final loadedTrainers = onlineTrainers;
-    AppLogger.i('TRAINERS: $onlineTrainers');
+    AppLogger.info('TRAINERS: $onlineTrainers');
     final controllers = loadedTrainers.map((session) {
       TrainerInPersonSessionController _controller = Get.put(
           TrainerInPersonSessionController()); //create new contoller for each session

@@ -5,7 +5,7 @@ import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Screens/Sessions/feedback.dart';
-import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Utils/app_logger.dart';
 import 'package:nowly/Widgets/Common/profile_image.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:nowly/root.dart';
@@ -28,7 +28,7 @@ class SessionCompleteScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
     final sess = SessionModel().toMap(_session);
-    AppLogger.i(sess);
+    AppLogger.info(sess);
     final _isIssue = false.obs;
     final _reviewSubmitted = false.obs;
 

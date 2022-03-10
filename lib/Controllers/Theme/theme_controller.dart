@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
-import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Utils/app_logger.dart';
 
 
 class ThemeController extends GetxController {
@@ -28,7 +28,7 @@ class ThemeController extends GetxController {
   }
 
   void changeTheme() {
-    AppLogger.i('Is Dark theme - ${Get.isDarkMode}');
+    AppLogger.info('Is Dark theme - ${Get.isDarkMode}');
     Get.changeTheme(Get.isDarkMode ? _lightTheme : _darkTheme);
   }
 }

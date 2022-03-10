@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Services/Net/net.dart';
 import 'package:nowly/Utils/env.dart';
-import 'package:nowly/Utils/logger.dart';
+import 'package:nowly/Utils/app_logger.dart';
 import '../controller_exporter.dart';
 
 extension SearchPlaces on MapController {
@@ -38,7 +38,7 @@ extension SearchPlaces on MapController {
     };
     net.onError = (Exception e) {
       isLoadingSearchedPlaces.value = false;
-      AppLogger.e(e);
+      AppLogger.error(e);
     };
     net.execute();
   }
@@ -70,7 +70,7 @@ extension SearchPlaces on MapController {
     };
     net.onError = (Exception e) {
       isLoadingPlaceDetails.value = false;
-      AppLogger.e(e);
+      AppLogger.error(e);
     };
     net.execute();
   }

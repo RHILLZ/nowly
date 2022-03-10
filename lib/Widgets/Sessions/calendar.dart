@@ -136,7 +136,7 @@
 //                       11: 'NOV',
 //                       12: 'DEC'
 //                     };
-//                     AppLogger.i(controller.selectedDay.value);
+//                     AppLogger.info(controller.selectedDay.value);
 //                     var abr = 'TH';
 //                     if (selectedDay.day == 1 ||
 //                         selectedDay.day == 21 ||
