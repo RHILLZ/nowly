@@ -1,0 +1,96 @@
+{
+  "project_info": {
+    "project_number": "561198630707",
+    "project_id": "nowly-c6733",
+    "storage_bucket": "nowly-c6733.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:561198630707:android:367405f4c541778f60e046",
+        "android_client_info": {
+          "package_name": "com.xdi.nowly"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "561198630707-p0kqq1c267vpacc3sc8l4ra1o1vt07m2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDegrhMu6Z6aMZ0SCSjt52L717ki2CqXg0"
+        },
+        {
+          "current_key": "AIzaSyBXTF207s3X_ghHBlKTjspIxqqmUGDn7iY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "561198630707-p0kqq1c267vpacc3sc8l4ra1o1vt07m2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "561198630707-29l9rhl41ugap9kj1ep7kpsg4i8jf19a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.xdi.nowly"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:561198630707:android:970a73b319dd951b60e046",
+        "android_client_info": {
+          "package_name": "com.xdi.nowlyTrainer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "561198630707-th4pe2rk1ct9bq9re3d039n7fa66f5q6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.xdi.nowlyTrainer",
+            "certificate_hash": "a7abfe635d0218ee6cfcae6c5af6208a08068d01"
+          }
+        },
+        {
+          "client_id": "561198630707-p0kqq1c267vpacc3sc8l4ra1o1vt07m2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDegrhMu6Z6aMZ0SCSjt52L717ki2CqXg0"
+        },
+        {
+          "current_key": "AIzaSyBXTF207s3X_ghHBlKTjspIxqqmUGDn7iY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "561198630707-p0kqq1c267vpacc3sc8l4ra1o1vt07m2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "561198630707-29l9rhl41ugap9kj1ep7kpsg4i8jf19a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.xdi.nowly"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
