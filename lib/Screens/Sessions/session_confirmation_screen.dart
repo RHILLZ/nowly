@@ -6,6 +6,7 @@ import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Screens/Stripe/add_payment_methods.dart';
+import 'package:nowly/Services/Stripe/android_stripe_service.dart';
 import 'package:nowly/Utils/logger.dart';
 import 'package:nowly/Widgets/Dialogs/dialogs.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
@@ -15,6 +16,7 @@ import 'package:sizer/sizer.dart';
 class SessionConfirmationScreen extends StatelessWidget {
   SessionConfirmationScreen({Key? key}) : super(key: key);
 
+  final _androidStripeController = Get.put(AndroidStripeController());
   static const routeName = '/SessionConfirmation';
   final SessionController _controller = Get.find<SessionController>();
   final StripeController _stripeController = Get.put(StripeController());
@@ -97,10 +99,11 @@ class SessionConfirmationScreen extends StatelessWidget {
                         _agoraVideoCallController.sessionTimer =
                             int.parse(durTimer) * 60;
 
-                        if (_stripeController.activePaymentMethod.last4 == '') {
-                          Dialogs().addPayMethod(context);
-                          return;
-                        }
+                        // if (_stripeController.activePaymentMethod.last4 == '') {
+                        //   Dialogs().addPayMethod(context);
+                        //   return;
+                        // }
+                        await _androidStripeController.initPaymentSheet();
 
                         _agoraVideoCallController.startSession(
                             context, _session);

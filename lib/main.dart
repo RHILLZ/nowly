@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:nowly/Bindings/binding_exporter.dart';
@@ -16,23 +17,28 @@ import 'Utils/logger.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = androidStripePublishableKey; 
+  Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
+  Stripe.urlScheme = 'flutterstripe';
+  await Stripe.instance.applySettings();
+  
   await Env.init();
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_fcmBackgroundHandler);
-  // await GetStorage.init();
+
   InitialBinding().dependencies();
-  AwesomeNotifications()
-      .initialize('resource://drawable/res_notification_app_icon.png', [
-    NotificationChannel(
-        channelKey: 'normal',
-        channelName: 'normal',
-        enableVibration: true,
-        channelShowBadge: false,
-        importance: NotificationImportance.Default,
-        onlyAlertOnce: true,
-        defaultColor: kPrimaryColor,
-        channelDescription: 'All Notifications'),
-  ]);
+  // AwesomeNotifications()
+  //     .initialize('resource://drawable/res_notification_app_icon.png', [
+  //   NotificationChannel(
+  //       channelKey: 'normal',
+  //       channelName: 'normal',
+  //       enableVibration: true,
+  //       channelShowBadge: false,
+  //       importance: NotificationImportance.Default,
+  //       onlyAlertOnce: true,
+  //       defaultColor: kPrimaryColor,
+  //       channelDescription: 'All Notifications'),
+  // ]);
 
   runApp(Phoenix(child: const NowlyApp()));
 }
@@ -40,7 +46,7 @@ void main() async {
 Future<void> _fcmBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   AppLogger.i(message.data);
-  AwesomeNotifications().createNotificationFromJsonData(message.data);
+  // AwesomeNotifications().createNotificationFromJsonData(message.data);
 }
 
 class NowlyApp extends StatelessWidget {

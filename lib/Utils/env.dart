@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+const androidStripePublishableKey = "pk_test_51JXoZrHxTvaJqgJRAreTvzeLTmp9xUDkgYRY4K0yZA8JcE4faFmRUvjBBPmgkCWjyBI1DiQ3FIaJBg0sCtFSA0q6009d90fyqv";
+
 /// The available flavors for the application.
 enum Flavor {
   /// The identifier for the development flavor.
@@ -68,6 +70,9 @@ class Env {
   static String get iosMapsKey => _nonNullEnvironment('IOS_MAPS_KEY');
 
   static String? get mixPanelToken => dotenv.env['MIXPANEL_TOKEN'];
+
+  static String get androidStripePublishKey => 
+    _nonNullEnvironment('ANDROID_STRIPE_PUBLISH_KEY');
 
   /// Ensures that an environment variable returns value. Otherwise, a
   /// [UnimplementedError] will be thrown.

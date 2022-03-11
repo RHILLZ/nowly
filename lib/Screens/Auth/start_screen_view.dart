@@ -1,10 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/Logo/logos.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
+import 'package:nowly/Services/Stripe/android_stripe_service.dart';
+import 'package:nowly/Utils/env.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:sizer/sizer.dart';
 
@@ -98,8 +101,9 @@ class StartScreenView extends GetView<AuthController> {
                     child: TextButton(
                         style: TextButton.styleFrom(
                             backgroundColor: getWidgetSelectedColor(context)),
-                        onPressed: () {
+                        onPressed: () async {
                           Get.to(() => OnBoardingView());
+                          // AndroidStripeService().paymentMethod();
                         },
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 1.h),

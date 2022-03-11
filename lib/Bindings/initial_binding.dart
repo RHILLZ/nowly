@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:nowly/Controllers/shared_preferences/preferences_controller.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:nowly/Services/Stripe/android_stripe_service.dart';
 
 class InitialBinding implements Bindings {
   @override
@@ -9,5 +9,6 @@ class InitialBinding implements Bindings {
     Get.put(ThemeController());
     Get.put(PreferencesController());
     Get.put(AuthController());
+    Get.put(AndroidStripeController());
   }
 }

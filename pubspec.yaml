@@ -38,6 +38,7 @@ dependencies:
   flutter_polyline_points: ^1.0.0
   flutter_rating_bar: ^4.0.0
   flutter_spinkit: ^5.1.0
+  flutter_stripe: ^2.3.0
   flutter_svg: ^0.23.0+1
   flutter_svg_provider: ^0.1.11
   flutter_time_picker_spinner: ^2.0.0
@@ -47,6 +48,7 @@ dependencies:
   google_fonts: ^2.2.0
   google_maps_flutter: ^2.0.11
   google_sign_in: ^5.2.0
+  http: ^0.13.4
   image_picker: ^0.8.4+4
   intl: ^0.17.0
   location: ^4.3.0
@@ -67,6 +69,7 @@ dependencies:
   shimmer: ^2.0.0
   sign_in_with_apple: ^3.2.0
   sizer: ^2.0.15
+  stripe_android: ^2.3.0
   stripe_payment: ^1.1.4
   table_calendar: ^3.0.3
   url_launcher: ^6.0.12
