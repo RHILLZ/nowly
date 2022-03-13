@@ -154,7 +154,7 @@ class UserAccountScreen extends GetView<UserController> {
             ),
             ListTile(
               onTap: () {
-                Get.to(() => AddPaymentMethodsScreen());
+                // Get.to(() => AddPaymentMethodsScreen());
               },
               leading: SvgPicture.asset(
                 'assets/images/profile/payment.svg',

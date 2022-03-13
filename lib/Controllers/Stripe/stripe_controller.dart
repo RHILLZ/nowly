@@ -6,7 +6,7 @@ import 'package:nowly/Services/service_exporter.dart';
 import 'package:nowly/Utils/app_logger.dart';
 import 'package:nowly/Widgets/Dialogs/dialogs.dart';
 import 'package:sizer/sizer.dart';
-import 'package:stripe_payment/stripe_payment.dart';
+
 
 import '../controller_exporter.dart';
 
@@ -134,24 +134,24 @@ class StripeController extends GetxController {
       );
 
 //CREATE A PAYMENT METHOD ON STRIPE/////////////////////////////////////////////
-  createPaymentMethod() async {
-    CreditCard card = CreditCard();
-    card.number = _cardNum.value;
-    card.expMonth = _cardExpMonth.value;
-    card.expYear = _cardExpYear.value;
-    card.cvc = _cardCvc.value;
-    card.addressLine1 = _cardAddressLine1.value;
-    card.addressLine2 = _cardAddressLine2.value;
-    card.addressCity = _cardAddressCity.value;
-    card.addressState = _cardAddressState.value;
-    card.addressZip = _cardAddressZip.value;
-    final payMethod = await StripeServices().createStripePaymentMethod(card);
-    _paymentMethodID.value = payMethod;
-    final result = await FirebaseFutures()
-        .setUserActiveStripePaymentMethodId(_user.id, payMethod);
+  // createPaymentMethod() async {
+  //   CreditCard card = CreditCard();
+  //   card.number = _cardNum.value;
+  //   card.expMonth = _cardExpMonth.value;
+  //   card.expYear = _cardExpYear.value;
+  //   card.cvc = _cardCvc.value;
+  //   card.addressLine1 = _cardAddressLine1.value;
+  //   card.addressLine2 = _cardAddressLine2.value;
+  //   card.addressCity = _cardAddressCity.value;
+  //   card.addressState = _cardAddressState.value;
+  //   card.addressZip = _cardAddressZip.value;
+  //   final payMethod = await StripeServices().createStripePaymentMethod(card);
+  //   _paymentMethodID.value = payMethod;
+  //   final result = await FirebaseFutures()
+  //       .setUserActiveStripePaymentMethodId(_user.id, payMethod);
 
-    return result;
-  }
+  //   return result;
+  // }
 
 ////////////////////////////////////////////////////////////////////////////////
   ///LINK PAYMENT METHOD TO STRIPE ACCOUNT////////////////////////////////////////
@@ -172,7 +172,7 @@ class StripeController extends GetxController {
   addNewPaymentMethod() async {
     _isProcessing.toggle();
     _loadMessage.value = 'Creating payment method with stripe...';
-    final result = await createPaymentMethod();
+    // final result = await createPaymentMethod();
     if (result) {
       _loadMessage.value = 'Linking new payment method to account...';
       final linkedAcc = await _linkStripePaymentMethod();
@@ -248,7 +248,7 @@ class StripeController extends GetxController {
       getAccountDetails();
       getPaymentMethods();
     }
-  }
+  
 
 //CREATE A PAYMENT INTENT /////////////////////////////////////////////////////
   createPaymentIntent(int amount, String desc, String connectId) async {

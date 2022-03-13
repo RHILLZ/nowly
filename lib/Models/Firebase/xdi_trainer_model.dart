@@ -19,7 +19,6 @@ class TrainerModel {
   int? rankIndex;
   int? prevRankIndex;
   List? skillSet;
-  List availability;
   GeoPoint? lastLocation;
   bool showOnMap;
   Timestamp? createdAt;
@@ -47,7 +46,6 @@ class TrainerModel {
       this.agreedToTerms = false,
       this.activeMode = 'Not Available',
       this.skillSet,
-      this.availability = const [],
       this.lastLocation,
       this.showOnMap = false,
       this.createdAt,
@@ -84,7 +82,6 @@ class TrainerModel {
         agreedToTerms: doc['agreedToTerms'],
         activeMode: doc['activeMode'],
         skillSet: doc['skillSet'],
-        availability: doc['availability'],
         lastLocation: doc['lastLoction'],
         showOnMap: doc['showOnMap'],
         validInsurance: doc['validInsurance'],
@@ -118,7 +115,6 @@ class TrainerModel {
     data['agreedToTerms'] = trainer.agreedToTerms;
     data['activeMode'] = trainer.activeMode;
     data['skillSet'] = trainer.skillSet;
-    data['availability'] = trainer.availability;
     data['lastLocation'] = trainer.lastLocation;
     data['showOnMap'] = trainer.showOnMap;
     data['certificationType'] = trainer.certificationType;

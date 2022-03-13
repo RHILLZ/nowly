@@ -4,6 +4,8 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:flutter_phoenix/generated/i18n.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Bindings/binding_exporter.dart';
 import 'package:nowly/Configs/configs.dart';
@@ -14,7 +16,8 @@ import 'package:sizer/sizer.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  Stripe.publishableKey =
+      'pk_test_51JXoZrHxTvaJqgJRAreTvzeLTmp9xUDkgYRY4K0yZA8JcE4faFmRUvjBBPmgkCWjyBI1DiQ3FIaJBg0sCtFSA0q6009d90fyqv';
   await Env.init();
   await Firebase.initializeApp();
 
@@ -22,6 +25,7 @@ Future<void> main() async {
 
   await _setupNotifications();
   await _setupFirebaseCrashlytics();
+  // await Stripe.instance.applySettings();
 
   runApp(Phoenix(child: const NowlyApp()));
 }

@@ -26,6 +26,11 @@ class UserRegistrationView extends GetView<RegistrationController> {
           title: Text('Account Registration'.toUpperCase(), style: k16BoldTS),
           centerTitle: true,
           leading: Logo.mark(3.h),
+          actions: [
+            // IconButton(
+            //     onPressed: () => Get.find<AuthController>().signOut(),
+            //     icon: const Icon(Icons.exit_to_app))
+          ],
         ),
         bottomSheet: Obx(() => MainButton(
             enabled: _controller.profileReady,

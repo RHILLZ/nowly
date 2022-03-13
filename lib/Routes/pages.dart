@@ -93,10 +93,10 @@ class Pages {
             ),
         binding: BaseScreenBinding()),
 
-    GetPage(
-        name: _Paths.ADD_PAYMENT_METHOD,
-        page: () => AddPaymentMethodsScreen(),
-        binding: BaseScreenBinding()),
+    // GetPage(
+    //     name: _Paths.ADD_PAYMENT_METHOD,
+    //     page: () => AddPaymentMethodsScreen(),
+    //     binding: BaseScreenBinding()),
     GetPage(name: _Paths.FEEDBACK_SCREEN, page: () => const FeedbackView()),
     // GetPage(
     //     name: _Paths.IN_PERSON_SESSION, page: () => const LiveSessionView()),
