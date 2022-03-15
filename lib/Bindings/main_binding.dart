@@ -1,6 +1,7 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:nowly/Services/Stripe/fstripe_services.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Controllers/shared_preferences/preferences_controller.dart';
 
@@ -30,6 +31,7 @@ class MainBinding implements Bindings {
     Get
       ..put(AuthController())
       ..put(PreferencesController())
-      ..put(ThemeController());
+      ..put(ThemeController())
+      ..put(FStripeController(), permanent: true);
   }
 }

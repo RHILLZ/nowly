@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/Constants/constants.dart';
 import 'package:nowly/Configs/configs.dart';
+import 'package:nowly/Services/Stripe/fstripe_services.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Screens/Stripe/add_payment_methods.dart';
@@ -66,7 +68,7 @@ class SessionConfirmationScreen2 extends StatelessWidget {
                                       : 'I’M SO PUMPED, LETS GO',
                                   onTap: _controller.isProcessing
                                       ? () => _controller.cancel(context)
-                                      : () {
+                                      : () async {
                                           // ;
                                           final userName =
                                               '${_userController.user.firstName} ${_userController.user.lastName}';
@@ -115,17 +117,19 @@ class SessionConfirmationScreen2 extends StatelessWidget {
 
                                           final tokenId =
                                               _sessionDetails.trainer.tokenId;
-                                          if (_stripeController
-                                                  .activePaymentMethod.last4 ==
-                                              '') {
-                                            Dialogs().addPayMethod(context);
-                                            return;
-                                          }
+                                          // if (_stripeController
+                                          //         .activePaymentMethod.last4 ==
+                                          //     '') {
+                                          //   Dialogs().addPayMethod(context);
+                                          //   return;
+                                          // }
+
                                           _controller.engageTrainer(
-                                              _session,
-                                              tokenId!,
-                                              context,
-                                              _trainerInPersonSessionController);
+                                            _session,
+                                            tokenId!,
+                                            context,
+                                            _trainerInPersonSessionController,
+                                          );
                                         })))
                           : Padding(
                               padding: UIParameters.screenPadding,
@@ -247,47 +251,47 @@ class SessionConfirmationScreen2 extends StatelessWidget {
                         //       )),
                         // ), // loading shimmer
 
-                        Row(
-                          children: [
-                            const Expanded(child: Text('PAYMENT METHOD')),
-                            TextButton(
-                              onPressed: () {
-                                Get.to(AddPaymentMethodsScreen());
-                              },
-                              child: Row(
-                                children: [
-                                  _stripeController
-                                          .activePaymentMethod.last4.isNotEmpty
-                                      ? Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                              _stripeController
-                                                          .activePaymentMethod
-                                                          .brand ==
-                                                      'visa'
-                                                  ? VISAIMAGE
-                                                  : MASTERCARDIMAGE,
-                                              SizedBox(
-                                                width: 2.w,
-                                              ),
-                                              Text(_stripeController
-                                                  .activePaymentMethod.last4)
-                                            ])
-                                      : const Text(
-                                          'ADD PAYMENT METHOD',
-                                          style: kRegularTS,
-                                          overflow: TextOverflow.fade,
-                                        ),
-                                  const Icon(Icons.navigate_next),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
+                        // Row(
+                        //   children: [
+                        //     const Expanded(child: Text('PAYMENT METHOD')),
+                        //     TextButton(
+                        //       onPressed: () {
+                        //         Get.to(AddPaymentMethodsScreen());
+                        //       },
+                        //       child: Row(
+                        //         children: [
+                        //           _stripeController
+                        //                   .activePaymentMethod.last4.isNotEmpty
+                        //               ? Row(
+                        //                   mainAxisAlignment:
+                        //                       MainAxisAlignment.spaceEvenly,
+                        //                   crossAxisAlignment:
+                        //                       CrossAxisAlignment.center,
+                        //                   mainAxisSize: MainAxisSize.min,
+                        //                   children: [
+                        //                       _stripeController
+                        //                                   .activePaymentMethod
+                        //                                   .brand ==
+                        //                               'visa'
+                        //                           ? VISAIMAGE
+                        //                           : MASTERCARDIMAGE,
+                        //                       SizedBox(
+                        //                         width: 2.w,
+                        //                       ),
+                        //                       Text(_stripeController
+                        //                           .activePaymentMethod.last4)
+                        //                     ])
+                        //               : const Text(
+                        //                   'ADD PAYMENT METHOD',
+                        //                   style: kRegularTS,
+                        //                   overflow: TextOverflow.fade,
+                        //                 ),
+                        //           const Icon(Icons.navigate_next),
+                        //         ],
+                        //       ),
+                        //     )
+                        //   ],
+                        // ),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           child: Row(

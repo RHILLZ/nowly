@@ -123,6 +123,7 @@ class AgoraController extends GetxController {
 
 //START A VIRTUAL SESSION/////////////////////////////////////////////////////
   void startSession(BuildContext context, SessionModel session) async {
+    // TODO: Init Stripe Intent here
     _context = context;
     _isSearching.toggle();
     _channel.value = session.sessionID!;

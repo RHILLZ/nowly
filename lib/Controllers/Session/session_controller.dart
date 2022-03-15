@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Models/models_exporter.dart';
@@ -348,13 +349,29 @@ class SessionController extends GetxController {
     final sessionCreated = await FirebaseFutures().createNewSession(sess);
 
     if (sessionCreated) {
-      _currentSession
+      try {
+        await Stripe.instance
+        .confirmPaymentSheetPayment();
+
+        Get.snackbar(
+          'Success', 
+          'Payment Complete',
+        );
+
+        _currentSession
           .bindStream(FirebaseStreams().streamSession(sess.sessionID!));
-      await Future.delayed(const Duration(seconds: 2), () => null);
-      ever(_currentSession, (callback) => checkSessionStatus(controller));
-      //SEND SIGNAL HEREfire
-      AppLogger.info(session);
-      FCM().sendInPersonSessionSignal(session, tokenId);
+        await Future.delayed(const Duration(seconds: 2), () => null);
+        ever(_currentSession, (callback) => checkSessionStatus(controller));
+        //SEND SIGNAL HEREfire
+        AppLogger.info(session);
+        FCM().sendInPersonSessionSignal(session, tokenId);
+      } on StripeException catch (e) {
+        Get.snackbar(
+          'Payment Issue',
+          'Error: ${e.error}',
+        );
+        //TODO: Implement user being sent back to find another trainer due to failing a transaction
+      }
     } else {
       _isProcessing.toggle();
       Get.snackbar('Something went wrong.',

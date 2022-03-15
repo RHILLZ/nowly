@@ -4,5 +4,4 @@
 
 del android\app\build
 
-flutter clean
-flutter pub get
+flutter clean && flutter pub get
