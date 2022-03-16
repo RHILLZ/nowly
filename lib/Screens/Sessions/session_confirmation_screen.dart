@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:nowly/Configs/Constants/constants.dart';
 import 'package:nowly/Configs/configs.dart';
-import 'package:nowly/Services/Stripe/fstripe_services.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
-import 'package:nowly/Screens/Stripe/add_payment_methods.dart';
+import 'package:nowly/Services/Stripe/fstripe_services.dart';
 import 'package:nowly/Utils/app_logger.dart';
-import 'package:nowly/Widgets/Dialogs/dialogs.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 import 'package:sizer/sizer.dart';
@@ -98,21 +96,24 @@ class SessionConfirmationScreen extends StatelessWidget {
                         _agoraVideoCallController.sessionTimer =
                             int.parse(durTimer) * 60;
 
-                        // if (_stripeController.activePaymentMethod.last4 == '') {
-                        //   Dialogs().addPayMethod(context);
-                        //   return;
-                        // }
+                        try {
+                          await FStripeService().initPayment();
+                            // ignore: use_build_context_synchronously
+                          _agoraVideoCallController.startSession(
+                            context, 
+                            _session,
+                          );
 
-                        await FStripeController().initPayment();
-
-                        _agoraVideoCallController.startSession(
-                            context, _session);
-
-                        //TRACK SESSION CALL WITH MIXPANEL
-                        Get.find<AuthController>()
-                            .mix
-                            .track('Virtual Session Call');
-                      }),
+                          //TRACK SESSION CALL WITH MIXPANEL
+                          Get.find<AuthController>()
+                              .mix
+                              .track('Virtual Session Call');
+                        } on StripeException catch (err) {
+                          Get.snackbar('Payment Error', 'message: $err');
+                        } catch (err) {
+                          Get.snackbar('Error', 'message: $err');
+                        }
+                      },),
               ),
             )),
         body: Obx(
@@ -241,70 +242,6 @@ class SessionConfirmationScreen extends StatelessWidget {
                                     )),
                               ); // loading shimmer
                             }),
-                            // Row(
-                            //   children: [
-                            //     const Text(
-                            //       'Payment Method:',
-                            //       style: kRegularTS,
-                            //     ),
-                            //     const Spacer(),
-                            //     TextButton(
-                            //       onPressed: () {
-                            //         Get.to(() => AddPaymentMethodsScreen());
-
-                            //         // if (_paymentController.myPaymentMethods.isNotEmpty) {
-                            //         //   Get.toNamed(PaymentMethodsScreen.routeName);
-                            //         // }
-                            //       },
-                            //       child: FittedBox(
-                            //         fit: BoxFit.fitWidth,
-                            //         child: Row(
-                            //           children: [
-                            //             _stripeController.activePaymentMethod
-                            //                     .last4.isNotEmpty
-                            //                 ? FittedBox(
-                            //                     fit: BoxFit.contain,
-                            //                     child: Row(
-                            //                         mainAxisAlignment:
-                            //                             MainAxisAlignment
-                            //                                 .spaceEvenly,
-                            //                         crossAxisAlignment:
-                            //                             CrossAxisAlignment
-                            //                                 .center,
-                            //                         mainAxisSize:
-                            //                             MainAxisSize.min,
-                            //                         children: [
-                            //                           FittedBox(
-                            //                               fit: BoxFit.contain,
-                            //                               child: _stripeController
-                            //                                           .activePaymentMethod
-                            //                                           .brand ==
-                            //                                       'visa'
-                            //                                   ? VISAIMAGE
-                            //                                   : MASTERCARDIMAGE),
-                            //                           SizedBox(
-                            //                             width: 2.w,
-                            //                           ),
-                            //                           Text(_stripeController
-                            //                               .activePaymentMethod
-                            //                               .last4)
-                            //                         ]),
-                            //                   )
-                            //                 : const FittedBox(
-                            //                     fit: BoxFit.scaleDown,
-                            //                     child: Text(
-                            //                       'ADD PAY METHOD',
-                            //                       style: kRegularTS,
-                            //                       overflow: TextOverflow.fade,
-                            //                     ),
-                            //                   ),
-                            //             const Icon(Icons.navigate_next),
-                            //           ],
-                            //         ),
-                            //       ),
-                            //     )
-                            //   ],
-                            // ),
                             const SizedBox(
                               height: 10,
                             ),

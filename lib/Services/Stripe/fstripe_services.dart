@@ -5,10 +5,10 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-class FStripeController extends GetConnect {
+class FStripeService extends GetConnect {
   final base_url = "http://10.0.2.2:4242";
 
-  Future<Map<String, dynamic>> createTestPaymentSheet() async {
+  Future<Map<String, dynamic>> _createTestPaymentSheet() async {
     final url = Uri.parse('$base_url/payment-sheet');
     final response = await http.post(
       url,
@@ -29,7 +29,7 @@ class FStripeController extends GetConnect {
 
   Future<void> initPayment() async {
     try{
-      final data = await createTestPaymentSheet();
+      final data = await _createTestPaymentSheet();
 
       await Stripe.instance.initPaymentSheet(
         paymentSheetParameters: SetupPaymentSheetParameters(
@@ -52,7 +52,7 @@ class FStripeController extends GetConnect {
 
       await Stripe.instance.presentPaymentSheet();
     } catch (err) {
-      Get.snackbar('Error', 'message: $err');
+      rethrow;
     }
   }
 }

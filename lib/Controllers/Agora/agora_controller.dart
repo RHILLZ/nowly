@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
@@ -141,10 +142,27 @@ class AgoraController extends GetxController {
     if (_currentVirtualSession.value.isAccepted &&
         _currentVirtualSession.value.sessionStatus == 'created') {
       // await initAgora();
-      _isSearching.toggle();
-      Get.to(() => VideoCallView(
-            agoraController: this,
-          ));
+      try {
+        await Stripe.instance
+        .confirmPaymentSheetPayment();
+
+        Get.snackbar(
+          'Success', 
+          'Payment Complete',
+        );
+
+        _isSearching.toggle();
+        unawaited(Get.to(() => VideoCallView(
+              agoraController: this,
+            ),),
+        );
+      } on StripeException catch (e) {
+        Get.snackbar(
+          'Payment Issue',
+          'Error: ${e.error}',
+        );
+        //TODO: Implement user being sent back to find another trainer due to failing a transaction
+      }
     }
     if (_currentVirtualSession.value.sessionStatus == 'unanswered') {
       _isSearching.toggle();

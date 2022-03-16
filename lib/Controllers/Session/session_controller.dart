@@ -349,29 +349,13 @@ class SessionController extends GetxController {
     final sessionCreated = await FirebaseFutures().createNewSession(sess);
 
     if (sessionCreated) {
-      try {
-        await Stripe.instance
-        .confirmPaymentSheetPayment();
-
-        Get.snackbar(
-          'Success', 
-          'Payment Complete',
-        );
-
-        _currentSession
+      _currentSession
           .bindStream(FirebaseStreams().streamSession(sess.sessionID!));
         await Future.delayed(const Duration(seconds: 2), () => null);
         ever(_currentSession, (callback) => checkSessionStatus(controller));
         //SEND SIGNAL HEREfire
         AppLogger.info(session);
         FCM().sendInPersonSessionSignal(session, tokenId);
-      } on StripeException catch (e) {
-        Get.snackbar(
-          'Payment Issue',
-          'Error: ${e.error}',
-        );
-        //TODO: Implement user being sent back to find another trainer due to failing a transaction
-      }
     } else {
       _isProcessing.toggle();
       Get.snackbar('Something went wrong.',
@@ -395,12 +379,13 @@ class SessionController extends GetxController {
     if (_currentSession.value.isAccepted == true &&
         !_currentSession.value.isScanned) {
       _isProcessing.toggle();
-      Get.to(() => CurrentSessionEnRouteDetailsScreen(
-            session: _currentSession.value,
-            mapNavController: Get.find<MapNavigatorController>(),
-            trainerSessionC: controller,
-            sessionController: this,
-          ));
+        unawaited(Get.to(() => CurrentSessionEnRouteDetailsScreen(
+              session: _currentSession.value,
+              mapNavController: Get.find<MapNavigatorController>(),
+              trainerSessionC: controller,
+              sessionController: this,
+            ),)
+        ,);
       return;
     }
 

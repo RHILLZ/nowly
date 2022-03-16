@@ -1,22 +1,18 @@
-import 'dart:convert';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/Logo/logos.dart';
 import 'package:nowly/Configs/configs.dart';
-import 'package:nowly/Services/Stripe/fstripe_services.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:sizer/sizer.dart';
 
 import 'welcome_view.dart';
 
-class StartScreenView extends GetView<FStripeController> {
+class StartScreenView extends GetView<AuthController> {
   StartScreenView({Key? key}) : super(key: key);
   final CarouselController _controller = CarouselController();
-  final _fstripeController = Get.find<AuthController>();
   final _current = 0.obs;
 
   @override

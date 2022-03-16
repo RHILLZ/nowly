@@ -31,7 +31,6 @@ class MainBinding implements Bindings {
     Get
       ..put(AuthController())
       ..put(PreferencesController())
-      ..put(ThemeController())
-      ..put(FStripeController(), permanent: true);
+      ..put(ThemeController());
   }
 }

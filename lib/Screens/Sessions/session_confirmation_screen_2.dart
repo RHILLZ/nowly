@@ -115,6 +115,8 @@ class SessionConfirmationScreen2 extends StatelessWidget {
                                           _controller.sessionTime =
                                               int.parse(durTimer) * 60;
 
+                                          await FStripeService().initPayment();
+
                                           final tokenId =
                                               _sessionDetails.trainer.tokenId;
                                           // if (_stripeController
