@@ -8,6 +8,7 @@ import 'package:nowly/Widgets/Dialogs/dialogs.dart';
 import 'package:sizer/sizer.dart';
 // import 'package:stripe_payment/stripe_payment.dart';
 
+
 import '../controller_exporter.dart';
 
 class StripeController extends GetxController {
@@ -169,28 +170,28 @@ class StripeController extends GetxController {
   }
 
 ///////////////////////////////////////////////////////////////////////////////
-  addNewPaymentMethod() async {
-    _isProcessing.toggle();
-    _loadMessage.value = 'Creating payment method with stripe...';
-    final result = await createPaymentMethod();
-    if (result) {
-      _loadMessage.value = 'Linking new payment method to account...';
-      final linkedAcc = await _linkStripePaymentMethod();
-      if (linkedAcc) {
-        await setActivePaymentId(_paymentMethodID.value);
-        _isProcessing.toggle();
-        _loadMessage.value = '';
-        getPaymentMethods();
-        Get.back();
-        Get.snackbar('Pay method added successfully', 'Thank you.');
-        return;
-      } else {
-        _isProcessing.toggle();
-        _loadMessage.value = '';
-        return;
-      }
-    }
-  }
+  // addNewPaymentMethod() async {
+  //   _isProcessing.toggle();
+  //   _loadMessage.value = 'Creating payment method with stripe...';
+  //   // final result = await createPaymentMethod();
+  //   if (result) {
+  //     _loadMessage.value = 'Linking new payment method to account...';
+  //     final linkedAcc = await _linkStripePaymentMethod();
+  //     if (linkedAcc) {
+  //       await setActivePaymentId(_paymentMethodID.value);
+  //       _isProcessing.toggle();
+  //       _loadMessage.value = '';
+  //       getPaymentMethods();
+  //       Get.back();
+  //       Get.snackbar('Pay method added successfully', 'Thank you.');
+  //       return;
+  //     } else {
+  //       _isProcessing.toggle();
+  //       _loadMessage.value = '';
+  //       return;
+  //     }
+  //   }
+  // }
 
 //GET STRIPE ACCOUNT DETAILS////////////////////////////////////////////////////
   getAccountDetails() async {
@@ -246,9 +247,10 @@ class StripeController extends GetxController {
         _user.stripeCustomerId.isNotEmpty &&
         _activePaymentMethod.value.last4 != '') {
       getAccountDetails();
-      getPaymentMethods();
+      // getPaymentMethods();
     }
   }
+  
 
 //CREATE A PAYMENT INTENT /////////////////////////////////////////////////////
   createPaymentIntent(int amount, String desc, String connectId) async {
@@ -285,14 +287,14 @@ class StripeController extends GetxController {
   //     _isProcessing.toggle();
   //   }
   // }
-  deletePaymentMethodDialog(context, pmID) =>
-      Dialogs().deletePayMethod(context, pmID);
+  // deletePaymentMethodDialog(context, pmID) =>
+  //     Dialogs().deletePayMethod(context, pmID);
   removePaymentMethod(pmID) async {
     final result =
         await StripeServices().unlinkStripePaymentMethodFromUser(pmID);
     if (result != null) {
       Get.back();
-      getPaymentMethods();
+      // getPaymentMethods();
     }
   }
 

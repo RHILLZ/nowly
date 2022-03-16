@@ -123,23 +123,23 @@ class Dialogs {
       loopAnimation: false,
       width: 80.w);
 
-  deletePayMethod(context, pmID) => CoolAlert.show(
-      context: context,
-      type: CoolAlertType.confirm,
-      backgroundColor: kPrimaryColor,
-      title: 'Delete Card',
-      text: 'Are you sure you want to delete payment card?',
-      barrierDismissible: false,
-      // widget: Logo.mark(context, 8.h),
-      lottieAsset: 'assets/alert.json',
-      confirmBtnText: 'Delete',
-      onConfirmBtnTap: () =>
-          Get.find<StripeController>().removePaymentMethod(pmID),
-      onCancelBtnTap: () => Get.back(),
-      cancelBtnText: 'Nevermind',
-      confirmBtnColor: kPrimaryColor,
-      loopAnimation: false,
-      width: 90.w);
+  // deletePayMethod(context, pmID) => CoolAlert.show(
+  //     context: context,
+  //     type: CoolAlertType.confirm,
+  //     backgroundColor: kPrimaryColor,
+  //     title: 'Delete Card',
+  //     text: 'Are you sure you want to delete payment card?',
+  //     barrierDismissible: false,
+  //     // widget: Logo.mark(context, 8.h),
+  //     lottieAsset: 'assets/alert.json',
+  //     confirmBtnText: 'Delete',
+  //     onConfirmBtnTap: () =>
+  //         Get.find<StripeController>().removePaymentMethod(pmID),
+  //     onCancelBtnTap: () => Get.back(),
+  //     cancelBtnText: 'Nevermind',
+  //     confirmBtnColor: kPrimaryColor,
+  //     loopAnimation: false,
+  //     width: 90.w);
 
   addPayMethod(context) => CoolAlert.show(
       context: context,

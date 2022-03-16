@@ -27,13 +27,13 @@ class UserPaymentMethodsList extends StatelessWidget {
 
   buildPaymentMethod(BuildContext context, UserPaymentMethodModel pm) =>
       ListTile(
-          onTap: () {
-            _stripeController.activePaymentMethod = pm;
-            _stripeController.setActivePaymentId(pm.id);
-          },
-          onLongPress: () => _stripeController.activePaymentMethod.id == pm.id
-              ? _stripeController.selectOtherCardWarning()
-              : _stripeController.deletePaymentMethodDialog(context, pm.id),
+          // onTap: () {
+          //   _stripeController.activePaymentMethod = pm;
+          //   _stripeController.setActivePaymentId(pm.id);
+          // },
+          // onLongPress: () => _stripeController.activePaymentMethod.id == pm.id
+          //     ? _stripeController.selectOtherCardWarning()
+          //     : _stripeController.deletePaymentMethodDialog(context, pm.id),
           leading: FittedBox(
               fit: BoxFit.contain,
               child: SvgPicture.asset(

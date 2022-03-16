@@ -18,26 +18,25 @@ class StripeServices extends GetConnect {
     return account['accountId'];
   }
 
-  Future createStripePaymentMethod(card) async {
-    String url = "$baseURL/createStripePaymentMethod";
+  // Future createStripePaymentMethod(CreditCard card) async {
+  //   String url = "$baseURL/createStripePaymentMethod";
+  //   final req = await httpClient.post(url,
+  //       body: jsonEncode({
+  //         'number': card.number,
+  //         'exp_month': card.expMonth,
+  //         'exp_year': card.expYear,
+  //         'cvc': card.cvc,
+  //         'line1': card.addressLine1,
+  //         'line2': card.addressLine2,
+  //         'city': card.addressCity,
+  //         'postal_code': card.addressZip,
+  //         'state': card.addressState
+  //       }));
 
-    final req = await httpClient.post(url,
-        body: jsonEncode({
-          'number': card.number,
-          'exp_month': card.expMonth,
-          'exp_year': card.expYear,
-          'cvc': card.cvc,
-          'line1': card.addressLine1,
-          'line2': card.addressLine2,
-          'city': card.addressCity,
-          'postal_code': card.addressZip,
-          'state': card.addressState
-        }));
+  //   final paymentMethod = req.body as Map<String, dynamic>;
 
-    final paymentMethod = req.body as Map<String, dynamic>;
-
-    return paymentMethod['paymentId'];
-  }
+  //   return paymentMethod['paymentId'];
+  // }
 
   Future linkStripePaymentMethodToUser(
       String customerID, String paymentMethodID) async {
