@@ -11,7 +11,7 @@ class CustomBottomNavBar extends StatelessWidget {
 
   final Function(int) onTap;
 
-  final _selectedIndex = 0.obs;
+  final _selectedIndex = 1.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -48,26 +48,19 @@ class CustomBottomNavBar extends StatelessWidget {
           getButton(
               size: 5,
               selectedSize: 5,
-              icon: 'assets/icons/bottom_app_bar_icons/home.svg',
-              label: 'Home',
-              selectedIcon:
-                  'assets/icons/bottom_app_bar_icons/training_active.svg',
-              isSelected: 0 == _selectedIndex.value),
-          getButton(
-              size: 5,
-              selectedSize: 6,
-              icon: 'assets/icons/bottom_app_bar_icons/training.svg',
-              label: 'Training',
-              selectedIcon: 'assets/logo/mark.svg',
-              isSelected: 1 == _selectedIndex.value),
-          getButton(
-              size: 5,
-              selectedSize: 5,
               icon: 'assets/icons/bottom_app_bar_icons/history.svg',
               label: 'Schedule',
               selectedIcon:
                   'assets/icons/bottom_app_bar_icons/history_active.svg',
-              isSelected: 2 == _selectedIndex.value),
+              isSelected: 0 == _selectedIndex.value),
+          getButton(
+              size: 5,
+              selectedSize: 5,
+              icon: 'assets/icons/bottom_app_bar_icons/home.svg',
+              label: 'Home',
+              selectedIcon:
+                  'assets/icons/bottom_app_bar_icons/training_active.svg',
+              isSelected: 1 == _selectedIndex.value),
           getButton(
               size: 5,
               selectedSize: 5,
@@ -75,7 +68,7 @@ class CustomBottomNavBar extends StatelessWidget {
               label: 'Profile',
               selectedIcon:
                   'assets/icons/bottom_app_bar_icons/profile_active.svg',
-              isSelected: 3 == _selectedIndex.value),
+              isSelected: 2 == _selectedIndex.value),
         ],
         currentIndex: 1,
         //selectedItemColor: Colors.amber[800],

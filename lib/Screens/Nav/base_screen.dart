@@ -11,13 +11,13 @@ class BaseScreen extends StatelessWidget {
   BaseScreen({Key? key}) : super(key: key);
   // ignore: unused_field
 
-  final _selectedIndex = 0.obs;
+  final _selectedIndex = 1.obs;
   static const routeName = '/baseScreen';
 
   final screens = [
-    UserHomeView(),
-    MapScreen(),
+    // MapScreen(),
     SessionHistoryView(),
+    UserHomeView(),
     const UserAccountScreen()
   ];
 
