@@ -16,7 +16,6 @@ export 'Session/session_mode_model.dart';
 
 export 'Session/workout_type_model.dart';
 export 'Session/avalibility_model.dart';
-export 'Session/trainer_inperson_session_model.dart';
 export 'Session/feedback_model.dart';
 export 'Stripe/payment_method_model.dart';
 export 'Maps/direction_model.dart';
