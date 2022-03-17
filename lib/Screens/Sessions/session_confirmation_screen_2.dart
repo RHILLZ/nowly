@@ -13,31 +13,17 @@ import 'package:progress_indicators/progress_indicators.dart';
 import 'package:sizer/sizer.dart';
 
 class SessionConfirmationScreen2 extends StatelessWidget {
-  SessionConfirmationScreen2(
-      {Key? key,
-      required TrainerInPersonSessionController
-          trainerInPersonSessionController})
-      : _trainerInPersonSessionController = trainerInPersonSessionController,
-        super(key: key);
+  SessionConfirmationScreen2({Key? key}) : super(key: key);
 
   static const routeName = '/session_confirmation_2';
   final SessionController _controller = Get.put(SessionController());
   final UserController _userController = Get.find();
   final StripeController _stripeController = Get.put(StripeController());
-  final MapNavigatorController _mapNavigatorController =
-      Get.put(MapNavigatorController());
-  final TrainerInPersonSessionController _trainerInPersonSessionController;
 
   @override
   Widget build(BuildContext context) {
-    final _sessionDetails = _trainerInPersonSessionController.trainerSession;
-    _controller.sessionDurAndCosts.value =
-        _trainerInPersonSessionController.trainerSession.sessionLengths;
-    _controller.sessionDurationAndCost =
-        _trainerInPersonSessionController.selectedLength.value;
-    final _city = Get.find<MapController>().city;
     final _sessionFee = (_controller.sessionDurationAndCost.cost / 100);
-    final st = SessionDurationAndCostModel.salesTaxByLoc[_city] ?? 0.0;
+    final st = 0.0; // Sales tax based on location
     final _salesTax = _sessionFee * st;
     final _totalCost = _sessionFee + _salesTax;
     final _totalCharge = (_totalCost * 100).toString().split('.')[0];

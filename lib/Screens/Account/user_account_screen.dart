@@ -78,15 +78,6 @@ class UserAccountScreen extends GetView<UserController> {
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                                Padding(
-                                  padding:
-                                      EdgeInsets.only(top: 1.h, bottom: 1.h),
-                                  child: Text(
-                                    Get.find<MapController>().cityState,
-                                    style: kRegularTS,
-                                    maxLines: 4,
-                                  ),
-                                ),
                                 Text(
                                     'Primary goal: ${controller.user.primaryGoal}'),
                                 SizedBox(

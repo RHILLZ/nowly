@@ -69,10 +69,7 @@ class Pages {
     GetPage(
         binding: BaseScreenBinding(),
         name: _Paths.SESSION_CONFIRMATION_2,
-        page: () => SessionConfirmationScreen2(
-              trainerInPersonSessionController:
-                  TrainerInPersonSessionController(),
-            )),
+        page: () => SessionConfirmationScreen2()),
     GetPage(
         binding: BaseScreenBinding(),
         name: _Paths.SESSION_COMPLETE_SCREEN,
@@ -82,8 +79,6 @@ class Pages {
         name: _Paths.SESSION_IN_PROGRESS,
         page: () => CurrentSessionEnRouteDetailsScreen(
             session: SessionModel(),
-            mapNavController: Get.find<MapNavigatorController>(),
-            trainerSessionC: Get.find<TrainerInPersonSessionController>(),
             sessionController: Get.find<SessionController>()),
         binding: MainBinding()),
     GetPage(

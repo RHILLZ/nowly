@@ -5,7 +5,6 @@ import 'package:nowly/Configs/Constants/constants.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
-import 'package:nowly/Screens/Stripe/add_payment_methods.dart';
 import 'package:nowly/Utils/app_logger.dart';
 import 'package:nowly/Widgets/Dialogs/dialogs.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
@@ -247,7 +246,6 @@ class SessionConfirmationScreen extends StatelessWidget {
                                 const Spacer(),
                                 TextButton(
                                   onPressed: () {
-                                    Get.to(() => AddPaymentMethodsScreen());
 
                                     // if (_paymentController.myPaymentMethods.isNotEmpty) {
                                     //   Get.toNamed(PaymentMethodsScreen.routeName);

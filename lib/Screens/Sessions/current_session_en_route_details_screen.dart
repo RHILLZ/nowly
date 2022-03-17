@@ -14,26 +14,18 @@ class CurrentSessionEnRouteDetailsScreen extends StatelessWidget {
   const CurrentSessionEnRouteDetailsScreen(
       {Key? key,
       required SessionModel session,
-      required MapNavigatorController mapNavController,
-      required TrainerInPersonSessionController trainerSessionC,
       required SessionController sessionController})
       : _sessionController = sessionController,
-        _mapNavController = mapNavController,
         _session = session,
-        _trainerSessionC = trainerSessionC,
         super(key: key);
 
   static const routeName = '/currentSession';
   final SessionModel _session;
-  final MapNavigatorController _mapNavController;
   final SessionController _sessionController;
-  final TrainerInPersonSessionController _trainerSessionC;
 
   @override
   Widget build(BuildContext context) {
     final SessionController _controller = Get.find();
-    _controller.sessionDurAndCosts.value =
-        _trainerSessionC.trainerSession.sessionLengths;
     // _controller.sessionDurationAndCosts = _trainerSessionC.selectedLength;
     final MessagingController _mController = Get.put(MessagingController());
 
@@ -73,8 +65,6 @@ class CurrentSessionEnRouteDetailsScreen extends StatelessWidget {
                   ],
                 ),
                 onPressed: () {
-                  _mapNavController.openAvialableMaps(
-                      sessionController: _trainerSessionC);
                 },
               ),
               SizedBox(

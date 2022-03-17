@@ -15,9 +15,6 @@ class UserHomeView extends StatelessWidget {
   final SessionController _sessionController = Get.put(SessionController());
   final UserController _userController = Get.put(UserController());
   final FilterController _filterController = Get.put(FilterController());
-  final MapController _mapController = Get.put(MapController());
-  final SessionListController _sessionListController =
-      Get.put(SessionListController());
 
   @override
   Widget build(BuildContext context) {
