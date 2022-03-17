@@ -2,19 +2,18 @@ import 'package:get/get.dart';
 import 'package:nowly/Bindings/binding_exporter.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
+import 'package:nowly/Screens/Account/info_screen.dart';
+import 'package:nowly/Screens/Account/my_goal_screen.dart';
+import 'package:nowly/Screens/Account/profile_details_screen.dart';
+import 'package:nowly/Screens/Account/user_account_screen.dart';
 import 'package:nowly/Screens/Auth/auth_view.dart';
-import 'package:nowly/Screens/Auth/welcome_view.dart';
 import 'package:nowly/Screens/Auth/start_screen_view.dart';
-import 'package:nowly/Screens/Map/map_screen.dart';
+import 'package:nowly/Screens/Auth/welcome_view.dart';
 import 'package:nowly/Screens/Messaging/messaging_screen.dart';
 import 'package:nowly/Screens/Nav/base_screen.dart';
 import 'package:nowly/Screens/Nav/home_view.dart';
 import 'package:nowly/Screens/Nav/session_history_view.dart';
 import 'package:nowly/Screens/OnBoarding/user_registration_view.dart';
-import 'package:nowly/Screens/Account/info_screen.dart';
-import 'package:nowly/Screens/Account/my_goal_screen.dart';
-import 'package:nowly/Screens/Account/profile_details_screen.dart';
-import 'package:nowly/Screens/Account/user_account_screen.dart';
 import 'package:nowly/Screens/Sessions/current_session_en_route_details_screen.dart';
 import 'package:nowly/Screens/Sessions/feedback.dart';
 import 'package:nowly/Screens/Sessions/live_session_screen.dart';
@@ -22,7 +21,6 @@ import 'package:nowly/Screens/Sessions/session_complete_screen.dart';
 import 'package:nowly/Screens/Sessions/session_confirmation_screen.dart';
 import 'package:nowly/Screens/Sessions/session_confirmation_screen_2.dart';
 import 'package:nowly/Screens/Sessions/virtual_session_view.dart';
-import 'package:nowly/Screens/Stripe/add_payment_methods.dart';
 import 'package:nowly/root.dart';
 
 part 'routes.dart';
@@ -56,10 +54,6 @@ class Pages {
         page: () => BaseScreen(),
         binding: BaseScreenBinding()),
     GetPage(name: _Paths.HOME, page: () => UserHomeView()),
-    GetPage(
-        name: _Paths.MAP,
-        page: () => MapScreen(),
-        binding: BaseScreenBinding()),
     GetPage(name: _Paths.SESSION_HISTORY, page: () => SessionHistoryView()),
     GetPage(name: _Paths.PROFILE, page: () => const UserAccountScreen()),
     GetPage(

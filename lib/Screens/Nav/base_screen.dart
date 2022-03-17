@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nowly/Screens/Map/map_screen.dart';
 import 'package:nowly/Screens/Nav/home_view.dart';
 import 'package:nowly/Screens/Nav/session_history_view.dart';
 import 'package:nowly/Screens/Account/user_account_screen.dart';
