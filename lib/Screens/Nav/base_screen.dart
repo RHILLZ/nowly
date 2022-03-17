@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nowly/Screens/Account/user_account_screen.dart';
 import 'package:nowly/Screens/Nav/home_view.dart';
 import 'package:nowly/Screens/Nav/session_history_view.dart';
-import 'package:nowly/Screens/Account/user_account_screen.dart';
 import 'package:nowly/Utils/app_logger.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 

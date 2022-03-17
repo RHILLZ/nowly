@@ -19,7 +19,6 @@ import 'package:nowly/Screens/Sessions/feedback.dart';
 import 'package:nowly/Screens/Sessions/live_session_screen.dart';
 import 'package:nowly/Screens/Sessions/session_complete_screen.dart';
 import 'package:nowly/Screens/Sessions/session_confirmation_screen.dart';
-import 'package:nowly/Screens/Sessions/session_confirmation_screen_2.dart';
 import 'package:nowly/Screens/Sessions/virtual_session_view.dart';
 import 'package:nowly/root.dart';
 
@@ -60,10 +59,6 @@ class Pages {
         binding: BaseScreenBinding(),
         name: _Paths.SESSION_CONFIRMATION,
         page: () => SessionConfirmationScreen()),
-    GetPage(
-        binding: BaseScreenBinding(),
-        name: _Paths.SESSION_CONFIRMATION_2,
-        page: () => SessionConfirmationScreen2()),
     GetPage(
         binding: BaseScreenBinding(),
         name: _Paths.SESSION_COMPLETE_SCREEN,
