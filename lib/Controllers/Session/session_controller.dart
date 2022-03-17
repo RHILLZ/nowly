@@ -5,7 +5,6 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Models/models_exporter.dart';
-import 'package:nowly/Screens/Sessions/current_session_en_route_details_screen.dart';
 import 'package:nowly/Screens/Sessions/session_complete_screen.dart';
 import 'package:nowly/Services/Firebase/fcm.dart';
 import 'package:nowly/Services/service_exporter.dart';

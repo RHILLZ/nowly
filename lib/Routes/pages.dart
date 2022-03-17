@@ -14,9 +14,7 @@ import 'package:nowly/Screens/Nav/base_screen.dart';
 import 'package:nowly/Screens/Nav/home_view.dart';
 import 'package:nowly/Screens/Nav/session_history_view.dart';
 import 'package:nowly/Screens/OnBoarding/user_registration_view.dart';
-import 'package:nowly/Screens/Sessions/current_session_en_route_details_screen.dart';
 import 'package:nowly/Screens/Sessions/feedback.dart';
-import 'package:nowly/Screens/Sessions/live_session_screen.dart';
 import 'package:nowly/Screens/Sessions/session_complete_screen.dart';
 import 'package:nowly/Screens/Sessions/session_confirmation_screen.dart';
 import 'package:nowly/Screens/Sessions/virtual_session_view.dart';
@@ -64,19 +62,6 @@ class Pages {
         name: _Paths.SESSION_COMPLETE_SCREEN,
         page: () => SessionCompleteScreen(
             session: SessionModel(), sessionController: SessionController())),
-    GetPage(
-        name: _Paths.SESSION_IN_PROGRESS,
-        page: () => CurrentSessionEnRouteDetailsScreen(
-            session: SessionModel(),
-            sessionController: Get.find<SessionController>()),
-        binding: MainBinding()),
-    GetPage(
-        name: _Paths.LIVE_SESSION,
-        page: () => LiveSessionView(
-              controller: SessionController(),
-            ),
-        binding: BaseScreenBinding()),
-
     // GetPage(
     //     name: _Paths.ADD_PAYMENT_METHOD,
     //     page: () => AddPaymentMethodsScreen(),
