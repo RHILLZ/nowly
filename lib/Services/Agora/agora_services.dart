@@ -13,7 +13,7 @@ class AgoraService extends GetConnect {
           'channelName': channelName
         })); // AWAIT HTTP POST {USER ID} for channel name
 
-    var token = response.body;
+    var token = response.body as Map<String, dynamic>;
 
     return token['token'];
   }

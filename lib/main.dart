@@ -16,9 +16,12 @@ import 'package:sizer/sizer.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Stripe.publishableKey =
-      'pk_test_51JXoZrHxTvaJqgJRAreTvzeLTmp9xUDkgYRY4K0yZA8JcE4faFmRUvjBBPmgkCWjyBI1DiQ3FIaJBg0sCtFSA0q6009d90fyqv';
+
   await Env.init();
+  
+  Stripe.publishableKey = Env.publishKey;
+  await Stripe.instance.applySettings();
+
   await Firebase.initializeApp();
 
   MainBinding().dependencies();

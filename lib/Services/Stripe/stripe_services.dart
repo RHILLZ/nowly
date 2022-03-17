@@ -20,7 +20,6 @@ class StripeServices extends GetConnect {
 
   // Future createStripePaymentMethod(CreditCard card) async {
   //   String url = "$baseURL/createStripePaymentMethod";
-
   //   final req = await httpClient.post(url,
   //       body: jsonEncode({
   //         'number': card.number,

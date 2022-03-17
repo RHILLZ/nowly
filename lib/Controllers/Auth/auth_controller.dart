@@ -35,7 +35,7 @@ class AuthController extends GetxController {
   get firebaseUser => _firebaseUser.value;
   get auth => _auth;
   get agreedToTerms => _agreedToTerms.value;
-  get mix => mixpanel;
+  Mixpanel get mix => mixpanel;
 
   set agreedToTerms(value) => _agreedToTerms.value = value;
 

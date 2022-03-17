@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Models/models_exporter.dart';
@@ -350,11 +351,11 @@ class SessionController extends GetxController {
     if (sessionCreated) {
       _currentSession
           .bindStream(FirebaseStreams().streamSession(sess.sessionID!));
-      await Future.delayed(const Duration(seconds: 2), () => null);
-      ever(_currentSession, (callback) => checkSessionStatus(controller));
-      //SEND SIGNAL HEREfire
-      AppLogger.info(session);
-      FCM().sendInPersonSessionSignal(session, tokenId);
+        await Future.delayed(const Duration(seconds: 2), () => null);
+        ever(_currentSession, (callback) => checkSessionStatus(controller));
+        //SEND SIGNAL HEREfire
+        AppLogger.info(session);
+        FCM().sendInPersonSessionSignal(session, tokenId);
     } else {
       _isProcessing.toggle();
       Get.snackbar('Something went wrong.',
@@ -378,12 +379,13 @@ class SessionController extends GetxController {
     if (_currentSession.value.isAccepted == true &&
         !_currentSession.value.isScanned) {
       _isProcessing.toggle();
-      Get.to(() => CurrentSessionEnRouteDetailsScreen(
-            session: _currentSession.value,
-            mapNavController: Get.find<MapNavigatorController>(),
-            trainerSessionC: controller,
-            sessionController: this,
-          ));
+        unawaited(Get.to(() => CurrentSessionEnRouteDetailsScreen(
+              session: _currentSession.value,
+              mapNavController: Get.find<MapNavigatorController>(),
+              trainerSessionC: controller,
+              sessionController: this,
+            ),)
+        ,);
       return;
     }
 

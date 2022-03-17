@@ -32,6 +32,8 @@ class Env {
   /// {@macro Env}
   const Env._();
 
+  static String publishKey = 'pk_test_51JXoZrHxTvaJqgJRAreTvzeLTmp9xUDkgYRY4K0yZA8JcE4faFmRUvjBBPmgkCWjyBI1DiQ3FIaJBg0sCtFSA0q6009d90fyqv';
+
   /// Loads the appropriate environment variables based on the current app
   /// flavor.
   static Future<void> init() async {
