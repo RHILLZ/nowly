@@ -64,15 +64,6 @@ class AuthView extends GetView<AuthController> {
                 ],
               )),
               SizedBox(height: 2.h),
-              AuthButton(
-                color: Get.isDarkMode ? Colors.white : kSecondaryColor,
-                onPressed: () {
-                  // Get.toNamed(BaseScreen.routeName);
-                  authController.emailOption(context);
-                },
-                title: 'Continue with Email',
-                iconPath: 'assets/icons/email.svg',
-              ),
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: AuthButton(

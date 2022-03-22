@@ -5,7 +5,6 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Models/models_exporter.dart';
-import 'package:nowly/Screens/Sessions/current_session_en_route_details_screen.dart';
 import 'package:nowly/Screens/Sessions/session_complete_screen.dart';
 import 'package:nowly/Services/Firebase/fcm.dart';
 import 'package:nowly/Services/service_exporter.dart';
@@ -58,8 +57,7 @@ class SessionController extends GetxController {
 
   buildSalesTax() {
     final num _sessionFee = (sessionDurationAndCost.cost / 100);
-    final _city = Get.find<MapController>().city;
-    final st = SessionDurationAndCostModel.salesTaxByLoc[_city] ?? 0.0;
+    final st = 0.0; // Sales tax based on location
     final _salesTax = _sessionFee * st;
     return ListTile(
       contentPadding: const EdgeInsets.all(0),
@@ -70,8 +68,7 @@ class SessionController extends GetxController {
 
   buildTotalCost() {
     final num _sessionFee = (sessionDurationAndCost.cost / 100);
-    final _city = Get.find<MapController>().city;
-    final st = SessionDurationAndCostModel.salesTaxByLoc[_city] ?? 0.0;
+    final st = 0.0; // sales tax based on location
     final _salesTax = _sessionFee * st;
     final _totalCost = _sessionFee + _salesTax;
     return ListTile(
@@ -89,8 +86,7 @@ class SessionController extends GetxController {
 
   bool applySalesTax() {
     final num _sessionFee = (sessionDurationAndCost.cost / 100);
-    final _city = Get.find<MapController>().city;
-    final st = SessionDurationAndCostModel.salesTaxByLoc[_city] ?? 0.0;
+    final st = 0.0; // sales tax based on location
     final _salesTax = _sessionFee * st;
     return _salesTax != 0.0;
   }
@@ -261,8 +257,7 @@ class SessionController extends GetxController {
   createSessionReceipt(SessionModel session) async {
     final status = session.reportedIssue! ? 'Complete With ISSUE' : 'Completed';
     final num _sessionFee = (sessionDurationAndCost.cost / 100);
-    final _city = Get.find<MapController>().city;
-    final st = SessionDurationAndCostModel.salesTaxByLoc[_city] ?? 0.0;
+    final st = 0.0; // sales tax based on location
     final _salesTax = _sessionFee * st;
     final _totalCost = _sessionFee + _salesTax;
     final receipt = SessionReceiptModel(
@@ -296,8 +291,7 @@ class SessionController extends GetxController {
   skip(SessionModel session, context) async {
     final status = session.reportedIssue! ? 'Complete With ISSUE' : 'Completed';
     final num _sessionFee = (sessionDurationAndCost.cost / 100);
-    final _city = Get.find<MapController>().city;
-    final st = SessionDurationAndCostModel.salesTaxByLoc[_city] ?? 0.0;
+    final st = 0.0; // sales tax based on location
     final _salesTax = _sessionFee * st;
     final _totalCost = _sessionFee + _salesTax;
     final receipt = SessionReceiptModel(
@@ -337,61 +331,6 @@ class SessionController extends GetxController {
   loadQr() async {
     await Future.delayed(
         const Duration(seconds: 3), () => qrLoaded.value = true);
-  }
-
-//ENGAGE A TRAINER FOR IN PERSON SESSION////////////////////////////////////////
-  engageTrainer(SessionModel sess, String tokenId, BuildContext context,
-      TrainerInPersonSessionController controller) async {
-    _isProcessing.toggle();
-    _context = context;
-    final session = SessionModel().toMap(sess);
-    final sessionCreated = await FirebaseFutures().createNewSession(sess);
-
-    if (sessionCreated) {
-      _currentSession
-          .bindStream(FirebaseStreams().streamSession(sess.sessionID!));
-      await Future.delayed(const Duration(seconds: 2), () => null);
-      ever(_currentSession, (callback) => checkSessionStatus(controller));
-      //SEND SIGNAL HEREfire
-      AppLogger.info(session);
-      FCM().sendInPersonSessionSignal(session, tokenId);
-    } else {
-      _isProcessing.toggle();
-      Get.snackbar('Something went wrong.',
-          'Unable to engage trainer at this time. Please try again later.',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white);
-    }
-  }
-
-//CHECK IF SESSION IS ACCEPTED AFTER ITS CREATED////////////////////////////////
-
-  checkSessionStatus(TrainerInPersonSessionController controller) async {
-    if (_currentSession.value.sessionStatus == 'cancelled') {
-      _currentSession.close();
-      Get.off(() => const Root());
-      Dialogs().sessionCancelledByOther(_context);
-      Phoenix.rebirth(_context!);
-      return;
-    }
-    if (_currentSession.value.isAccepted == true &&
-        !_currentSession.value.isScanned) {
-      _isProcessing.toggle();
-      Get.to(() => CurrentSessionEnRouteDetailsScreen(
-            session: _currentSession.value,
-            mapNavController: Get.find<MapNavigatorController>(),
-            trainerSessionC: controller,
-            sessionController: this,
-          ));
-      return;
-    }
-
-    if (_currentSession.value.isScanned == true) {
-      startSessionTimer();
-      return;
-    }
-    trainerUnavailable();
   }
 
 //FIRES WHEN TRAIINER IS UNAVAILABLE///////////////////////////////////////////

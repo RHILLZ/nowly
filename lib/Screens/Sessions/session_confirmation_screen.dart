@@ -5,7 +5,6 @@ import 'package:nowly/Configs/Constants/constants.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
 import 'package:nowly/Models/models_exporter.dart';
-import 'package:nowly/Screens/Stripe/add_payment_methods.dart';
 import 'package:nowly/Utils/app_logger.dart';
 import 'package:nowly/Widgets/Dialogs/dialogs.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
@@ -26,9 +25,8 @@ class SessionConfirmationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _controller.user = Get.find<UserController>().user;
-    final _city = Get.find<MapController>().city;
     final _sessionFee = (_controller.sessionDurationAndCost.cost / 100);
-    final st = SessionDurationAndCostModel.salesTaxByLoc[_city] ?? 0.0;
+    final st = 0.0;
     final _salesTax = _sessionFee * st;
     final _totalCost = _sessionFee + _salesTax;
     final _totalCharge = (_totalCost * 100).toString().split('.')[0];
@@ -247,7 +245,6 @@ class SessionConfirmationScreen extends StatelessWidget {
                                 const Spacer(),
                                 TextButton(
                                   onPressed: () {
-                                    Get.to(() => AddPaymentMethodsScreen());
 
                                     // if (_paymentController.myPaymentMethods.isNotEmpty) {
                                     //   Get.toNamed(PaymentMethodsScreen.routeName);

@@ -470,25 +470,4 @@ class FirebaseFutures {
     }
     return _isSuccessful;
   }
-
-  Future getOnlineTrainers(sessionLengths) async {
-    List<TrainerInPersonSessionModel> trainers = await _firestore
-        .collection(TRAINERSCOLLECTION)
-        .where('activeMode', isEqualTo: 'Physical')
-        .get()
-        .then((query) => query.docs
-            .map((doc) => TrainerInPersonSessionModel(
-                trainer: TrainerModel.fromDocumentSnapshot(
-                  doc.data(),
-                  doc.id,
-                ),
-                sessionLengths: sessionLengths,
-                locationDetailsModel: LocationDetailsModel(
-                    id: doc.id,
-                    longitude: doc.data()['lastLocation'].longitude,
-                    latitude: doc.data()['lastLocation'].latitude)))
-            .toList());
-
-    return trainers;
-  }
 }

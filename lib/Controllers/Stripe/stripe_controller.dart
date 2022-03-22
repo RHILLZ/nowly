@@ -134,24 +134,24 @@ class StripeController extends GetxController {
       );
 
 //CREATE A PAYMENT METHOD ON STRIPE/////////////////////////////////////////////
-  // createPaymentMethod() async {
-  //   CreditCard card = CreditCard();
-  //   card.number = _cardNum.value;
-  //   card.expMonth = _cardExpMonth.value;
-  //   card.expYear = _cardExpYear.value;
-  //   card.cvc = _cardCvc.value;
-  //   card.addressLine1 = _cardAddressLine1.value;
-  //   card.addressLine2 = _cardAddressLine2.value;
-  //   card.addressCity = _cardAddressCity.value;
-  //   card.addressState = _cardAddressState.value;
-  //   card.addressZip = _cardAddressZip.value;
-  //   final payMethod = await StripeServices().createStripePaymentMethod(card);
-  //   _paymentMethodID.value = payMethod;
-  //   final result = await FirebaseFutures()
-  //       .setUserActiveStripePaymentMethodId(_user.id, payMethod);
-
-  //   return result;
-  // }
+  createPaymentMethod() async {
+    // CreditCard card = CreditCard();
+    // card.number = _cardNum.value;
+    // card.expMonth = _cardExpMonth.value;
+    // card.expYear = _cardExpYear.value;
+    // card.cvc = _cardCvc.value;
+    // card.addressLine1 = _cardAddressLine1.value;
+    // card.addressLine2 = _cardAddressLine2.value;
+    // card.addressCity = _cardAddressCity.value;
+    // card.addressState = _cardAddressState.value;
+    // card.addressZip = _cardAddressZip.value;
+    // final payMethod = await StripeServices().createStripePaymentMethod(card);
+    // _paymentMethodID.value = payMethod;
+    // final result = await FirebaseFutures()
+    //     .setUserActiveStripePaymentMethodId(_user.id, payMethod);
+    dynamic result;
+    return result;
+  }
 
 ////////////////////////////////////////////////////////////////////////////////
   ///LINK PAYMENT METHOD TO STRIPE ACCOUNT////////////////////////////////////////
@@ -172,7 +172,7 @@ class StripeController extends GetxController {
   addNewPaymentMethod() async {
     _isProcessing.toggle();
     _loadMessage.value = 'Creating payment method with stripe...';
-    // final result = await createPaymentMethod();
+    final result = await createPaymentMethod();
     if (result) {
       _loadMessage.value = 'Linking new payment method to account...';
       final linkedAcc = await _linkStripePaymentMethod();
@@ -180,7 +180,7 @@ class StripeController extends GetxController {
         await setActivePaymentId(_paymentMethodID.value);
         _isProcessing.toggle();
         _loadMessage.value = '';
-        getPaymentMethods();
+        // getPaymentMethods();
         Get.back();
         Get.snackbar('Pay method added successfully', 'Thank you.');
         return;
@@ -246,8 +246,9 @@ class StripeController extends GetxController {
         _user.stripeCustomerId.isNotEmpty &&
         _activePaymentMethod.value.last4 != '') {
       getAccountDetails();
-      getPaymentMethods();
+      // getPaymentMethods();
     }
+  }
   
 
 //CREATE A PAYMENT INTENT /////////////////////////////////////////////////////
@@ -285,14 +286,15 @@ class StripeController extends GetxController {
   //     _isProcessing.toggle();
   //   }
   // }
-  deletePaymentMethodDialog(context, pmID) =>
-      Dialogs().deletePayMethod(context, pmID);
+  // deletePaymentMethodDialog(context, pmID) =>
+  //     Dialogs().deletePayMethod(context, pmID);
+
   removePaymentMethod(pmID) async {
     final result =
         await StripeServices().unlinkStripePaymentMethodFromUser(pmID);
     if (result != null) {
       Get.back();
-      getPaymentMethods();
+      // getPaymentMethods();
     }
   }
 
