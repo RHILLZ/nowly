@@ -1,12 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nowly/Controllers/shared_preferences/preferences_controller.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
+import 'package:nowly/Controllers/shared_preferences/preferences_controller.dart';
 import 'package:nowly/Models/models_exporter.dart';
 import 'package:nowly/Services/service_exporter.dart';
 import 'package:nowly/root.dart';
 
+/// {@template StartScreenView}
+/// Enter Start Screen view document here
+/// {@endtemplate}
 class RegistrationController extends GetxController {
   final NameAndInfoQModel nameAndInfoQModel = NameAndInfoQModel();
   final GoalsQModel goalsQModel = GoalsQModel();
@@ -35,7 +38,6 @@ class RegistrationController extends GetxController {
 
   createUser() async {
     _isProcessing.toggle();
-    // final _preferences = Get.put(PreferencesController());
     final _preferences = Get.find<PreferencesController>();
     AuthController _auth = Get.find<AuthController>();
     final uid = _auth.firebaseUser.uid;
@@ -50,21 +52,6 @@ class RegistrationController extends GetxController {
     user.weight = nameAndInfoQModel.weight.toString();
     user.sex = nameAndInfoQModel.gender.toString();
     user.birthYear = nameAndInfoQModel.birthYear.toString();
-    //USER GOAL INFO
-    user.goals = goalsQModel.selectedFitnessGoals;
-    user.goalTimeFrame =
-        goalsQModel.timeFrames[goalsQModel.selectedTimeFrameIndex.toInt()];
-    user.primaryGoal = goalsQModel.selectedPrimaryGoal.toString();
-    //USER EXERCISE HISTORY
-    user.fitnessLevel = exerciseHistoryQModel.selectedFitnessLevel.toString();
-    user.activeDaysWeekly = exerciseHistoryQModel
-        .workOutDays[exerciseHistoryQModel.selectedWorkOutIndex.toInt()];
-    user.hadPastTrainer =
-        // ignore: unrelated_type_equality_checks
-        exerciseHistoryQModel.trainedWithACoach == yesNoAnswer.yes
-            ? true
-            : false;
-    user.experienceWithPastTrainer = exerciseHistoryQModel.howWasIt.toString();
     //INJURY HISTORY
     user.hasInjury = injuryHistoryQModel.hasInjury;
     user.injuryDetails = injuryHistoryQModel.injuryDetail;
@@ -126,15 +113,6 @@ class RegistrationController extends GetxController {
 
     if (!nameAndInfoQModel.filled.value) {
       sections.add('Name and info');
-    }
-    if (!goalsQModel.filled.value) {
-      sections.add('Goals');
-    }
-    if (!pscoreQModel.filled.value) {
-      sections.add('Personality');
-    }
-    if (!exerciseHistoryQModel.filled.value) {
-      sections.add('Exercise History');
     }
     if (!injuryHistoryQModel.filled.value) {
       sections.add('Injury History');

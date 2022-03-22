@@ -3,15 +3,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/configs.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
-import 'package:nowly/Screens/Nav/session_history_view.dart';
 import 'package:nowly/Screens/Account/info_screen.dart';
+import 'package:nowly/Screens/Account/profile_details_screen.dart';
 import 'package:nowly/Screens/Account/profile_pic.dart';
-import 'package:nowly/Screens/Stripe/add_payment_methods.dart';
+import 'package:nowly/Screens/Nav/session_history_view.dart';
 import 'package:nowly/Widgets/Common/profile_image.dart';
 import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:sizer/sizer.dart';
-import 'my_goal_screen.dart';
-import 'profile_details_screen.dart';
 
 class UserAccountScreen extends GetView<UserController> {
   const UserAccountScreen({Key? key}) : super(key: key);
@@ -35,7 +33,7 @@ class UserAccountScreen extends GetView<UserController> {
       ),
       body: Obx(
         () => Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // if (controller.isUserAvailable.value)
             Padding(
@@ -78,8 +76,6 @@ class UserAccountScreen extends GetView<UserController> {
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                                Text(
-                                    'Primary goal: ${controller.user.primaryGoal}'),
                                 SizedBox(
                                   height: 1.h,
                                 ),
@@ -87,11 +83,6 @@ class UserAccountScreen extends GetView<UserController> {
                               ],
                             ),
                           ),
-                          // SvgPicture.asset(
-                          //   controller
-                          //       .userModel!.myPrimaryFitnessGoals.imagePath,
-                          //   color: Theme.of(context).iconTheme.color,
-                          // ),
                           const SizedBox(
                             width: 10,
                           ),
@@ -130,17 +121,6 @@ class UserAccountScreen extends GetView<UserController> {
                 color: iconColor,
               ),
               title: Text('Information'.toUpperCase()),
-              trailing: const Icon(Icons.keyboard_arrow_right),
-            ),
-            ListTile(
-              onTap: () {
-                Get.to(() => UserGoalScreen());
-              },
-              leading: SvgPicture.asset(
-                'assets/images/profile/goal.svg',
-                color: iconColor,
-              ),
-              title: const Text('GOALS'),
               trailing: const Icon(Icons.keyboard_arrow_right),
             ),
             ListTile(

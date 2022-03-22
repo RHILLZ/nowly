@@ -3,10 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:nowly/Configs/Logo/logos.dart';
 import 'package:nowly/Configs/configs.dart';
-import 'package:nowly/Controllers/shared_preferences/preferences_controller.dart';
 import 'package:nowly/Controllers/controller_exporter.dart';
-import 'package:nowly/Screens/OnBoarding/exercise_history.dart';
-import 'package:nowly/Screens/OnBoarding/goal.dart';
 import 'package:nowly/Screens/OnBoarding/injury_history.dart';
 import 'package:nowly/Screens/OnBoarding/medical_history.dart';
 import 'package:nowly/Screens/OnBoarding/name_and_info.dart';
@@ -14,7 +11,11 @@ import 'package:nowly/Widgets/widget_exporter.dart';
 import 'package:progress_indicators/progress_indicators.dart';
 import 'package:sizer/sizer.dart';
 
+/// {@template UserRegistrationView}
+/// User inputs their information into this Registration Form screen 
+/// {@endtemplate}
 class UserRegistrationView extends GetView<RegistrationController> {
+  /// {@macro StartScreenView}
   UserRegistrationView({Key? key}) : super(key: key);
   final RegistrationController _controller = Get.put(RegistrationController());
   final headerKey = GlobalKey();
@@ -26,20 +27,16 @@ class UserRegistrationView extends GetView<RegistrationController> {
           title: Text('Account Registration'.toUpperCase(), style: k16BoldTS),
           centerTitle: true,
           leading: Logo.mark(3.h),
-          actions: [
-            // IconButton(
-            //     onPressed: () => Get.find<AuthController>().signOut(),
-            //     icon: const Icon(Icons.exit_to_app))
-          ],
         ),
         bottomSheet: Obx(() => MainButton(
-            enabled: _controller.profileReady,
-            onTap: () async {
-              // await _controller.isEveryRequirmentsFilled();
-              _controller.createUser();
-              // _controller.testit();
-            },
-            title: 'Create Profile'.toUpperCase())),
+              enabled: _controller.profileReady,
+              onTap: () async {
+                // await _controller.isEveryRequirmentsFilled();
+                _controller.createUser();
+                // _controller.testit();
+              },
+              title: 'Create Profile'.toUpperCase(),
+            ),),
         body: Obx(
           () => _controller.isProcessing
               ? _proccessingView()
@@ -54,16 +51,9 @@ class UserRegistrationView extends GetView<RegistrationController> {
                           );
                         },
                         children: [
-                          // Row(children: const [
-                          //   CloseButton(),
-                          // ]),
-                          // const Text(
-                          //   'Our goal is to provide you the best fit trainer \n for your needs. Please take a moment and \n provide this info, help us help you!',
-                          //   textAlign: TextAlign.center,
-                          // ),
                           Obx(
                             () => Transform.translate(
-                              offset: const Offset(0, 0),
+                              offset: Offset.zero,
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,
                                 child: Text(
@@ -78,14 +68,6 @@ class UserRegistrationView extends GetView<RegistrationController> {
                           NameAndInfo(
                             controller: _controller,
                           ),
-                          Goal(
-                            controller: _controller,
-                          ),
-                          PScore(
-                            controller: _controller,
-                            key: headerKey,
-                          ),
-                          ExerciseHistory(controller: _controller),
                           InjuryHistory(controller: _controller),
                           MedicalHistory(controller: _controller),
                           SizedBox(
@@ -107,7 +89,7 @@ class UserRegistrationView extends GetView<RegistrationController> {
               child: SvgPicture.asset(
             'assets/icons/logo_outlined.svg',
             height: 10.h,
-          )),
+          ),),
           SizedBox(
             height: 5.h,
           ),

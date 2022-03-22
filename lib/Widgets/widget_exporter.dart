@@ -14,7 +14,6 @@ export 'Common/expandable_card.dart';
 export 'Common/fix_width_container.dart';
 export 'Common/indicator_dot.dart';
 export 'Common/main_button.dart';
-export 'Common/pscore_widget.dart';
 export 'Common/rating_stars_widget.dart';
 export 'Common/rounded_corner_button.dart';
 export 'Common/seperated_column.dart';
